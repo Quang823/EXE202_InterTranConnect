@@ -1,0 +1,115 @@
+:root {
+  --primary-color: #1e3a8a;
+  --secondary-color: #f97316;
+  --header-background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  --text-color: #ffffff;
+  --text-color-dark: #1f2937;
+  --border-color: #ddd;
+  --border-radius: 8px;
+  --transition-default: all 0.3s ease-in-out;
+  --font-family-primary: "Poppins", sans-serif;
+}
+
+.footer {
+  background: var(--header-background);
+  color: var(--text-color);
+  padding: 20px 0;
+  text-align: center;
+  font-family: var(--font-family-primary);
+  margin-top: 10px;
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-sections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  max-width: 250px;
+  text-align: left;
+}
+
+.footer-section h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--text-color);
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-section p,
+.footer-section ul {
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin: 5px 0;
+}
+
+.footer-section ul li a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: var(--transition-default);
+}
+
+.footer-section ul li a:hover {
+  color: var(--secondary-color);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-links a {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  transition: var(--transition-default);
+}
+
+.social-links a:hover {
+  color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    min-width: 150px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .footer-section h4 {
+    border-bottom: none;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .footer-sections {
+    gap: 30px;
+  }
+}

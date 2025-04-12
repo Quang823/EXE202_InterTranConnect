@@ -1,0 +1,293 @@
+// Variables for colors
+$primary-color: #007bff;
+$success-color: #28a745;
+$background-color: #f8f9fa;
+$card-bg: #ffffff;
+$text-color: #333;
+$muted-color: #6c757d;
+$border-color: #ddd;
+
+// General styles
+.home-page-client {
+  background-color: $background-color;
+  padding: 40px 0;
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: $text-color;
+    position: relative;
+
+    &::after {
+      content: "";
+      width: 60px;
+      height: 4px;
+      background-color: $primary-color;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+// Top Translators Section
+.top-translators-section {
+  margin-bottom: 60px;
+
+  .translator-card-col {
+    margin-bottom: 20px;
+  }
+
+  .translator-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .translator-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .card-body {
+      text-align: center;
+      padding: 20px;
+
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $text-color;
+      }
+
+      .card-subtitle {
+        font-size: 1rem;
+        color: $muted-color;
+      }
+
+      .card-text {
+        font-size: 0.9rem;
+        color: $text-color;
+        margin: 10px 0;
+      }
+
+      .social-links {
+        margin: 15px 0;
+
+        .social-icon {
+          margin: 0 10px;
+          font-size: 1.2rem;
+          color: $muted-color;
+          transition: color 0.3s ease;
+
+          &.facebook:hover {
+            color: #3b5998;
+          }
+
+          &.twitter:hover {
+            color: #1da1f2;
+          }
+
+          &.linkedin:hover {
+            color: #0077b5;
+          }
+        }
+      }
+
+      .card-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        .view-profile-btn {
+          background-color: $primary-color;
+          border: none;
+          padding: 8px 20px;
+          border-radius: 20px;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: darken($primary-color, 10%);
+          }
+        }
+
+        .book-now-btn {
+          background-color: $success-color;
+          border: none;
+          padding: 8px 20px;
+          border-radius: 20px;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: darken($success-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Choose Your Translators Section
+.choose-translators-section {
+  .filters-sidebar {
+    background-color: $card-bg;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+
+    .filter-group {
+      margin-bottom: 20px;
+
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $text-color;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        border: 1px solid $border-color;
+        padding: 8px;
+      }
+
+      .form-check {
+        margin-bottom: 8px;
+
+        .form-check-label {
+          font-size: 0.9rem;
+          color: $text-color;
+        }
+      }
+    }
+  }
+
+  .translators-list {
+    .translator-list-item {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .translator-image-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .translator-list-image {
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+      }
+
+      .card-body {
+        padding: 15px;
+
+        .card-title {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: $text-color;
+        }
+
+        .card-subtitle {
+          font-size: 0.9rem;
+          color: $muted-color;
+        }
+
+        .translator-details {
+          display: flex;
+          gap: 15px;
+          margin: 10px 0;
+
+          .price {
+            font-weight: 600;
+            color: $primary-color;
+          }
+
+          .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #f1c40f;
+          }
+
+          .status {
+            font-size: 0.85rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            color: white;
+
+            &.available {
+              background-color: $success-color;
+            }
+
+            &.booked {
+              background-color: #dc3545;
+            }
+          }
+        }
+
+        .translator-fields {
+          margin: 10px 0;
+
+          .field-badge {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: $text-color;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+          }
+        }
+
+        .card-text {
+          font-size: 0.9rem;
+          color: $muted-color;
+        }
+      }
+
+      .book-now-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .book-now-btn {
+          background-color: $success-color;
+          border: none;
+          padding: 8px 20px;
+          border-radius: 20px;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: darken($success-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}
