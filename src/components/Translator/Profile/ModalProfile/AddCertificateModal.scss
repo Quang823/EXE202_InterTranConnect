@@ -1,0 +1,297 @@
+// Global variables for consistency
+$primary-color: #007bff;
+$border-color: #e0e0e0;
+$text-color: #333;
+$muted-color: #888;
+$background-color: #fff;
+$overlay-color: rgba(0, 0, 0, 0.6);
+$border-radius: 8px;
+$spacing-unit: 16px;
+$font-size-base: 14px;
+
+// Modal overlay
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $overlay-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+// Modal content
+.modal-content1 {
+  background: $background-color;
+  border-radius: $border-radius;
+  width: 90%;
+  max-width: 70%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: $spacing-unit * 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-unit;
+}
+
+// Modal header
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: $spacing-unit;
+  border-bottom: 1px solid $border-color;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: $text-color;
+    margin: 0;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: $muted-color;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+}
+
+// Modal body
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-unit * 1.5;
+}
+
+// Section
+.section {
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: $primary-color;
+    margin-bottom: $spacing-unit;
+  }
+}
+
+// Form row
+.form-row {
+  display: flex;
+  gap: $spacing-unit;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+// Profile photo form group
+.form-group1 {
+  flex: 0 0 200px;
+  min-width: 200px;
+}
+
+// Form group stack
+.form-group-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-unit;
+
+  .form-group-stack-info,
+  .form-group-stack-info2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-unit;
+    width: 100%;
+
+    .form-group-info,
+    .form-group2 {
+      flex: 1;
+      min-width: 100px;
+      display: flex; // Ensure proper layout for label and input
+      flex-direction: column; // Stack label and input vertically
+      gap: 20px; // Add spacing between label and input
+    }
+
+    label {
+      font-size: $font-size-base;
+      font-weight: 500;
+      color: $text-color;
+      margin-bottom: 0; // Remove extra margin since gap is used
+    }
+
+    input,
+    select {
+      width: 95%;
+      padding: 10px;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+      font-size: $font-size-base;
+      color: $text-color;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+      }
+    }
+  }
+}
+
+// General form group
+.form-group {
+  flex: 1;
+  min-width: 150px;
+
+  label {
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $text-color;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: $font-size-base;
+    color: $text-color;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+}
+
+// Upload box
+.upload-box {
+  border: 2px dashed $border-color;
+  border-radius: 4px;
+  padding: $spacing-unit;
+  text-align: center;
+  cursor: pointer;
+  background: #fafafa;
+  transition: border-color 0.2s ease;
+  min-height: 150px; // Ensure consistent height for upload box
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &.cv-upload {
+    padding: $spacing-unit * 0.75;
+  }
+
+  .upload-icon {
+    font-size: 28px;
+    color: $muted-color;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 4px 0;
+    font-size: $font-size-base;
+    color: $muted-color;
+  }
+
+  .upload-info {
+    font-size: 12px;
+    color: #aaa;
+  }
+}
+
+// File info
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  margin-top: 8px;
+  background: #f9f9f9;
+
+  .file-icon {
+    font-size: 20px;
+    color: $primary-color;
+  }
+
+  span {
+    font-size: $font-size-base;
+    color: $text-color;
+  }
+
+  .file-size {
+    margin-left: auto;
+    font-size: 12px;
+    color: $muted-color;
+  }
+}
+
+// Certificate list
+.certificate-list {
+  margin-top: $spacing-unit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// Modal footer
+.modal-footer {
+  text-align: center;
+
+  .save-btn {
+    background: $primary-color;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: $font-size-base;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .modal-content1 {
+    width: 95%;
+    max-height: 90vh;
+    padding: $spacing-unit;
+  }
+
+  .form-group1 {
+    flex: 1;
+    min-width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group-stack-info,
+  .form-group-stack-info2 {
+    flex-direction: column;
+  }
+}
