@@ -57,10 +57,10 @@ const Header_Translator = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="header-navbar-nav">
-                  <NavLink to="/translator/home" className="header-nav-item">
+                  <NavLink to="/translator/" className="header-nav-item">
                     Home
                   </NavLink>
-                  <NavLink to="/translator/jobs" className="header-nav-item">
+                  <NavLink to="/translator/job" className="header-nav-item">
                     Jobs
                   </NavLink>
                   <NavLink to="/news-blog" className="header-nav-item">
@@ -110,10 +110,10 @@ const Header_Translator = () => {
                   align="end"
                   data-bs-theme="light"
                 >
-                  <NavDropdown.Item href="/profile">
+                  <NavDropdown.Item href="/edit_profile">
                     <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/applied-jobs">
+                  <NavDropdown.Item href="/job/applyJob">
                     <FaBriefcase style={{ marginRight: "8px" }} /> Applied Jobs
                   </NavDropdown.Item>
                   <NavDropdown.Item href="/wallet">

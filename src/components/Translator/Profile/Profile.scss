@@ -1,0 +1,338 @@
+
+// Define some variables for consistent theming
+$primary-color: #4a90e2;
+$secondary-color: #333;
+$background-color: #f9fafb;
+$border-color: #e0e0e0;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+.ep-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-color;
+  padding: 20px;
+  font-family: $font-family;
+}
+
+.ep-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: $shadow;
+  padding: 30px;
+  width: 100%;
+  max-width: 1200px;
+
+  .ep-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: $secondary-color;
+      margin: 0;
+    }
+  }
+
+  .ep-content {
+    .ep-form-section {
+      .ep-name-section {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+
+        .ep-input-group1 {
+          flex: 1;
+
+          input {
+            width: 80%;
+          }
+        }
+      }
+      .ep-input-group1 {
+        margin-bottom: 20px;
+
+        label {
+          display: block;
+          font-size: 14px;
+          font-weight: 500;
+          color: $secondary-color;
+          margin-bottom: 8px;
+        }
+
+        input[type='text'],
+        input[type='email'],
+        input[type='password'] {
+          width: 93%;
+          max-width: 96%;
+          padding: 12px;
+          border: 1px solid $border-color;
+          border-radius: 8px;
+          font-size: 14px;
+          color: $secondary-color;
+          background-color: #fff;
+          transition: border-color 0.3s, box-shadow 0.3s;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+          }
+
+          &::placeholder {
+            color: #a0a0a0;
+          }
+        }
+
+        .ep-input-with-icon {
+          display: flex;
+          align-items: center;
+          position: relative;
+          max-width: 100%;
+
+          input[type='text'],
+          input[type='email'],
+          input[type='password'] {
+            width: 100%;
+            padding-right: 70px;
+          }
+
+          .ep-icon-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            right: 12px;
+            font-size: 13px;
+            color: $secondary-color;
+
+            &.ep-verified {
+              color: #34c759;
+
+              svg {
+                stroke: #34c759;
+                stroke-width: 2.5;
+              }
+            }
+
+            &.ep-clickable {
+              cursor: pointer;
+              color: $primary-color;
+
+              svg {
+                stroke: $primary-color;
+              }
+            }
+
+            span {
+              font-size: 13px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      .ep-input-group {
+        margin-bottom: 20px;
+
+        label {
+          display: block;
+          font-size: 14px;
+          font-weight: 500;
+          color: $secondary-color;
+          margin-bottom: 8px;
+        }
+
+        input[type='text'],
+        input[type='email'],
+        input[type='password'] {
+          width: 96%;
+          max-width: 97%;
+          padding: 12px;
+          border: 1px solid $border-color;
+          border-radius: 8px;
+          font-size: 14px;
+          color: $secondary-color;
+          background-color: #fff;
+          transition: border-color 0.3s, box-shadow 0.3s;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+          }
+
+          &::placeholder {
+            color: #a0a0a0;
+          }
+        }
+
+        .ep-input-with-icon {
+          display: flex;
+          align-items: center;
+          position: relative;
+          max-width: 100%;
+
+          input[type='text'],
+          input[type='email'],
+          input[type='password'] {
+            width: 100%;
+            padding-right: 70px;
+          }
+
+          .ep-icon-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            right: 5%;
+            font-size: 13px;
+            color: $secondary-color;
+
+            &.ep-verified {
+              color: #34c759;
+
+              svg {
+                stroke: #34c759;
+                stroke-width: 2.5;
+              }
+            }
+
+            &.ep-clickable {
+              cursor: pointer;
+              color: $primary-color;
+
+              svg {
+                stroke: $primary-color;
+              }
+            }
+
+            span {
+              font-size: 13px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .ep-avatar-section {
+      .ep-avatar-wrapper {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        transition: transform 0.3s;
+
+        &:hover {
+          transform: scale(1.05);
+
+          .ep-avatar-overlay {
+            opacity: 1;
+          }
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .ep-avatar-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s;
+
+          span {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .ep-action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+
+    .ep-certificate-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: transparent;
+      color: $primary-color;
+      border: 1px solid $primary-color;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: $primary-color;
+        color: #fff;
+
+        svg {
+          stroke: #fff;
+        }
+      }
+
+      svg {
+        stroke: $primary-color;
+        stroke-width: 2.5;
+      }
+    }
+
+    .ep-form-actions {
+      display: flex;
+      gap: 10px;
+
+      .ep-cancel-btn {
+        background-color: #f1f3f5;
+        color: $secondary-color;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+
+      .ep-save-btn {
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+    }
+  }
+}
+
