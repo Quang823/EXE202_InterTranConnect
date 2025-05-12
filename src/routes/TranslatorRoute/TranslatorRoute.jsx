@@ -6,6 +6,7 @@ import JobDetail from "../../pages/Translator/JobTranslator/JobDetail/Job_Detail
 import ApplyJobs from "../../pages/Translator/JobTranslator/ApplyJobs/Apply_Job";
 import FavoriteJob from "../../pages/Translator/JobTranslator/FavoriteJob/Favorite_Job";
 import WalletTrans from "../../pages/Translator/WalletTranslator/WalletTranslator";
+import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/SubscriptionPlan";
 const TranslatorRoute = () => {
   return (
     <Routes>
@@ -16,6 +17,7 @@ const TranslatorRoute = () => {
       <Route path="jobFavorite" element={<FavoriteJob />} />
       <Route path="applyJob" element={<ApplyJobs />} />
       <Route path="wallet" element={<WalletTrans />} />
+       <Route path="subscriptionPlan" element={<SubscriptionPlan />} />
     </Routes>
   );
 };
