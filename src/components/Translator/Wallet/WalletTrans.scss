@@ -1,0 +1,331 @@
+// Font Awesome Import (ensure this is included in your project)
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+// Variables
+$primary: #4a90e2;
+$accent: #ff6200;
+$dark: #1a1a1a;
+$light: #f5f7fa;
+$text: #333;
+$white: #fff;
+$border-radius: 0.375rem;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-style {
+  border: none;
+  padding: 8px 16px;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-weight: 500;
+  @include flex-center;
+  gap: 5px;
+}
+
+// Base Styles
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: $light;
+  color: $text;
+  margin: 0;
+}
+
+.wt-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+// Main Layout
+.wt-main {
+  display: flex;
+  flex: 1;
+}
+
+// Sidebar
+.wt-sidebar {
+  width: 15%;
+  height: 94.5%;
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+
+
+  .wt-nav {
+    .wt-nav-item {
+      padding: 12px 20px;
+      color: $text;
+      cursor: pointer;
+      @include flex-center;
+      gap: 10px;
+
+      &.wt-nav-item--active {
+        background-color: $primary;
+        color: $white;
+
+        .wt-nav-icon,
+        .wt-nav-dropdown {
+          color: $white;
+        }
+      }
+
+      .wt-nav-icon,
+      .wt-nav-dropdown,
+      .wt-nav-arrow {
+        font-size: 14px;
+      }
+
+      .wt-nav-text {
+        flex: 1;
+        font-size: 14px;
+      }
+
+      .wt-nav-dropdown,
+      .wt-nav-arrow {
+        font-size: 10px;
+      }
+    }
+
+    .wt-nav-sub {
+      margin-left: 40px;
+
+      .wt-sub-item {
+        padding: 8px 0;
+        font-size: 13px;
+        color: #666;
+        cursor: pointer;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
+
+// Content
+.wt-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// Card Section
+.wt-card-section {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: 20px;
+
+  .wt-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .wt-card-title {
+      font-size: 20px;
+      font-weight: 600;
+
+      .wt-highlight {
+        color: $accent;
+      }
+    }
+
+    .wt-add-card {
+      @include button-style;
+      background-color: transparent;
+      color: $primary;
+      font-size: 14px;
+    }
+  }
+
+  .wt-card-container {
+    display: flex;
+    gap: 30px;
+  }
+
+  .wt-card {
+    flex: 1;
+    background: $dark;
+    color: $white;
+    border-radius: $border-radius;
+    padding: 20px;
+    box-shadow: $shadow;
+
+    .wt-card-balance {
+      margin-bottom: 20px;
+
+      .wt-card-label {
+        font-size: 24px;
+        opacity: 0.7;
+      }
+
+      .wt-card-amount {
+        font-size: 24px;
+        font-weight: 700;
+      }
+    }
+
+    .wt-card-actions {
+      @include flex-center;
+      gap: 10px;
+      margin-bottom: 20px;
+
+      .wt-card-button {
+        @include button-style;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: $white;
+        font-size: 14px;
+
+        &.wt-card-button--deposit,
+        &.wt-card-button--withdraw {
+          i {
+            font-size: 12px;
+          }
+        }
+      }
+
+      .wt-partner-logo {
+        margin-left: auto;
+        width: 30px;
+        height: 30px;
+        background-color: $white;
+        border-radius: 5px;
+      }
+    }
+
+    .wt-card-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .wt-card-issuer {
+        font-size: 14px;
+      }
+
+      .wt-card-number {
+        font-size: 14px;
+
+        .wt-hidden-digits {
+          letter-spacing: 2px;
+        }
+      }
+
+      .wt-card-network {
+        width: 40px;
+        height: 20px;
+        background: linear-gradient(45deg, $accent, #ff8c00);
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .wt-card-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+
+    .wt-meta-item {
+      .wt-meta-label {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .wt-meta-value {
+        font-size: 16px;
+        font-weight: 500;
+
+        &.wt-highlight {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
+
+// Transaction Section
+.wt-transaction-section {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: 10px;
+
+  .wt-transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .wt-transaction-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .wt-view-report {
+      @include button-style;
+      background-color: $primary;
+      color: $white;
+      font-size: 14px;
+    }
+  }
+
+  .wt-transaction-table {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      th {
+        background-color: #f0f0f0;
+        font-weight: 500;
+      }
+
+      td {
+        border-bottom: 1px solid #eee;
+
+        &.wt-amount {
+          color: $accent;
+          font-weight: 500;
+        }
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .wt-main {
+    flex-direction: column;
+  }
+
+  .wt-sidebar {
+    width: 100%;
+  }
+
+  .wt-card-container {
+    flex-direction: column;
+  }
+}
