@@ -1,62 +1,62 @@
-.job-tracking-container {
+.job-app-container {
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
   padding: 1.5rem;
-  max-width: 95%;
+  max-width: 90%;
   margin: 0 auto;
 }
 
-.table-container {
+.job-app-table-container {
   overflow-x: auto;
 }
 
-.job-table {
+.job-app-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.table-header {
+.job-app-header {
   color: #6b7280;
   font-size: 0.75rem;
 }
 
-.header-cell {
+.job-app-header-cell {
   text-align: left;
   padding: 0.5rem 1rem;
   font-weight: 500;
 }
 
-.table-row {
+.job-app-row {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.table-row:hover {
+.job-app-row-hover:hover {
   background-color: #f9fafb;
 }
 
-.highlighted {
+.job-app-highlighted {
   background-color: #eff6ff;
 }
 
-.table-cell {
+.job-app-cell {
   padding: 1rem;
 }
 
-.job-info {
+.job-app-info {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.logo-container {
+.job-app-logo-container {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
   overflow: hidden;
 }
 
-.company-logo {
+.job-app-company-logo {
   width: 100%;
   height: 100%;
   display: flex;
@@ -75,79 +75,66 @@
 .slack { background-color: #6d28d9; }
 .reddit { background-color: #f97316; }
 
-.job-title {
+.job-app-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-app-title {
   font-weight: 600;
 }
 
-.job-location, .date-cell {
+.job-app-type {
+  background-color: #e5e7eb;
+  color: #374151;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.job-app-location, .job-app-date-cell {
   color: #6b7280;
   font-size: 0.875rem;
 }
 
-.status {
+.job-app-status {
   color: #22c55e;
   font-weight: 600;
 }
 
-.action-buttons {
+.job-app-action-buttons {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.view-button {
-  color: #2c3036;
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-.view-button:hover {
-  color: #2563eb;
-}
-
-.import-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  background-color: #ffffff;
+.job-app-apply-button {
+  background-color: #e6f0fa;
   border: 1px solid #d1e0f0;
   border-radius: 0.25rem;
   padding: 0.25rem 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.import-button:hover {
-  background-color: #d1e0f0;
-}
-
-.file-input {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.import-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   color: #1e40af;
   font-weight: 500;
 }
 
-.plus-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  stroke: #1e40af;
-  stroke-width: 2;
-  fill: #1e40af;
-  border-radius: 50%;
-  padding: 0.125rem;
+.job-app-apply-button:hover {
+  background-color: #d1e0f0;
 }
 
-.pagination {
+.job-app-highlighted-button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+}
+
+.job-app-highlighted-button:hover {
+  background-color: #1e40af;
+}
+
+.job-app-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -155,32 +142,32 @@
   margin-top: 1.5rem;
 }
 
-.nav-button {
+.job-app-nav-button {
   color: #6b7280;
   padding: 0.5rem;
   border-radius: 50%;
 }
 
-.nav-button:hover {
+.job-app-nav-button:hover {
   background-color: #f3f4f6;
 }
 
-.nav-button:disabled {
+.job-app-nav-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.page-button {
+.job-app-page-button {
   color: #6b7280;
   padding: 0.5rem 1rem;
   border-radius: 50%;
 }
 
-.page-button:hover {
+.job-app-page-button:hover {
   background-color: #f3f4f6;
 }
 
-.page-button.active {
+.job-app-active {
   background-color: #2563eb;
   color: white;
 }
