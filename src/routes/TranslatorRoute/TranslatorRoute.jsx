@@ -4,6 +4,7 @@ import ProfileTranslator from "../../pages/Translator/ProfileTranslator/Profile_
 import JobTranslator from "../../pages/Translator/JobTranslator/Job_Translator";
 import JobDetails from "../../components/Translator/Job/JobDetails/JobDetails";
 import ApplyJob from "../../components/Translator/Job/ApplyJob/ApplyJob";
+import WalletTrans from "../../components/Translator/Wallet/WalletTrans";
 const TranslatorRoute = () => {
   return (
     <Routes>
@@ -12,6 +13,7 @@ const TranslatorRoute = () => {
       <Route path="job" element={<JobTranslator/>} />
       <Route path="job/jobDetails" element={<JobDetails />} />
       <Route path="job/applyJob" element={<ApplyJob />} />
+      <Route path="wallet" element={<WalletTrans />} />
     </Routes>
   );
 };
