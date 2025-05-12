@@ -22,7 +22,7 @@ const JobTranslator = () => {
   const navigate = useNavigate();
 
   const handleJobDetails = () => {
-    navigate("jobDetails");
+    navigate("/translator/jobDetails");
   };
 
   const jobListings = [
