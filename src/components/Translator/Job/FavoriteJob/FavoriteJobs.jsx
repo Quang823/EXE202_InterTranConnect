@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import './FavoriteJobs.scss';
-
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import "./FavoriteJobs.scss";
 
 const LogoComponents = {
   up: () => <div className="job-app-company-logo up">UP</div>,
@@ -11,7 +10,7 @@ const LogoComponents = {
   twitter: () => <div className="job-app-company-logo twitter">TW</div>,
   facebook: () => <div className="job-app-company-logo facebook">FB</div>,
   slack: () => <div className="job-app-company-logo slack">SL</div>,
-  reddit: () => <div className="job-app-company-logo reddit">RD</div>
+  reddit: () => <div className="job-app-company-logo reddit">RD</div>,
 };
 
 const FavoriteJobs = () => {
@@ -19,14 +18,70 @@ const FavoriteJobs = () => {
   const jobsPerPage = 5;
 
   const jobs = [
-    { company: 'up', title: 'Marketing Translation', location: '$50k-80k', date: 'Feb 2, 2019 19:28', status: 'Active', highlighted: false },
-    { company: 'dribbble', title: 'Marketing Translation', location: '$50k-80k', date: 'Dec 7, 2019 23:26', status: 'Booked', highlighted: false },
-    { company: 'apple', title: 'Marketing Translation', location: '$50k-80k', date: 'Feb 2, 2019 19:28', status: 'Active', highlighted: false },
-    { company: 'microsoft', title: 'Marketing Translation', location: '$50k-80k', date: 'Dec 7, 2019 23:26', status: 'Booked', highlighted: true },
-    { company: 'twitter', title: 'Marketing Translation', location: '$50k-80k', date: 'Dec 4, 2019 21:42', status: 'Active', highlighted: false },
-    { company: 'facebook', title: 'Marketing Translation', location: '$50k-80k', date: 'Dec 30, 2019 07:52', status: 'Active', highlighted: false },
-    { company: 'slack', title: 'Marketing Translation', location: '$50k-80k', date: 'Dec 30, 2019 05:18', status: 'Active', highlighted: false },
-    { company: 'reddit', title: 'Marketing Translation', location: '$50k-80k', date: 'Mar 20, 2019 23:14', status: 'Active', highlighted: false }
+    {
+      company: "up",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Feb 2, 2019 19:28",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "dribbble",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Dec 7, 2019 23:26",
+      status: "Booked",
+      highlighted: false,
+    },
+    {
+      company: "apple",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Feb 2, 2019 19:28",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "microsoft",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Dec 7, 2019 23:26",
+      status: "Booked",
+      highlighted: true,
+    },
+    {
+      company: "twitter",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Dec 4, 2019 21:42",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "facebook",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Dec 30, 2019 07:52",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "slack",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Dec 30, 2019 05:18",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "reddit",
+      title: "Marketing Translation",
+      location: "$50k-80k",
+      date: "Mar 20, 2019 23:14",
+      status: "Active",
+      highlighted: false,
+    },
   ];
 
   // Pagination logic
@@ -58,9 +113,17 @@ const FavoriteJobs = () => {
           </thead>
           <tbody>
             {currentJobs.map((job, index) => {
-              const LogoComponent = LogoComponents[job.company] || LogoComponents.up;
+              const LogoComponent =
+                LogoComponents[job.company] || LogoComponents.up;
               return (
-                <tr key={index} className={`job-app-row ${job.highlighted ? 'job-app-highlighted' : 'job-app-row-hover'}`}>
+                <tr
+                  key={index}
+                  className={`job-app-row ${
+                    job.highlighted
+                      ? "job-app-highlighted"
+                      : "job-app-row-hover"
+                  }`}
+                >
                   <td className="job-app-cell">
                     <div className="job-app-info">
                       <div className="job-app-logo-container">
@@ -81,8 +144,10 @@ const FavoriteJobs = () => {
                   </td>
                   <td className="job-app-cell">
                     <div className="job-app-action-buttons">
-                      <button 
-                        className={`job-app-apply-button ${job.highlighted ? 'job-app-highlighted-button' : ''}`}
+                      <button
+                        className={`job-app-apply-button ${
+                          job.highlighted ? "job-app-highlighted-button" : ""
+                        }`}
                         onClick={() => handleApplyNow(job)}
                       >
                         Apply Now
@@ -108,10 +173,12 @@ const FavoriteJobs = () => {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`job-app-page-button ${currentPage === page ? 'job-app-active' : ''}`}
+            className={`job-app-page-button ${
+              currentPage === page ? "job-app-active" : ""
+            }`}
             onClick={() => handlePageChange(page)}
           >
-            {page.toString().padStart(2, '0')}
+            {page} {/* Bỏ .padStart(2, '0') */}
           </button>
         ))}
         <button

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
-import './ApplyJob.scss';
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import "./ApplyJob.scss";
 
 // Company logos (simplified placeholders)
 const LogoComponents = {
@@ -11,7 +11,7 @@ const LogoComponents = {
   twitter: () => <div className="company-logo twitter">TW</div>,
   facebook: () => <div className="company-logo facebook">FB</div>,
   slack: () => <div className="company-logo slack">SL</div>,
-  reddit: () => <div className="company-logo reddit">RD</div>
+  reddit: () => <div className="company-logo reddit">RD</div>,
 };
 
 const ApplyJob = () => {
@@ -19,14 +19,70 @@ const ApplyJob = () => {
   const jobsPerPage = 5;
 
   const jobs = [
-    { company: 'up', title: 'Marketing Translation', location: '$50k', date: 'Feb 2, 2019 19:28', status: 'Active', highlighted: false },
-    { company: 'dribbble', title: 'Marketing Translation', location: '$50k', date: 'Dec 7, 2019 23:26', status: 'Active', highlighted: false },
-    { company: 'apple', title: 'Marketing Translation', location: '$50k', date: 'Feb 2, 2019 19:28', status: 'Active', highlighted: false },
-    { company: 'microsoft', title: 'Marketing Translation', location: '$50k', date: 'Dec 7, 2019 23:26', status: 'Active', highlighted: true },
-    { company: 'twitter', title: 'Marketing Translation', location: '$50k', date: 'Dec 4, 2019 21:42', status: 'Active', highlighted: false },
-    { company: 'facebook', title: 'Marketing Translation', location: '$50k', date: 'Dec 30, 2019 07:52', status: 'Active', highlighted: false },
-    { company: 'slack', title: 'Marketing Translation', location: '$50k', date: 'Dec 30, 2019 05:18', status: 'Active', highlighted: false },
-    { company: 'reddit', title: 'Marketing Translation', location: '$50k', date: 'Mar 20, 2019 23:14', status: 'Active', highlighted: false }
+    {
+      company: "up",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Feb 2, 2019 19:28",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "dribbble",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Dec 7, 2019 23:26",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "apple",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Feb 2, 2019 19:28",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "microsoft",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Dec 7, 2019 23:26",
+      status: "Active",
+      highlighted: true,
+    },
+    {
+      company: "twitter",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Dec 4, 2019 21:42",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "facebook",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Dec 30, 2019 07:52",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "slack",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Dec 30, 2019 05:18",
+      status: "Active",
+      highlighted: false,
+    },
+    {
+      company: "reddit",
+      title: "Marketing Translation",
+      location: "$50k",
+      date: "Mar 20, 2019 23:14",
+      status: "Active",
+      highlighted: false,
+    },
   ];
 
   // Pagination logic
@@ -42,7 +98,7 @@ const ApplyJob = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log('File selected:', file.name);
+      console.log("File selected:", file.name);
       // Add your file handling logic here
     }
   };
@@ -61,9 +117,15 @@ const ApplyJob = () => {
           </thead>
           <tbody>
             {currentJobs.map((job, index) => {
-              const LogoComponent = LogoComponents[job.company] || LogoComponents.up;
+              const LogoComponent =
+                LogoComponents[job.company] || LogoComponents.up;
               return (
-                <tr key={index} className={`table-row ${job.highlighted ? 'highlighted' : 'row-hover'}`}>
+                <tr
+                  key={index}
+                  className={`table-row ${
+                    job.highlighted ? "highlighted" : "row-hover"
+                  }`}
+                >
                   <td className="table-cell">
                     <div className="job-info">
                       <div className="logo-container">
@@ -118,10 +180,10 @@ const ApplyJob = () => {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`page-button ${currentPage === page ? 'active' : ''}`}
+            className={`page-button ${currentPage === page ? "active" : ""}`}
             onClick={() => handlePageChange(page)}
           >
-            {page.toString().padStart(2, '0')}
+            {page} {/* Changed from page.toString().padStart(2, '0') to page */}
           </button>
         ))}
         <button

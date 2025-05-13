@@ -1,0 +1,129 @@
+.ctc-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #f9f9f9;
+}
+
+.ctc-left {
+  flex: 50%;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ctc-promise {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.ctc-description {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+}
+
+.ctc-benefits {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.ctc-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.ctc-icon {
+  color: #48bb78;
+  margin-top: 0.2rem;
+}
+
+.ctc-info {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  grid-template-rows: auto auto; /* Two rows */
+  gap: 1.5rem; /* Space between items */
+}
+
+.ctc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2d3748;
+}
+
+.ctc-item p {
+  margin: 0;
+  color: #718096;
+}
+
+.ctc-right {
+  flex: 1;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 2rem;
+}
+
+.ctc-form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.ctc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ctc-form-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.ctc-form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+.ctc-form-textarea {
+  height: 100px;
+  resize: none;
+}
+
+.ctc-form-input::placeholder {
+  color: #a0aec0;
+}
+
+.ctc-form-submit {
+  background: #48bb78;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.ctc-form-submit:hover {
+  background: #38a169;
+}
