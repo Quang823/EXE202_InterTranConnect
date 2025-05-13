@@ -5,7 +5,7 @@ import './SubscriptionPlans.scss';
 const SubscriptionPlans = () => {
   const plans = [
     {
-      title: 'PARTNERCHIP',
+      title: 'PartnerShip',
       price: '99.000 VNĐ',
       badgeClass: 'partnership-badge',
       benefits: [
@@ -15,7 +15,7 @@ const SubscriptionPlans = () => {
       ]
     },
     {
-      title: 'PREMIUM',
+      title: 'Premium',
       price: '299.000 VNĐ',
       badgeClass: 'premium-badge',
       benefits: [
@@ -26,7 +26,7 @@ const SubscriptionPlans = () => {
       isElevated: true
     },
     {
-      title: 'ADVANCE',
+      title: 'Advance',
       price: '199.000 VNĐ',
       badgeClass: 'advance-badge',
       benefits: [
