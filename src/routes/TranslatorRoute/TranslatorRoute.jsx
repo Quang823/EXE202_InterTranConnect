@@ -9,6 +9,8 @@ import WalletTrans from "../../pages/Translator/WalletTranslator/WalletTranslato
 import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/SubscriptionPlan";
 import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
+import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
+import AdminDashboards from "../../pages/Translator/AdminDashboards/AdminDashboards";
 const TranslatorRoute = () => {
   return (
     <Routes>
@@ -22,6 +24,8 @@ const TranslatorRoute = () => {
       <Route path="subscriptionPlan" element={<SubscriptionPlan />} />
       <Route path="contactPages" element={<ContactPages />} />
       <Route path="forum" element={<Forums />} />
+      <Route path="aboutUs" element={<InterTransConnects />} />
+      <Route path="dashboard" element={<AdminDashboards />} />
     </Routes>
   );
 };
