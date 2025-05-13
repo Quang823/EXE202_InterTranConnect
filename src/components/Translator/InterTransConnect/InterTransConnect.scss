@@ -1,0 +1,331 @@
+.itc-container {
+  font-family: 'Poppins', sans-serif;
+  color: #2d3436;
+  background: #f8f9fa;
+  overflow-x: hidden;
+}
+
+.itc-parallax-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-size: cover;
+  background-attachment: fixed;
+  transition: all 0.5s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(44, 62, 80, 0.9), rgba(0, 196, 180, 0.6));
+    transition: background 0.5s ease;
+  }
+}
+
+.itc-about-section, .itc-video-section, .itc-why-us-section {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 80px 20px;
+  color: #fff;
+}
+
+.itc-content {
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #00c4b4;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    font-size: 38px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: #dfe6e9;
+  }
+}
+
+.itc-features-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+
+  li {
+    background: rgba(44, 62, 80, 0.5); /* Match header/footer tone */
+    padding: 25px;
+    border-radius: 12px;
+    width: 240px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #dfe6e9;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      transform: translateY(-5px);
+      background: rgba(244, 162, 97, 0.3);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.itc-checkmark {
+  color: #00c4b4;
+  font-size: 18px;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.itc-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.itc-how-it-works-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: #f8f9fa; /* Light background to contrast with dark header/footer */
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: #2c3e50; /* Match header/footer background */
+  }
+}
+
+.itc-steps {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.itc-step {
+  text-align: center;
+  width: 160px;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    color: #f4a261;
+
+    .itc-step-icon {
+      transform: scale(1.1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  .itc-step-icon {
+    margin-bottom: 20px;
+    color: #00c4b4;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+}
+
+.itc-video-section {
+  text-align: center;
+
+  .itc-play-button {
+    color: #fff;
+    background: linear-gradient(135deg, #00c4b4 0%, #2c3e50 100%); /* Gradient with header/footer color */
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #f4a261 0%, #2c3e50 100%);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+  }
+}
+
+.itc-video-steps {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.itc-video-step {
+  text-align: center;
+  width: 200px;
+
+  .itc-step-number {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #00c4b4 0%, #2c3e50 100%);
+    color: #fff;
+    border-radius: 50%;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #f4a261 0%, #2c3e50 100%);
+      transform: scale(1.1);
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+  }
+}
+
+.itc-faq-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: #f8f9fa;
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: #2c3e50;
+  }
+}
+
+.itc-faq-list {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.itc-faq-item {
+  background: linear-gradient(135deg, #e6f7fa 0%, #dfe6e9 100%); /* Softer gradient to match light sections */
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, #dfe6e9 0%, #e6f7fa 100%);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #00c4b4;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #f4a261;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+}
+
+.itc-why-us-section {
+  text-align: center;
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 50px;
+    color: #dfe6e9;
+  }
+}
+
+.itc-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.itc-benefit {
+  text-align: center;
+  width: 160px;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    color: #f4a261;
+
+    .itc-benefit-icon {
+      transform: scale(1.1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  .itc-benefit-icon {
+    margin-bottom: 20px;
+    color: #00c4b4;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+  }
+}
