@@ -55,7 +55,7 @@ const ContactPage = () => {
           </div>
           <div className="ctc-item">
             <Mail className="ctc-icon" size={18} />
-            <span>Send email:</span>
+            <span>Email:</span>
             <p>nammpse173557@ftp.edu.vn</p>
           </div>
           <div className="ctc-item">
