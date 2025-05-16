@@ -3,7 +3,7 @@ import AdminDashboard from "../../../components/Translator/AdminDashboard/AdminD
 const AdminDashboards = () => {
   return (
     <div className="dashboard-container">
-      <div className="content-container container mx-auto" >
+      <div className="dashboard-container container mx-auto" >
         <AdminDashboard />
       </div>
     </div>
