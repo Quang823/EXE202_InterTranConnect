@@ -7,11 +7,11 @@ import ApplyJob from "../../components/Translator/Job/ApplyJob/ApplyJob";
 const TranslatorRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePageTranslator/>} />
-      <Route path="edit_profile" element={<ProfileTranslator/>} />
-      <Route path="job" element={<JobTranslator/>} />
-      <Route path="job/jobDetails" element={<JobDetails />} />
-      <Route path="job/applyJob" element={<ApplyJob />} />
+      <Route path="/home" element={<HomePageTranslator />} />
+      <Route path="/edit_profile" element={<ProfileTranslator />} />
+      <Route path="/job" element={<JobTranslator />} />
+      <Route path="/job/jobDetails" element={<JobDetails />} />
+      <Route path="/job/applyJob" element={<ApplyJob />} />
     </Routes>
   );
 };

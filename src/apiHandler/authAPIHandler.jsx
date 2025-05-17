@@ -23,3 +23,12 @@ export const registerUser = async (userData) => {
     throw error;
   }
 };
+
+export const googleLogin = async (token) => {
+  try {
+    const response = await axios.post(`${rootAuth}/google-login`, { token });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

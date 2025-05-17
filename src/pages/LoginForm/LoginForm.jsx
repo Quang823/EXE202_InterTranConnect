@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../services/authService";
+import { login, googleLogin } from "../../services/authService";
 import { validateForm } from "../../utils/validate";
 import useAuth from "../../hooks/useAuth";
 import Image from "../../assets/images/Image";
@@ -56,18 +56,23 @@ const LoginForm = () => {
   };
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
-    // try {
-    //   setIsLoading(true);
-    //   const result = await loginWithGoogle(credentialResponse.credential, loginContext);
-    // } catch (error) {
-    //   console.error("Google login error:", error);
-    //   setErrors({
-    //     ...errors,
-    //     apiError: "Google login failed. Please try again.",
-    //   });
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      setIsLoading(true);
+      console.log("Google ID Token:", credentialResponse.credential);
+      const result = await googleLogin(
+        credentialResponse.credential,
+        loginContext
+      );
+      console.log("Google login successful:", result);
+    } catch (error) {
+      console.error("Google login error:", error);
+      setErrors({
+        ...errors,
+        apiError: error.message || "Google login failed. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLoginFailure = () => {
@@ -92,7 +97,7 @@ const LoginForm = () => {
         console.error("Error during login:", error);
         setErrors({
           ...errors,
-          apiError: "Please check your email or password!" || "Login failed",
+          apiError: error.message || "Please check your email or password!",
         });
       } finally {
         setIsLoading(false);
