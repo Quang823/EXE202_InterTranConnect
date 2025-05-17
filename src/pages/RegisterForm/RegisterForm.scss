@@ -405,15 +405,17 @@
 
   .form-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin-bottom: 20px;
   }
 
   .form-col {
-    padding-right: 10px;
-    padding-left: 10px;
-    flex: 1 1 auto;
+    flex: 1 1 50%;
     min-width: 0;
+  }
+
+  .form-col .form-control {
+    width: 100%;
   }
 
   .form-check-custom {

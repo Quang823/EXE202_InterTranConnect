@@ -57,7 +57,7 @@ const Header_Translator = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="header-navbar-nav">
-                  <NavLink to="/translator/" className="header-nav-item">
+                  <NavLink to="/translator/home" className="header-nav-item">
                     Home
                   </NavLink>
                   <NavLink to="/translator/job" className="header-nav-item">
@@ -75,9 +75,13 @@ const Header_Translator = () => {
                   <NavLink to="/pricing" className="header-nav-item">
                     Pricing
                   </NavLink>
-                  <NavLink to="/forum" className="header-nav-item">
-                    Forum
-                  </NavLink>
+                  {user ? (
+                    <NavLink to="/client/forum" className="header-nav-item">
+                      Forum
+                    </NavLink>
+                  ) : (
+                    <></>
+                  )}
                 </Nav>
               </Navbar.Collapse>
             </Col>
@@ -88,45 +92,48 @@ const Header_Translator = () => {
               md={2}
               className="d-flex justify-content-end align-items-center"
             >
-              <NavDropdown
-                title={
-                  <>
-                    <FaGlobe style={{ marginRight: "5px" }} /> EN
-                  </>
-                }
-                id="language-dropdown"
-                align="end"
-                className="header-language-switcher"
-              >
-                <NavDropdown.Item href="#">English</NavDropdown.Item>
-                <NavDropdown.Item href="#">Spanish</NavDropdown.Item>
-                <NavDropdown.Item href="#">French</NavDropdown.Item>
-                <NavDropdown.Item href="#">Vietnamese</NavDropdown.Item>
-              </NavDropdown>
               {user ? (
-                <NavDropdown
-                  title={user.fullName}
-                  id="account-dropdown"
-                  align="end"
-                  data-bs-theme="light"
-                >
-                  <NavDropdown.Item href="/edit_profile">
-                    <FaUser style={{ marginRight: "8px" }} /> Setting Profile
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/job/applyJob">
-                    <FaBriefcase style={{ marginRight: "8px" }} /> Applied Jobs
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/wallet">
-                    <FaWallet style={{ marginRight: "8px" }} /> Wallet
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>
-                    <FaSignOutAlt
-                      style={{ marginRight: "8px", color: "red" }}
-                    />{" "}
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
+                <>
+                  <NavDropdown
+                    title={
+                      <>
+                        <FaGlobe style={{ marginRight: "5px" }} /> EN
+                      </>
+                    }
+                    id="language-dropdown"
+                    align="end"
+                    className="header-language-switcher"
+                  >
+                    <NavDropdown.Item href="#">English</NavDropdown.Item>
+                    <NavDropdown.Item href="#">Spanish</NavDropdown.Item>
+                    <NavDropdown.Item href="#">French</NavDropdown.Item>
+                    <NavDropdown.Item href="#">Vietnamese</NavDropdown.Item>
+                  </NavDropdown>
+                  <NavDropdown
+                    title={user.fullName}
+                    id="account-dropdown"
+                    align="end"
+                    data-bs-theme="light"
+                  >
+                    <NavDropdown.Item href="/translator/edit_profile">
+                      <FaUser style={{ marginRight: "8px" }} /> Setting Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/job/applyJob">
+                      <FaBriefcase style={{ marginRight: "8px" }} /> Applied
+                      Jobs
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/wallet">
+                      <FaWallet style={{ marginRight: "8px" }} /> Wallet
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={handleLogout}>
+                      <FaSignOutAlt
+                        style={{ marginRight: "8px", color: "red" }}
+                      />{" "}
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
               ) : (
                 <>
                   <NavLink to="/login" className="header-auth-link">

@@ -69,10 +69,7 @@ const Header_Client = () => {
                   <NavLink to="/client/home" className="header-nav-item">
                     Home
                   </NavLink>
-                  <NavLink
-                    to="/client/post-history"
-                    className="header-nav-item"
-                  >
+                  <NavLink to="/client/create_post" className="header-nav-item">
                     Post
                   </NavLink>
                   <NavLink to="/news-blog" className="header-nav-item">
@@ -130,7 +127,7 @@ const Header_Client = () => {
                     data-bs-theme="light"
                     className="header-account-dropdown"
                   >
-                    <NavDropdown.Item href="/profile">
+                    <NavDropdown.Item href="/client/edit_profile">
                       <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/post-history">

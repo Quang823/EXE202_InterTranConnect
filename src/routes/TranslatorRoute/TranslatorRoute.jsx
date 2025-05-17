@@ -14,9 +14,9 @@ import AdminDashboards from "../../pages/Translator/AdminDashboards/AdminDashboa
 const TranslatorRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePageTranslator/>} />
-      <Route path="edit_profile" element={<ProfileTranslator/>} />
-      <Route path="job" element={<JobTranslator/>} />
+      <Route path="/" element={<HomePageTranslator />} />
+      <Route path="edit_profile" element={<ProfileTranslator />} />
+      <Route path="job" element={<JobTranslator />} />
       <Route path="jobDetails" element={<JobDetail />} />
       <Route path="jobFavorite" element={<FavoriteJob />} />
       <Route path="applyJob" element={<ApplyJobs />} />
