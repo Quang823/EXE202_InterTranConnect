@@ -2,14 +2,14 @@
 .job-search-container {
   display: flex;
   font-family: Arial, sans-serif;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   gap: 20px;
 }
 
 .search-sidebar {
-  flex: 0 0 230px;
+  flex: 0 0 100px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;

@@ -1,0 +1,336 @@
+.itc-container {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color-dark); /* Matches --text-color-dark from :root */
+  background: var(--background-color); /* Changed from #f8f9fa to --background-color (#f3f4f6) */
+  overflow-x: hidden;
+}
+
+.itc-parallax-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-size: cover;
+  background-attachment: fixed;
+  transition: all 0.5s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Changed gradient to use --primary-color with opacity */
+    background: linear-gradient(to bottom, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.6)); /* Uses --primary-color (#1e3a8a) */
+    transition: background 0.5s ease;
+  }
+}
+
+.itc-about-section, .itc-video-section, .itc-why-us-section {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-color); /* Matches --text-color (#ffffff) */
+}
+
+.itc-content {
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--secondary-color); /* Changed from #00c4b4 to --secondary-color (#f97316) */
+    letter-spacing: 1px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    font-size: 38px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-color); /* Matches --text-color (#ffffff) */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: #dfe6e9; /* Kept as is for contrast, no direct match in :root */
+  }
+}
+
+.itc-features-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+
+  li {
+    /* Changed background to use --primary-color with opacity */
+    background: rgba(30, 58, 138, 0.5); /* Uses --primary-color (#1e3a8a) */
+    padding: 25px;
+    border-radius: var(--border-radius); /* Matches --border-radius (8px) */
+    width: 240px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #dfe6e9; /* Kept for contrast */
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-default); /* Matches --shadow-default */
+
+    &:hover {
+      transform: translateY(-5px);
+      background: rgba(249, 115, 22, 0.3); /* Uses --secondary-color (#f97316) */
+      box-shadow: var(--header-shadow); /* Matches --header-shadow */
+    }
+  }
+}
+
+.itc-checkmark {
+  color: var(--secondary-color); /* Changed from #00c4b4 to --secondary-color (#f97316) */
+  font-size: 18px;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.itc-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.itc-how-it-works-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: var(--background-color); /* Changed from #f8f9fa to --background-color (#f3f4f6) */
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: var(--text-color-dark); /* Changed from #2c3e50 to --text-color-dark (#1f2937) */
+  }
+}
+
+.itc-steps {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.itc-step {
+  text-align: center;
+  width: 160px;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    color: var(--secondary-color); /* Changed from #f4a261 to --secondary-color (#f97316) */
+
+    .itc-step-icon {
+      transform: scale(1.1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  .itc-step-icon {
+    margin-bottom: 20px;
+    color: var(--secondary-color); /* Changed from #00c4b4 to --secondary-color (#f97316) */
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color-dark); /* Changed from #2c3e50 to --text-color-dark (#1f2937) */
+  }
+}
+
+.itc-video-section {
+  text-align: center;
+
+  .itc-play-button {
+    color: var(--text-color); /* Matches --text-color (#ffffff) */
+    /* Changed gradient to use --secondary-color and --primary-color */
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%); /* Uses #f97316 and #1e3a8a */
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-default); /* Matches --shadow-default */
+
+    &:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%); /* Same gradient, no change needed */
+      box-shadow: var(--header-shadow); /* Matches --header-shadow */
+    }
+  }
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+  }
+}
+
+.itc-video-steps {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.itc-video-step {
+  text-align: center;
+  width: 200px;
+
+  .itc-step-number {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    /* Changed gradient to use --secondary-color and --primary-color */
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%); /* Uses #f97316 and #1e3a8a */
+    color: var(--text-color); /* Matches --text-color (#ffffff) */
+    border-radius: 50%;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-default); /* Matches --shadow-default */
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%); /* Same gradient */
+      transform: scale(1.1);
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color); /* Matches --text-color (#ffffff) */
+  }
+}
+
+.itc-faq-section {
+  padding: 100px 20px;
+  text-align: center;
+  background: var(--background-color); /* Changed from #f8f9fa to --background-color (#f3f4f6) */
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    color: var(--text-color-dark); /* Changed from #2c3e50 to --text-color-dark (#1f2937) */
+  }
+}
+
+.itc-faq-list {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.itc-faq-item {
+  /* Changed gradient to use --background-color with slight variation */
+  background: linear-gradient(135deg, var(--background-color) 0%, #e5e7eb 100%); /* Uses --background-color (#f3f4f6) and a lighter shade */
+  padding: 25px;
+  border-radius: var(--border-radius); /* Matches --border-radius (8px) */
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-default); /* Matches --shadow-default */
+
+  &:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, #e5e7eb 0%, var(--background-color) 100%); /* Reversed for hover effect */
+    box-shadow: var(--header-shadow); /* Matches --header-shadow */
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--secondary-color); /* Changed from #00c4b4 to --secondary-color (#f97316) */
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--primary-color); /* Changed from #f4a261 to --primary-color (#1e3a8a) */
+    }
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-color-dark); /* Changed from #2c3e50 to --text-color-dark (#1f2937) */
+    line-height: 1.6;
+  }
+}
+
+.itc-why-us-section {
+  text-align: center;
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 50px;
+    color: #dfe6e9; /* Kept for contrast */
+  }
+}
+
+.itc-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.itc-benefit {
+  text-align: center;
+  width: 160px;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    color: var(--secondary-color); /* Changed from #f4a261 to --secondary-color (#f97316) */
+
+    .itc-benefit-icon {
+      transform: scale(1.1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  .itc-benefit-icon {
+    margin-bottom: 20px;
+    color: var(--secondary-color); /* Changed from #00c4b4 to --secondary-color (#f97316) */
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color); /* Matches --text-color (#ffffff) */
+  }
+}

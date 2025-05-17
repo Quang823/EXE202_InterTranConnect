@@ -1,6 +1,6 @@
 const AdminLayout = ({ children }) => {
   return (
-    <div className="translator-layout">
+    <div className="admin-layout">
       <main>{children}</main>
     </div>
   );

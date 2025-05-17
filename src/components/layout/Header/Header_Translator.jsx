@@ -66,10 +66,10 @@ const Header_Translator = () => {
                   <NavLink to="/news-blog" className="header-nav-item">
                     News & Blog
                   </NavLink>
-                  <NavLink to="/about" className="header-nav-item">
+                  <NavLink to="/translator/aboutUs" className="header-nav-item">
                     About Us
                   </NavLink>
-                  <NavLink to="/contact" className="header-nav-item">
+                  <NavLink to="/translator/contactPages" className="header-nav-item">
                     Contact Us
                   </NavLink>
                   <NavLink to="/pricing" className="header-nav-item">
