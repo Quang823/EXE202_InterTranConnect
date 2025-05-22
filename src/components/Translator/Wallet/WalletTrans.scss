@@ -1,255 +1,255 @@
-// Font Awesome Import (ensure this is included in your project)
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-
 // Variables
-$primary: #4a90e2;
-$accent: #ff6200;
-$dark: #1a1a1a;
-$light: #f5f7fa;
-$text: #333;
-$white: #fff;
-$border-radius: 0.375rem;
-$shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$primary-color: #5e72e4;
+$secondary-color: #11cdef;
+$accent-color: #fb6340;
+$text-color: #32325d;
+$light-text: #8898aa;
+$white: #ffffff;
+$light-gray: #f6f9fc;
+$border-color: #e9ecef;
+$success-color: #2dce89;
+$warning-color: #fb6340;
+$danger-color: #f5365c;
 
 // Mixins
-@mixin flex-center {
+@mixin flex-between {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 @mixin button-style {
-  border: none;
-  padding: 8px 16px;
-  border-radius: $border-radius;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
   cursor: pointer;
-  font-weight: 500;
-  @include flex-center;
-  gap: 5px;
-}
-
-// Base Styles
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: $light;
-  color: $text;
-  margin: 0;
-}
-
-.wt-app {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-// Main Layout
-.wt-main {
-  display: flex;
-  flex: 1;
-}
-
-// Sidebar
-.wt-sidebar {
-  width: 15%;
-  height: 94.5%;
-  background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-
-
-  .wt-nav {
-    .wt-nav-item {
-      padding: 12px 20px;
-      color: $text;
-      cursor: pointer;
-      @include flex-center;
-      gap: 10px;
-
-      &.wt-nav-item--active {
-        background-color: $primary;
-        color: $white;
-
-        .wt-nav-icon,
-        .wt-nav-dropdown {
-          color: $white;
-        }
-      }
-
-      .wt-nav-icon,
-      .wt-nav-dropdown,
-      .wt-nav-arrow {
-        font-size: 14px;
-      }
-
-      .wt-nav-text {
-        flex: 1;
-        font-size: 14px;
-      }
-
-      .wt-nav-dropdown,
-      .wt-nav-arrow {
-        font-size: 10px;
-      }
-    }
-
-    .wt-nav-sub {
-      margin-left: 40px;
-
-      .wt-sub-item {
-        padding: 8px 0;
-        font-size: 13px;
-        color: #666;
-        cursor: pointer;
-
-        &:hover {
-          color: $primary;
-        }
-      }
-    }
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
 }
 
-// Content
+// Base styles
+.wt-app {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: $text-color;
+  background-color: $light-gray;
+  min-height: 100vh;
+  padding: 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.wt-main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .wt-content {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
 }
 
 // Card Section
 .wt-card-section {
   background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-  padding: 20px;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
 
-  .wt-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .wt-card-title {
-      font-size: 20px;
-      font-weight: 600;
-
-      .wt-highlight {
-        color: $accent;
-      }
-    }
-
-    .wt-add-card {
-      @include button-style;
-      background-color: transparent;
-      color: $primary;
-      font-size: 14px;
+.wt-card-header {
+  @include flex-between;
+  margin-bottom: 1.5rem;
+  
+  .wt-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-color;
+    
+    .wt-highlight {
+      color: $primary-color;
     }
   }
-
-  .wt-card-container {
-    display: flex;
-    gap: 30px;
+  
+  .wt-add-card {
+    @include button-style;
+    background-color: $light-gray;
+    color: $text-color;
   }
+}
 
-  .wt-card {
-    flex: 1;
-    background: $dark;
-    color: $white;
-    border-radius: $border-radius;
-    padding: 20px;
-    box-shadow: $shadow;
-
-    .wt-card-balance {
-      margin-bottom: 20px;
-
-      .wt-card-label {
-        font-size: 24px;
-        opacity: 0.7;
-      }
-
-      .wt-card-amount {
-        font-size: 24px;
-        font-weight: 700;
-      }
-    }
-
-    .wt-card-actions {
-      @include flex-center;
-      gap: 10px;
-      margin-bottom: 20px;
-
-      .wt-card-button {
-        @include button-style;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: $white;
-        font-size: 14px;
-
-        &.wt-card-button--deposit,
-        &.wt-card-button--withdraw {
-          i {
-            font-size: 12px;
-          }
-        }
-      }
-
-      .wt-partner-logo {
-        margin-left: auto;
-        width: 30px;
-        height: 30px;
-        background-color: $white;
-        border-radius: 5px;
-      }
-    }
-
-    .wt-card-details {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .wt-card-issuer {
-        font-size: 14px;
-      }
-
-      .wt-card-number {
-        font-size: 14px;
-
-        .wt-hidden-digits {
-          letter-spacing: 2px;
-        }
-      }
-
-      .wt-card-network {
-        width: 40px;
-        height: 20px;
-        background: linear-gradient(45deg, $accent, #ff8c00);
-        border-radius: 5px;
-      }
-    }
+.wt-card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
   }
+}
 
-  .wt-card-meta {
-    flex: 1;
+.wt-card {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: $white;
+  position: relative;
+  height: 220px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+  }
+  
+  .wt-card-balance {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-
-    .wt-meta-item {
-      .wt-meta-label {
-        font-size: 12px;
+    
+    .wt-card-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+    
+    .wt-card-amount {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+  }
+  
+  .wt-card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    align-items: center;
+    
+    .wt-card-button {
+      @include button-style;
+      padding: 0.5rem 1rem;
+      
+      &--deposit {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: $white;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+      
+      &--withdraw {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: $white;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+    
+    .wt-partner-logo {
+      margin-left: auto;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+    }
+  }
+  
+  .wt-card-details {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    
+    .wt-card-issuer {
+      font-weight: 700;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    
+    .wt-card-number {
+      font-size: 1rem;
+      letter-spacing: 1px;
+      
+      .wt-hidden-digits {
         opacity: 0.7;
       }
+    }
+    
+    .wt-card-network {
+      width: 40px;
+      height: 25px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+    }
+  }
+}
 
-      .wt-meta-value {
-        font-size: 16px;
-        font-weight: 500;
-
-        &.wt-highlight {
-          color: $primary;
-        }
+.wt-card-meta {
+  background-color: $light-gray;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .wt-meta-item {
+    margin-bottom: 1rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .wt-meta-label {
+      font-size: 0.75rem;
+      color: $light-text;
+      margin-right: 0.5rem;
+    }
+    
+    .wt-meta-value {
+      font-weight: 600;
+      color: $text-color;
+      
+      &.wt-highlight {
+        color: $primary-color;
       }
     }
   }
@@ -258,74 +258,120 @@ body {
 // Transaction Section
 .wt-transaction-section {
   background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-  padding: 10px;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
 
-  .wt-transaction-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-
-    .wt-transaction-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .wt-view-report {
-      @include button-style;
-      background-color: $primary;
-      color: $white;
-      font-size: 14px;
-    }
+.wt-transaction-header {
+  @include flex-between;
+  margin-bottom: 1.5rem;
+  
+  .wt-transaction-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-color;
   }
-
-  .wt-transaction-table {
-    overflow-x: auto;
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-
-      th, td {
-        padding: 12px;
-        text-align: left;
-        font-size: 14px;
-      }
-
-      th {
-        background-color: #f0f0f0;
-        font-weight: 500;
-      }
-
-      td {
-        border-bottom: 1px solid #eee;
-
-        &.wt-amount {
-          color: $accent;
-          font-weight: 500;
-        }
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-    }
+  
+  .wt-view-report {
+    @include button-style;
+    background-color: $light-gray;
+    color: $text-color;
   }
 }
 
-// Responsive Design
-@media (max-width: 768px) {
-  .wt-main {
-    flex-direction: column;
-  }
-
-  .wt-sidebar {
+.wt-transaction-table {
+  overflow-x: auto;
+  
+  table {
     width: 100%;
-  }
-
-  .wt-card-container {
-    flex-direction: column;
+    border-collapse: separate;
+    border-spacing: 0;
+    
+    th, td {
+      padding: 1rem;
+      text-align: left;
+    }
+    
+    th {
+      background-color: $light-gray;
+      color: $light-text;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+      
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+    }
+    
+    tbody tr {
+      border-bottom: 1px solid $border-color;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: rgba($light-gray, 0.5);
+      }
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &.status-completed {
+        .wt-status {
+          color: $success-color;
+          
+          .wt-status-indicator {
+            background-color: $success-color;
+          }
+        }
+      }
+      
+      &.status-pending {
+        .wt-status {
+          color: $warning-color;
+          
+          .wt-status-indicator {
+            background-color: $warning-color;
+          }
+        }
+      }
+      
+      &.status-failed {
+        .wt-status {
+          color: $danger-color;
+          
+          .wt-status-indicator {
+            background-color: $danger-color;
+          }
+        }
+      }
+    }
+    
+    .wt-amount {
+      font-weight: 600;
+    }
+    
+    .wt-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      text-transform: capitalize;
+      
+      .wt-status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+    }
   }
 }

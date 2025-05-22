@@ -3,7 +3,7 @@ import InterTransConnect from "../../../components/Translator/InterTransConnect/
 const InterTransConnects = () => {
   return (
     <div className="interTransConnect-container">
-      <div className="content-container container mx-auto" >
+      <div className="about-container container mx-auto" >
         <InterTransConnect />
       </div>
     </div>
