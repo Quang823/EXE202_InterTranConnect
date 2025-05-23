@@ -1,22 +1,54 @@
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Plus, FileUp, ExternalLink, Search, Filter, MoreHorizontal, Calendar, Clock, CheckCircle } from 'lucide-react';
 import "./ApplyJob.scss";
 
-// Company logos (simplified placeholders)
-const LogoComponents = {
-  up: () => <div className="company-logo up">UP</div>,
-  dribbble: () => <div className="company-logo dribbble">DB</div>,
-  apple: () => <div className="company-logo apple">AP</div>,
-  microsoft: () => <div className="company-logo microsoft">MS</div>,
-  twitter: () => <div className="company-logo twitter">TW</div>,
-  facebook: () => <div className="company-logo facebook">FB</div>,
-  slack: () => <div className="company-logo slack">SL</div>,
-  reddit: () => <div className="company-logo reddit">RD</div>,
+// Company logos with more professional styling
+const CompanyLogos = {
+  up: () => (
+    <div className="company-logo up">
+      <span>UP</span>
+    </div>
+  ),
+  dribbble: () => (
+    <div className="company-logo dribbble">
+      <span>DB</span>
+    </div>
+  ),
+  apple: () => (
+    <div className="company-logo apple">
+      <span>AP</span>
+    </div>
+  ),
+  microsoft: () => (
+    <div className="company-logo microsoft">
+      <span>MS</span>
+    </div>
+  ),
+  twitter: () => (
+    <div className="company-logo twitter">
+      <span>TW</span>
+    </div>
+  ),
+  facebook: () => (
+    <div className="company-logo facebook">
+      <span>FB</span>
+    </div>
+  ),
+  slack: () => (
+    <div className="company-logo slack">
+      <span>SL</span>
+    </div>
+  ),
+  reddit: () => (
+    <div className="company-logo reddit">
+      <span>RD</span>
+    </div>
+  ),
 };
 
 const ApplyJob = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 5;
+  const jobsPerPage = 6;
 
   const jobs = [
     {
@@ -103,97 +135,139 @@ const ApplyJob = () => {
     }
   };
 
+  // Format date to be more readable
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  // Extract time from date string
+  const extractTime = (dateString) => {
+    const parts = dateString.split(' ');
+    return parts[parts.length - 1];
+  };
+
   return (
-    <div className="job-tracking-container">
-      <div className="table-container">
-        <table className="job-table">
-          <thead className="table-header">
-            <tr>
-              <th className="header-cell">JOBS</th>
-              <th className="header-cell">DATE APPLIED</th>
-              <th className="header-cell">STATUS</th>
-              <th className="header-cell">ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentJobs.map((job, index) => {
-              const LogoComponent =
-                LogoComponents[job.company] || LogoComponents.up;
-              return (
-                <tr
-                  key={index}
-                  className={`table-row ${
-                    job.highlighted ? "highlighted" : "row-hover"
-                  }`}
-                >
-                  <td className="table-cell">
-                    <div className="job-info">
-                      <div className="logo-container">
-                        <LogoComponent />
-                      </div>
-                      <div>
-                        <div className="job-title">{job.title}</div>
-                        <div className="job-location">{job.location}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="table-cell date-cell">{job.date}</td>
-                  <td className="table-cell">
-                    <span className="status">{job.status}</span>
-                  </td>
-                  <td className="table-cell">
-                    <div className="action-buttons">
-                      <button className="view-button">
-                        <Eye size={20} />
-                      </button>
-                      <label className="import-button">
-                        <input
-                          type="file"
-                          className="file-input"
-                          onChange={handleFileUpload}
-                        />
-                        <span className="import-label">
-                          <svg className="plus-icon" viewBox="0 0 24 24">
-                            <path d="M12 4v16m8-8H4" />
-                          </svg>
-                          Import File
-                        </span>
-                      </label>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+    <div className="job-tracking-dashboard">
+      <div className="dashboard-header">
+        <div className="header-left">
+          <h2>Job Applications</h2>
+        </div>
+        <div className="header-right">
+          <div className="search-wrapper">
+            <Search className="search-icon" size={18} />
+            <input type="text" placeholder="Search applications..." className="search-input-app" />
+          </div>
+          <button className="filter-button">
+            <Filter size={16} />
+            <span>Filter</span>
+          </button>
+          <button className="add-button">
+            <Plus size={16} />
+            <span>New Application</span>
+          </button>
+        </div>
       </div>
 
-      {/* Pagination */}
-      <div className="pagination">
-        <button
-          className="nav-button"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <ChevronLeft size={20} />
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            className={`page-button ${currentPage === page ? "active" : ""}`}
-            onClick={() => handlePageChange(page)}
-          >
-            {page} {/* Changed from page.toString().padStart(2, '0') to page */}
-          </button>
-        ))}
-        <button
-          className="nav-button"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          <ChevronRight size={20} />
-        </button>
+      <div className="job-cards-container">
+        {currentJobs.map((job, index) => {
+          const LogoComponent = CompanyLogos[job.company] || CompanyLogos.up;
+          return (
+            <div key={index} className={`job-card ${job.highlighted ? 'highlighted' : ''}`}>
+              <div className="card-header">
+                <div className="company-info">
+                  <LogoComponent />
+                  <div className="company-details">
+                    <h3 className="job-title">{job.title}</h3>
+                    <span className="salary">{job.location}</span>
+                  </div>
+                </div>
+                <div className="card-actions">
+                  <button className="action-icon-button">
+                    <MoreHorizontal size={18} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="card-content">
+                <div className="date-info">
+                  <div className="date-item">
+                    <Calendar size={14} />
+                    <span>{formatDate(job.date)}</span>
+                  </div>
+                  <div className="date-item">
+                    <Clock size={14} />
+                    <span>{extractTime(job.date)}</span>
+                  </div>
+                </div>
+                
+                <div className="status-section">
+                  <div className={`status-indicator ${job.status.toLowerCase()}`}>
+                    <CheckCircle size={14} />
+                    <span>{job.status}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="card-footer">
+                <button className="action-button view">
+                  <Eye size={16} />
+                  <span>View</span>
+                </button>
+                <button className="action-button link">
+                  <ExternalLink size={16} />
+                  <span>Open</span>
+                </button>
+                <label className="action-button upload">
+                  <FileUp size={16} />
+                  <span>Upload</span>
+                  <input type="file" className="file-input" onChange={handleFileUpload} />
+                </label>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {jobs.length > jobsPerPage && (
+        <div className="pagination-container">
+          <div className="pagination-info">
+            <span>Showing {indexOfFirstJob + 1}-{Math.min(indexOfLastJob, jobs.length)} of {jobs.length} applications</span>
+          </div>
+          <div className="pagination-controls">
+            <button
+              className="pagination-button prev"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft size={16} />
+              <span>Previous</span>
+            </button>
+            
+            <div className="pagination-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`page-number ${currentPage === page ? "active" : ""}`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              className="pagination-button next"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <span>Next</span>
+              <ChevronRight size={16} />
+            </button>
+          </div>  
+        </div>
+      )}
     </div>
   );
 };
