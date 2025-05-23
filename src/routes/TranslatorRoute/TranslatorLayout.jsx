@@ -23,7 +23,6 @@ const TranslatorLayout = ({
             flex: 1;
             main {
               flex: 3;
-              padding: 16px;
             }
           }
         }

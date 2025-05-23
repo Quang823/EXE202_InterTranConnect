@@ -106,6 +106,19 @@ const Content = () => {
       rating: 4.6,
       reviews: 92,
     },
+    {
+      time: "26 min ago",
+      title: "Marketing",
+      customer: "Name Customer",
+      field: "Commerce",
+      language: "VIE - ENG",
+      duration: "1 Hours",
+      price: "$3800-$4000",
+      saved: false,
+      featured: false,
+      rating: 4.6,
+      reviews: 92,
+    },
   ];
 
   const categories = [

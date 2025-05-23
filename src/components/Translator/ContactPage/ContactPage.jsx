@@ -26,12 +26,6 @@ const ContactPage = () => {
       <div className="contact-wrapper">
         <div className="contact-left">
           <h1 className="contact-heading">You Will Grow, You Will Succeed. <span>We Promise That.</span></h1>
-          
-          <p className="contact-description">
-            At InterTransConnect, we believe in your potential and are committed to helping you
-            achieve success in the world of translation and interpretation. 🌍
-          </p>
-          
           <div className="benefits-container">
             <h3 className="benefits-title">Why Choose Us</h3>
             <div className="benefits-list">
@@ -111,9 +105,7 @@ const ContactPage = () => {
         
         <div className="contact-right">
           <div className="form-container">
-            <h2 className="form-title">Send Us a Message</h2>
-            <p className="form-subtitle">We'd love to hear from you. Fill out the form below and we'll get back to you shortly.</p>
-            
+            <h2 className="form-title">Send Message</h2>
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
