@@ -3,7 +3,7 @@ import Wallet from "../../../components/Translator/Wallet/WalletTrans";
 const WalletTrans = () => {
   return (
     <div className="wallet-container">
-      <div className="content-container container mx-auto" >
+      <div className="wallet-container container mx-auto" >
         <Wallet />
       </div>
     </div>
