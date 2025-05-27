@@ -3,7 +3,7 @@ import FavoriteJobs from "../../../../components/Translator/Job/FavoriteJob/Favo
 const FavoriteJob = () => {
   return (
     <div className="jobfav-container">
-      <div className="content-container container mx-auto" >
+      <div className="jobfav-container container mx-auto" >
         <FavoriteJobs />
       </div>
     </div>

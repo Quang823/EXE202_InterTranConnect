@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Book, Briefcase, Clock, Mail, MapPin, Phone } from 'lucide-react';
-import './ContactPage.scss';
+import "./ContactPage.scss"
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -22,96 +22,146 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="ctc-container">
-      <div className="ctc-left">
-        <h1 className="ctc-promise">You Will Grow, You Will Succeed. We Promise That.</h1>
-        <p className="ctc-description">
-          At InterTransConnect, we believe in your potential and are committed to helping you
-          achieve success in the world of translation and interpretation. 🌍
-        </p>
-        <ul className="ctc-benefits">
-          <li className="ctc-benefit">
-            <Book className="ctc-icon" size={18} />
-            <span>Continuous Learning — Gain access to training, resources, and industry insights.</span>
-          </li>
-          <li className="ctc-benefit">
-            <Briefcase className="ctc-icon" size={18} />
-            <span>Career Advancement — Work with global clients and expand your professional network.</span>
-          </li>
-          <li className="ctc-benefit">
-            <Clock className="ctc-icon" size={18} />
-            <span>Flexible Opportunities — Choose projects that match your skills and schedule.</span>
-          </li>
-          <li className="ctc-benefit">
-            <Mail className="ctc-icon" size={18} />
-            <span>Supportive Community — Collaborate with top professionals and grow together...</span>
-          </li>
-        </ul>
-        <div className="ctc-info">
-          <div className="ctc-item">
-            <Phone className="ctc-icon" size={18} />
-            <span>Call for us:</span>
-            <p>0987654321</p>
+    <div className="contact-container">
+      <div className="contact-wrapper">
+        <div className="contact-left">
+          <h1 className="contact-heading">You Will Grow, You Will Succeed. <span>We Promise That.</span></h1>
+          <div className="benefits-container">
+            <h3 className="benefits-title">Why Choose Us</h3>
+            <div className="benefits-list">
+              <div className="benefit-item">
+                <div className="benefit-icon">
+                  <Book size={20} />
+                </div>
+                <div className="benefit-content">
+                  <h4>Continuous Learning</h4>
+                  <p>Gain access to training, resources, and industry insights.</p>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-icon">
+                  <Briefcase size={20} />
+                </div>
+                <div className="benefit-content">
+                  <h4>Career Advancement</h4>
+                  <p>Work with global clients and expand your professional network.</p>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-icon">
+                  <Clock size={20} />
+                </div>
+                <div className="benefit-content">
+                  <h4>Flexible Opportunities</h4>
+                  <p>Choose projects that match your skills and schedule.</p>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-icon">
+                  <Mail size={20} />
+                </div>
+                <div className="benefit-content">
+                  <h4>Supportive Community</h4>
+                  <p>Collaborate with top professionals and grow together.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="ctc-item">
-            <Mail className="ctc-icon" size={18} />
-            <span>Email:</span>
-            <p>nammpse173557@ftp.edu.vn</p>
-          </div>
-          <div className="ctc-item">
-            <Clock className="ctc-icon" size={18} />
-            <span>Opening hours:</span>
-            <p>Mon - Sunday: 24/24</p>
-          </div>
-          <div className="ctc-item">
-            <MapPin className="ctc-icon" size={18} />
-            <span>Office:</span>
-            <p>Location</p>
+          
+          <div className="contact-info">
+            <h3 className="info-title">Get In Touch</h3>
+            <div className="info-grid">
+              <div className="info-item">
+                <Phone className="info-icon" />
+                <div>
+                  <h4>Phone</h4>
+                  <p>0987654321</p>
+                </div>
+              </div>
+              <div className="info-item">
+                <Mail className="info-icon" />
+                <div>
+                  <h4>Email</h4>
+                  <p>nammpse173557@ftp.edu.vn</p>
+                </div>
+              </div>
+              <div className="info-item">
+                <Clock className="info-icon" />
+                <div>
+                  <h4>Hours</h4>
+                  <p>Mon - Sunday: 24/24</p>
+                </div>
+              </div>
+              <div className="info-item">
+                <MapPin className="info-icon" />
+                <div>
+                  <h4>Location</h4>
+                  <p>Our Office Address</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="ctc-right">
-        <h2 className="ctc-form-title">Contact Info</h2>
-        <form className="ctc-form" onSubmit={handleSubmit}>
-          <div className="ctc-form-group">
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="First Name"
-              className="ctc-form-input"
-            />
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Last Name"
-              className="ctc-form-input"
-            />
+        
+        <div className="contact-right">
+          <div className="form-container">
+            <h2 className="form-title">Send Message</h2>
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="Enter your first name"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Enter your last name"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email address"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="How can we help you?"
+                  rows={5}
+                />
+              </div>
+              
+              <button type="submit" className="submit-button">
+                Send Message
+              </button>
+            </form>
           </div>
-          <div className="ctc-form-group">
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              className="ctc-form-input"
-            />
-          </div>
-          <div className="ctc-form-group">
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Message"
-              className="ctc-form-input ctc-form-textarea"
-            />
-          </div>
-          <button type="submit" className="ctc-form-submit">Send Message</button>
-        </form>
+        </div>
       </div>
     </div>
   );

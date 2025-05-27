@@ -19,11 +19,11 @@ const TranslatorLayout = ({
       <style jsx>{`
         .translator-layout {
           .content-wrapper {
+            margin : 20px ;
             display: flex;
             flex: 1;
             main {
               flex: 3;
-              padding: 16px;
             }
           }
         }
