@@ -3,7 +3,7 @@ import JobDetails from "../../../../components/Translator/Job/JobDetails/JobDeta
 const JobDetail = () => {
   return (
     <div className="jobDetails-container">
-      <div className="content-container container mx-auto" >
+      <div className="jobDetails-container container mx-auto" >
         <JobDetails />
       </div>
     </div>

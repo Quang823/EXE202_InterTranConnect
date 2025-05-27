@@ -5,7 +5,7 @@ const SubscriptionPlan = () => {
   return (
     <div className="sub-container">
       <div
-        className="content-container container mx-auto"
+        className="sub-container container mx-auto"
         style={{
           "--bs-gutter-x": "0",
           paddingRight: "0",
