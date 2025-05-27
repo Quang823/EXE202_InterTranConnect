@@ -1,0 +1,200 @@
+:root {
+  --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  --primary-dark: #1e3a8a;
+  --primary-light: #3b82f6;
+  --text-dark: #1a1a1a;
+  --text-light: #e0e0e0;
+}
+
+.upwork-role-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px;
+  background: var(--primary-gradient);
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  transition: background 0.5s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+.dark-mode {
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  color: var(--text-light);
+}
+
+.dark-mode-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.2) rotate(15deg);
+  }
+}
+
+.upwork-logo-wrapper {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.upwork-logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.upwork-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.upwork-page-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-light);
+  font-weight: 600;
+  animation: fadeInDown 1s ease-out;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.upwork-role-title {
+  font-size: 1.8rem;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  font-weight: 500;
+  animation: fadeIn 1.2s ease-out;
+}
+
+.upwork-role-options {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.upwork-role-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    background: var(--primary-light);
+    .upwork-role-label {
+      color: var(--text-light);
+    }
+  }
+  &.selected {
+    background: var(--primary-gradient);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    .upwork-role-label {
+      color: var(--text-light);
+    }
+  }
+}
+
+.dark-mode .upwork-role-card {
+  background: rgba(255, 255, 255, 0.15);
+  &:hover {
+    background: var(--primary-dark);
+  }
+  &.selected {
+    background: var(--primary-gradient);
+  }
+}
+
+.upwork-role-input {
+  margin-right: 1rem;
+  accent-color: var(--primary-light);
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+  &:checked {
+    transform: scale(1.4);
+  }
+}
+
+.upwork-role-label {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .upwork-role-label {
+  color: var(--text-light);
+}
+
+.upwork-role-continue-btn {
+  padding: 1rem 4rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-light);
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(59, 130, 246, 0.5);
+    background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

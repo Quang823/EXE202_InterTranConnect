@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -13,73 +13,51 @@ import "./LoginForm.scss";
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login: loginContext, user } = useAuth();
-  const [darkMode, setDarkMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  useEffect(() => {
-    if (user) {
-      if (user.role === "Customer") {
-        navigate("/client/home");
-      } else if (user.role === "Talent") {
-        navigate("/translator/home");
-      } else {
-        setErrors({
-          ...errors,
-          apiError: "Invalid role. Please contact support.",
-        });
-      }
-    }
-  }, [user, navigate]);
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({
     email: "",
     password: "",
     apiError: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const redirectPath =
+        user.role === "Customer"
+          ? "/client/home"
+          : user.role === "Talent"
+          ? "/translator/home"
+          : null;
+      if (redirectPath) navigate(redirectPath);
+      else
+        setErrors((prev) => ({
+          ...prev,
+          apiError: "Invalid role. Please contact support.",
+        }));
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    setErrors({
-      ...errors,
-      apiError: "",
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, apiError: "" }));
   };
 
-  const handleGoogleLoginSuccess = async (credentialResponse) => {
+  const handleGoogleLoginSuccess = async ({ credential }) => {
     try {
       setIsLoading(true);
-      console.log("Google ID Token:", credentialResponse.credential);
-      const result = await googleLogin(
-        credentialResponse.credential,
-        loginContext
-      );
-      console.log("Google login successful:", result);
+      await googleLogin(credential, loginContext);
     } catch (error) {
-      console.error("Google login error:", error);
-      setErrors({
-        ...errors,
-        apiError: error.message || "Google login failed. Please try again.",
-      });
+      setErrors((prev) => ({
+        ...prev,
+        apiError: error.message || "Google login failed.",
+      }));
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleLoginFailure = () => {
-    setErrors({
-      ...errors,
-      apiError: "Google login failed. Please try again.",
-    });
   };
 
   const handleSubmit = async (e) => {
@@ -88,40 +66,40 @@ const LoginForm = () => {
       { name: "email" },
       { name: "password" },
     ]);
-
     if (!formErrors.email && !formErrors.password) {
       try {
         setIsLoading(true);
         await login(formData.email, formData.password, loginContext);
       } catch (error) {
-        console.error("Error during login:", error);
-        setErrors({
-          ...errors,
-          apiError: error.message || "Please check your email or password!",
-        });
+        setErrors((prev) => ({
+          ...prev,
+          apiError: error.message || "Invalid email or password.",
+        }));
       } finally {
         setIsLoading(false);
       }
     } else {
-      setErrors({
-        ...errors,
+      setErrors((prev) => ({
+        ...prev,
         ...formErrors,
-        apiError: "Please fix the errors and fill in all fields.",
-      });
+        apiError: "Please fix the errors.",
+      }));
     }
   };
 
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
-      <div className="theme-toggle" onClick={toggleDarkMode}>
+      <div className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? <MdLightMode size={30} /> : <MdDarkMode size={30} />}
       </div>
+
       <div className="logo-wrapper" onClick={() => navigate("/client/home")}>
         <div className="logo">
           <Image src="logo" alt="Inter-Trans Connect Logo" />
         </div>
         <span className="logo-title">Inter-Trans Connect</span>
       </div>
+
       <Container className="login-container">
         <Row className="login-row">
           <Col md={6} className="form-section">
@@ -132,17 +110,24 @@ const LoginForm = () => {
               >
                 <GoogleLogin
                   onSuccess={handleGoogleLoginSuccess}
-                  onError={handleGoogleLoginFailure}
+                  onError={() =>
+                    setErrors((prev) => ({
+                      ...prev,
+                      apiError: "Google login failed.",
+                    }))
+                  }
                   text="signin_with"
                   disabled={isLoading}
                 />
               </GoogleOAuthProvider>
             </div>
+
             {errors.apiError && (
               <div className="text-danger text-center mb-3">
                 {errors.apiError}
               </div>
             )}
+
             <LoginFormFields
               formData={formData}
               errors={errors}
@@ -153,6 +138,7 @@ const LoginForm = () => {
               Don't have an account? <a href="/register">Sign Up</a>
             </p>
           </Col>
+
           <Col md={6} className="image-section">
             <Image
               src="loginIllustration"

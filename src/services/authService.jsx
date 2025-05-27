@@ -7,7 +7,19 @@ import { jwtDecode } from "jwt-decode";
 
 // Helper function to process login response
 const processLoginResponse = (response, loginContext) => {
-  const { accessToken, refreshToken, user } = response;
+  // Extract user data from response properties
+  const user = {
+    id: response.user.id,
+    fullName: response.user.fullName,
+    email: response.user.email,
+    phoneNumber: response.user.phoneNumber,
+    address: response.user.address,
+    gender: response.user.gender,
+    avatarUrl: response.user.avatarUrl,
+  };
+
+  const accessToken = response.accessToken;
+  const refreshToken = response.refreshToken;
 
   if (!user || !accessToken) {
     throw new Error("Invalid login response: Missing user or access token");
@@ -27,13 +39,13 @@ const processLoginResponse = (response, loginContext) => {
 
   return {
     user: {
-      id: user?.id,
-      email: user?.email,
+      id: user.id,
+      email: user.email,
       role: role,
-      userName: user?.fullName,
-      phoneNumber: user?.phoneNumber,
-      address: user?.address,
-      gender: user?.gender,
+      userName: user.fullName,
+      phoneNumber: user.phoneNumber,
+      address: user.address,
+      gender: user.gender,
     },
     token: accessToken,
     refreshToken,

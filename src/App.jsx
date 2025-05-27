@@ -13,6 +13,7 @@ import AdminLayout from "./routes/AdminRoute/AdminLayout";
 import AdminRoute from "./routes/AdminRoute/AdminRoute";
 import RegisterForm from "./pages/RegisterForm/RegisterForm";
 import LoginForm from "./pages/LoginForm/LoginForm";
+import SelectRole from "./pages/RegisterForm/SelectRole";
 import useAuth from "./hooks/useAuth";
 import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./components/common/ScrollToTop/ScrollToTop";
@@ -62,6 +63,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/selectRole" element={<SelectRole />} />
           <Route
             path="/client/*"
             element={

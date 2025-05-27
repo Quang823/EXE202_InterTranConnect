@@ -63,20 +63,29 @@ const Header_Translator = () => {
                   <NavLink to="/translator/job" className="header-nav-item">
                     Jobs
                   </NavLink>
-                  <NavLink to="/news-blog" className="header-nav-item">
+                  <NavLink
+                    to="/translator/news-blog"
+                    className="header-nav-item"
+                  >
                     News & Blog
                   </NavLink>
                   <NavLink to="/translator/aboutUs" className="header-nav-item">
                     About Us
                   </NavLink>
-                  <NavLink to="/translator/contactPages" className="header-nav-item">
+                  <NavLink
+                    to="/translator/contactPages"
+                    className="header-nav-item"
+                  >
                     Contact Us
                   </NavLink>
-                  <NavLink to="/pricing" className="header-nav-item">
+                  <NavLink
+                    to="/translator/subscriptionPlan"
+                    className="header-nav-item"
+                  >
                     Pricing
                   </NavLink>
                   {user ? (
-                    <NavLink to="/client/forum" className="header-nav-item">
+                    <NavLink to="/translator/forum" className="header-nav-item">
                       Forum
                     </NavLink>
                   ) : (
@@ -118,11 +127,11 @@ const Header_Translator = () => {
                     <NavDropdown.Item href="/translator/edit_profile">
                       <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/job/applyJob">
+                    <NavDropdown.Item href="/translator/job/applyJob">
                       <FaBriefcase style={{ marginRight: "8px" }} /> Applied
                       Jobs
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/wallet">
+                    <NavDropdown.Item href="/translator/wallet">
                       <FaWallet style={{ marginRight: "8px" }} /> Wallet
                     </NavDropdown.Item>
                     <NavDropdown.Divider />

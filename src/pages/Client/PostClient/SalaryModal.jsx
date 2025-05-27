@@ -1,67 +1,96 @@
-// modals/SalaryModal.jsx
-import React, { useState } from "react";
+import React from "react";
+import "./Post_Client.scss";
 
-const SalaryModal = ({ isOpen, onClose, onSave }) => {
-  const [hourlyRate, setHourlyRate] = useState("");
-  const [platformFee, setPlatformFee] = useState("");
-  const [translatorReceives, setTranslatorReceives] = useState("");
-
-  const handleSave = () => {
-    onSave({ hourlyRate, platformFee, translatorReceives });
-    onClose();
-  };
-
+const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
   if (!isOpen) return null;
 
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      onClose();
+    }
+  };
+  const hourlyRate = parseFloat(formData.hourlyRate) || 0;
+  const platformFee = (hourlyRate * 0.3).toFixed(2);
+  const totalFee = (hourlyRate + parseFloat(platformFee)).toFixed(2);
+
+  const handleHourlyRateChange = (e) => {
+    const value = e.target.value;
+    onChange(e);
+    onChange({
+      target: {
+        name: "platformFee",
+        value: (parseFloat(value) * 0.3 || 0).toFixed(2),
+      },
+    });
+    onChange({
+      target: {
+        name: "totalFee",
+        value: (
+          parseFloat(value) +
+            parseFloat((parseFloat(value) * 0.3 || 0).toFixed(2)) || 0
+        ).toFixed(2),
+      },
+    });
+  };
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>
-          ✕
-        </button>
-        <h3>Set the payment for your job</h3>
-        <p>
-          Translators will see this rate when they apply for your job. Please
-          set a fair price based on the complexity and scope of work.
-        </p>
-        <div>
-          <label>Hourly Rate</label>
-          <input
-            type="text"
-            placeholder="$/hr"
-            value={hourlyRate}
-            onChange={(e) => setHourlyRate(e.target.value)}
-          />
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div
+        id="salary-modal"
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-header">
+          <h4>
+            <span className="header-icon">💰</span> Salary Information
+          </h4>
+          <button className="modal-close" onClick={onClose}>
+            ×
+          </button>
         </div>
-        <div>
-          <label>Platform Service Fee</label>
-          <input
-            type="text"
-            placeholder="$/hr"
-            value={platformFee}
-            onChange={(e) => setPlatformFee(e.target.value)}
-          />
-          <p>
-            This is the intermediary fee charged by our platform to facilitate
-            the transaction, and provide secure payments.
-          </p>
-        </div>
-        <div>
-          <label>Translator Will Receive</label>
-          <input
-            type="text"
-            placeholder="$/hr"
-            value={translatorReceives}
-            onChange={(e) => setTranslatorReceives(e.target.value)}
-          />
-          <p>
-            The estimated amount the translator will receive after the platform
-            fee.
-          </p>
-        </div>
-        <div className="modal-actions">
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSave}>Save</button>
+        <div className="form-fields">
+          <div className="salary-input-section">
+            <label htmlFor="hourlyRate" className="salary-label">
+              Hourly Rate for Translator ($/hr)
+            </label>
+            <input
+              type="number"
+              id="hourlyRate"
+              name="hourlyRate"
+              placeholder="Enter hourly rate"
+              value={formData.hourlyRate}
+              onChange={handleHourlyRateChange}
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <div className="salary-breakdown">
+            <h5>Salary Breakdown</h5>
+            <div className="breakdown-item">
+              <span className="breakdown-label">Hourly Rate:</span>
+              <span className="breakdown-value">
+                ${formData.hourlyRate || "0.00"}/hr
+              </span>
+            </div>
+            <div className="breakdown-item">
+              <span className="breakdown-label">
+                Platform Service Fee (30%):
+              </span>
+              <span className="breakdown-value">${platformFee}/hr</span>
+            </div>
+            <div className="breakdown-item total">
+              <span className="breakdown-label">Total Fee:</span>
+              <span className="breakdown-value">${totalFee}/hr</span>
+            </div>
+            <p className="breakdown-note">
+              Note: The Platform Service Fee is automatically calculated as 30%
+              of the Hourly Rate. The Total Fee is the sum of the Hourly Rate
+              and the Platform Service Fee.
+            </p>
+          </div>
+
+          <button onClick={onClose}>Close</button>
         </div>
       </div>
     </div>
