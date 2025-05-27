@@ -1,52 +1,74 @@
-// modals/ContactModal.jsx
 import React, { useState } from "react";
+import "./Post_Client.scss";
 
-const ContactModal = ({ isOpen, onClose, onSave }) => {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-
-  const handleSave = () => {
-    onSave({ email, phone, address });
-    onClose();
-  };
-
+const ContactModal = ({ isOpen, onClose, formData, onChange }) => {
   if (!isOpen) return null;
 
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      if (hasChanges) {
+        const confirmClose = window.confirm(
+          "You have made changes. Are you sure you want to close without saving?"
+        );
+        if (!confirmClose) return;
+      }
+      onClose();
+    }
+  };
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>
-          ✕
-        </button>
-        <h3>Add Contact Information</h3>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div
+        id="contact-modal"
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-header">
+          <h4>
+            <span className="header-icon">📞</span> Contact Information
+          </h4>
+          <button className="modal-close" onClick={onClose}>
+            ×
+          </button>
         </div>
-        <div>
-          <label>Phone Number</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Address (Optional)</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-        <div className="modal-actions">
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSave}>Add Information</button>
+        <div className="form-fields">
+          <div className="form-field">
+            <label htmlFor="contactEmail" className="form-label">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter Email"
+              value={formData.email}
+              onChange={onChange}
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="contactPhoneNumber" className="form-label">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              name="phone"
+              placeholder="Enter Phone Number"
+              value={formData.phone}
+              onChange={onChange}
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="contactAddresss" className="form-label">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              placeholder="Enter Address (Optional)"
+              value={formData.address}
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

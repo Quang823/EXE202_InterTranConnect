@@ -1,45 +1,80 @@
-// modals/CompanyModal.jsx
 import React, { useState } from "react";
+import "./Post_Client.scss";
 
-const CompanyModal = ({ isOpen, onClose, onSave }) => {
-  const [companyName, setCompanyName] = useState("");
-  const [file, setFile] = useState(null);
-
-  const handleSave = () => {
-    onSave({ companyName, file });
-    onClose();
-  };
-
+const CompanyModal = ({ isOpen, onClose, formData, uploadFileUrl }) => {
   if (!isOpen) return null;
 
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("modal-overlay")) {
+      if (hasChanges) {
+        const confirmClose = window.confirm(
+          "You have made changes. Are you sure you want to close without saving?"
+        );
+        if (!confirmClose) return;
+      }
+      onClose();
+    }
+  };
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>
-          ✕
-        </button>
-        <h3>Add Company/Organization Information</h3>
-        <div>
-          <label>Company/Organization Name</label>
-          <input
-            type="text"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-          />
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div
+        id="company-modal"
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-header">
+          <h4>
+            <span className="header-icon">📄</span> Company Information
+          </h4>
+          <button className="modal-close" onClick={onClose}>
+            ×
+          </button>
         </div>
-        <div>
-          <label>Upload your Company/Organization Information</label>
-          <div className="upload-section">
-            <p>
-              Browse file or drop here
-              <br />
-              Only PDF format. Max file size 12 MB.
-            </p>
+        <div className="form-fields">
+          <div className="form-field">
+            <label htmlFor="companyName" className="form-label">
+              Company Name
+            </label>
+            <input
+              type="text"
+              id="companyName"
+              name="companyName"
+              placeholder="Enter company name"
+              value={formData.companyName}
+            />
           </div>
-        </div>
-        <div className="modal-actions">
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSave}>Add Information</button>
+          <div className="form-field">
+            <label htmlFor="companyDescription" className="form-label">
+              Company Description
+            </label>
+            <textarea
+              id="companyDescription"
+              name="companyDescription"
+              placeholder="Enter company description"
+              value={formData.companyDescription}
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="companyLogo" className="form-label">
+              Company Logo
+            </label>
+            <div className="upload-section">
+              <div className="file-input-wrapper">
+                <input type="file" id="companyLogo" accept="image/*" />
+                <label htmlFor="companyLogo" className="file-input-label">
+                  Choose File
+                </label>
+              </div>
+              <p className="upload-hint">Upload Company Logo (Max 5 MB)</p>
+              {uploadFileUrl && (
+                <div className="logo-preview">
+                  <img src={uploadFileUrl} alt="Company Logo" />
+                </div>
+              )}
+            </div>
+          </div>
+          <button onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

@@ -14,18 +14,18 @@ import AdminDashboards from "../../pages/Translator/AdminDashboards/AdminDashboa
 const TranslatorRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePageTranslator />} />
-      <Route path="edit_profile" element={<ProfileTranslator />} />
-      <Route path="job" element={<JobTranslator />} />
-      <Route path="jobDetails" element={<JobDetail />} />
-      <Route path="jobFavorite" element={<FavoriteJob />} />
-      <Route path="applyJob" element={<ApplyJobs />} />
-      <Route path="wallet" element={<WalletTrans />} />
-      <Route path="subscriptionPlan" element={<SubscriptionPlan />} />
-      <Route path="contactPages" element={<ContactPages />} />
-      <Route path="forum" element={<Forums />} />
-      <Route path="aboutUs" element={<InterTransConnects />} />
-      <Route path="dashboard" element={<AdminDashboards />} />
+      <Route path="/home" element={<HomePageTranslator />} />
+      <Route path="/edit_profile" element={<ProfileTranslator />} />
+      <Route path="/job" element={<JobTranslator />} />
+      <Route path="/jobDetails" element={<JobDetail />} />
+      <Route path="/jobFavorite" element={<FavoriteJob />} />
+      <Route path="/applyJob" element={<ApplyJobs />} />
+      <Route path="/wallet" element={<WalletTrans />} />
+      <Route path="/subscriptionPlan" element={<SubscriptionPlan />} />
+      <Route path="/contactPages" element={<ContactPages />} />
+      <Route path="/forum" element={<Forums />} />
+      <Route path="/aboutUs" element={<InterTransConnects />} />
+      <Route path="/dashboard" element={<AdminDashboards />} />
     </Routes>
   );
 };
