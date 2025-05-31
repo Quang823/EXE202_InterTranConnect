@@ -1,5 +1,5 @@
-// Variables for colors
-$primary-color: #007bff;
+// Variables
+$primary-color: #3b82f6;
 $success-color: #28a745;
 $background-color: #f8f9fa;
 $card-bg: #ffffff;
@@ -9,22 +9,26 @@ $border-color: #ddd;
 
 // General styles
 .home-page-client {
-  background-color: $background-color;
+  background: linear-gradient(135deg, #e6f0fa 0%, #f3e8ff 100%);
   padding: 40px 0;
+  min-height: 100vh;
 
-  .section-title {
+  .hpc-section-title {
     text-align: center;
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 40px;
-    color: $text-color;
+    background: linear-gradient(90deg, #1e3a8a, $primary-color);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     position: relative;
 
     &::after {
       content: "";
       width: 60px;
       height: 4px;
-      background-color: $primary-color;
+      background: linear-gradient(to right, $primary-color, #1e3a8a);
       position: absolute;
       bottom: -10px;
       left: 50%;
@@ -34,59 +38,61 @@ $border-color: #ddd;
 }
 
 // Top Translators Section
-.top-translators-section {
+.hpc-top-translators-section {
   margin-bottom: 60px;
 
-  .translator-card-col {
+  .hpc-translator-card-col {
     margin-bottom: 20px;
   }
 
-  .translator-card {
+  .hpc-translator-card {
     border: none;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
+    }
+    .hpc-image-wrapper {
+      display: flex;
+      justify-content: center; // Căn giữa ngang
+      align-items: center; // Căn giữa dọc
+      padding: 20px 0; // Khoảng cách trên dưới
+      min-height: 190px; // Đảm bảo đủ không gian cho ảnh (có thể điều chỉnh)
     }
 
-    .translator-image {
+    .hpc-translator-image {
       width: 150px;
       height: 150px;
       object-fit: cover;
       border-radius: 50%;
-      margin: 20px auto;
-      display: block;
+      border: 3px solid #e9ecef;
+      transition: transform 0.3s ease; // Hiệu ứng cho ảnh
+
+      &:hover {
+        transform: scale(1.05); // Phóng to nhẹ khi hover
+      }
     }
 
     .card-body {
-      text-align: center;
       padding: 20px;
 
       .card-title {
         font-size: 1.5rem;
-        font-weight: 600;
-        color: $text-color;
       }
 
       .card-subtitle {
         font-size: 1rem;
-        color: $muted-color;
       }
 
       .card-text {
         font-size: 0.9rem;
-        color: $text-color;
-        margin: 10px 0;
+        color: $muted-color;
       }
 
-      .social-links {
-        margin: 15px 0;
-
-        .social-icon {
-          margin: 0 10px;
+      .hpc-social-links {
+        .hpc-social-icon {
           font-size: 1.2rem;
           color: $muted-color;
           transition: color 0.3s ease;
@@ -105,32 +111,26 @@ $border-color: #ddd;
         }
       }
 
-      .card-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-
-        .view-profile-btn {
-          background-color: $primary-color;
-          border: none;
-          padding: 8px 20px;
+      .hpc-card-buttons {
+        .hpc-view-profile-btn {
           border-radius: 20px;
-          transition: background-color 0.3s ease;
+          padding: 8px 20px;
+          background: linear-gradient(to right, $primary-color, #6610f2);
+          border: none;
+          transition: transform 0.3s ease;
 
           &:hover {
-            background-color: darken($primary-color, 10%);
+            transform: scale(1.05);
           }
         }
 
-        .book-now-btn {
-          background-color: $success-color;
-          border: none;
-          padding: 8px 20px;
+        .hpc-book-now-btn {
           border-radius: 20px;
-          transition: background-color 0.3s ease;
+          padding: 8px 20px;
+          transition: transform 0.3s ease;
 
           &:hover {
-            background-color: darken($success-color, 10%);
+            transform: scale(1.05);
           }
         }
       }
@@ -139,155 +139,115 @@ $border-color: #ddd;
 }
 
 // Choose Your Translators Section
-.choose-translators-section {
-  .filters-sidebar {
-    background-color: $card-bg;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: fit-content;
+.hpc-choose-translators-section {
+  .hpc-filters-sidebar {
+    .bg-light {
+      border: 1px solid $border-color;
+    }
 
-    .filter-group {
-      margin-bottom: 20px;
+    h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-      h4 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: $text-color;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
+    .form-control,
+    .form-select {
+      transition: border-color 0.3s ease;
 
-      .form-control {
-        border-radius: 8px;
-        border: 1px solid $border-color;
-        padding: 8px;
-      }
-
-      .form-check {
-        margin-bottom: 8px;
-
-        .form-check-label {
-          font-size: 0.9rem;
-          color: $text-color;
-        }
+      &:hover {
+        border-color: $primary-color;
       }
     }
   }
 
-  .translators-list {
-    .translator-list-item {
+  .hpc-translators-list {
+    .hpc-translator-list-item {
       border: none;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
       }
 
-      .translator-image-col {
+      .hpc-translator-image-col {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        padding: 10px;
 
-        .translator-list-image {
-          width: 80px;
-          height: 80px;
+        .hpc-translator-list-image {
+          width: 150px;
+          height: 150px;
           object-fit: cover;
           border-radius: 50%;
+          border: 2px solid #e9ecef;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
         }
       }
-
       .card-body {
-        padding: 15px;
-
-        .card-title {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: $text-color;
-        }
-
-        .card-subtitle {
-          font-size: 0.9rem;
-          color: $muted-color;
-        }
-
-        .translator-details {
-          display: flex;
-          gap: 15px;
-          margin: 10px 0;
-
-          .price {
-            font-weight: 600;
-            color: $primary-color;
+        .hpc-translator-details {
+          .hpc-price {
+            font-size: 1rem;
           }
 
-          .rating {
+          .hpc-rating {
             display: flex;
             align-items: center;
             gap: 5px;
-            color: #f1c40f;
           }
 
-          .status {
-            font-size: 0.85rem;
-            padding: 3px 10px;
-            border-radius: 12px;
-            color: white;
-
-            &.available {
-              background-color: $success-color;
-            }
-
-            &.booked {
-              background-color: #dc3545;
-            }
-          }
-        }
-
-        .translator-fields {
-          margin: 10px 0;
-
-          .field-badge {
-            display: inline-block;
-            background-color: #e9ecef;
-            color: $text-color;
-            padding: 4px 10px;
-            border-radius: 12px;
-            margin-right: 8px;
-            margin-bottom: 8px;
+          .hpc-status {
             font-size: 0.85rem;
           }
         }
 
-        .card-text {
-          font-size: 0.9rem;
-          color: $muted-color;
+        .hpc-translator-fields {
+          .hpc-field-badge {
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #dee2e6;
+            }
+          }
         }
       }
 
-      .book-now-col {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .book-now-btn {
-          background-color: $success-color;
-          border: none;
+      .hpc-book-now-col {
+        .hpc-book-now-btn {
           padding: 8px 20px;
-          border-radius: 20px;
-          transition: background-color 0.3s ease;
+          transition: transform 0.3s ease;
 
           &:hover {
-            background-color: darken($success-color, 10%);
+            transform: scale(1.05);
           }
         }
       }
     }
+  }
+}
+
+// Responsive
+@media (max-width: 767.98px) {
+  .hpc-translator-image-col {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .hpc-book-now-col {
+    margin-top: 1rem;
+  }
+
+  .hpc-translators-list .hpc-translator-list-item .card-body {
+    padding: 1rem;
   }
 }

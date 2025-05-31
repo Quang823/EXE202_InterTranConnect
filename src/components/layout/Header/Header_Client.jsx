@@ -20,6 +20,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import useAuth from "../../../hooks/useAuth";
 import useScroll from "../../../hooks/useScroll";
 import Image from "../../../assets/images/Image";
+import ToastManager from "../../common/Toast/ToastManager";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header_Client = () => {
   const navigate = useNavigate();
@@ -31,13 +34,23 @@ const Header_Client = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      alert("Translator hired!");
+      ToastManager.showSuccess("Translator hired!");
     }, 2000);
   };
 
   const handleLogout = () => {
     logout();
     navigate("/client/home");
+  };
+
+  const handlePostClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      ToastManager.showError("Please log in to post a job.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
   };
 
   return (
@@ -49,7 +62,7 @@ const Header_Client = () => {
       >
         <Container>
           <Row className="w-100 align-items-center">
-            {/* Logo*/}
+            {/* Logo */}
             <Col xs={6} md={3} className="d-flex align-items-center">
               <Navbar.Brand href="/" className="d-flex align-items-center">
                 <Image
@@ -69,7 +82,11 @@ const Header_Client = () => {
                   <NavLink to="/client/home" className="header-nav-item">
                     Home
                   </NavLink>
-                  <NavLink to="/client/create_post" className="header-nav-item">
+                  <NavLink
+                    to="/client/create_post"
+                    className="header-nav-item"
+                    onClick={handlePostClick}
+                  >
                     Post
                   </NavLink>
                   <NavLink to="/news-blog" className="header-nav-item">
@@ -130,7 +147,7 @@ const Header_Client = () => {
                     <NavDropdown.Item href="/client/edit_profile">
                       <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/post-history">
+                    <NavDropdown.Item href="/client/post_history">
                       <FaHistory style={{ marginRight: "8px" }} /> Post History
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/wallet">
@@ -199,6 +216,19 @@ const Header_Client = () => {
           </Row>
         </Container>
       </div>
+
+      {/* Thêm ToastContainer */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </header>
   );
 };

@@ -6,12 +6,6 @@ const ContactModal = ({ isOpen, onClose, formData, onChange }) => {
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
-      if (hasChanges) {
-        const confirmClose = window.confirm(
-          "You have made changes. Are you sure you want to close without saving?"
-        );
-        if (!confirmClose) return;
-      }
       onClose();
     }
   };

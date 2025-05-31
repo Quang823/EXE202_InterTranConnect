@@ -1,0 +1,197 @@
+:root {
+  --jsb-primary-gradient: linear-gradient(90deg, #24459f, #3b82f6);
+  --jsb-secondary-gradient: linear-gradient(135deg, #f7b2ff 0%, #9600ad 100%);
+  --jsb-success-gradient: linear-gradient(135deg, #1e3a8a 0%, #00a6ff 100%);
+  --jsb-primary-color: #667eea;
+  --jsb-primary-dark: #5a67d8;
+  --jsb-secondary-color: #f093fb;
+  --jsb-success-color: #0b64b2;
+}
+
+.jobSidebar-container {
+  width: 370px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.jobSidebar-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--jsb-primary-gradient);
+  color: white;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.jobSidebar-back,
+.jobSidebar-create {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.jobSidebar-back:hover,
+.jobSidebar-create:hover {
+  color: #dfe4ff;
+}
+
+.jobSidebar-content {
+  padding: 16px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.jobSidebar-section {
+  margin-bottom: 24px;
+}
+
+.jobSidebar-section h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--jsb-primary-dark);
+  position: relative;
+}
+
+.jobSidebar-section h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 30px;
+  height: 3px;
+  background: var(--jsb-primary-gradient);
+  border-radius: 4px;
+}
+
+.jobSidebar-search-input {
+  position: relative;
+}
+
+.jobSidebar-search-input input {
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.jobSidebar-search-input input:focus {
+  border-color: var(--jsb-primary-color);
+}
+
+.jobSidebar-search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--jsb-primary-color);
+}
+
+.jobSidebar-location-select {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.jobSidebar-location-select:hover {
+  border-color: var(--jsb-primary-color);
+}
+
+.jobSidebar-location-icon,
+.jobSidebar-dropdown-icon {
+  margin: 0 6px;
+  color: var(--jsb-primary-color);
+}
+
+.jobSidebar-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jobSidebar-checkbox-group label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f9ff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.jobSidebar-checkbox-group label:hover {
+  background: #eef3ff;
+}
+
+.jobSidebar-checkbox-group input {
+  margin-right: 8px;
+}
+
+.jobSidebar-count {
+  background: var(--jsb-secondary-gradient);
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 12px;
+}
+
+.jobSidebar-showMore {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: var(--jsb-primary-color);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+
+.jobSidebar-showMore:hover {
+  color: var(--jsb-primary-dark);
+}
+
+.jobSidebar-salary-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--jsb-primary-color);
+}
+
+.jobSidebar-salary-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.jobSidebar-apply-btn {
+  background: var(--jsb-success-gradient);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.jobSidebar-apply-btn:hover {
+  background: var(--jsb-success-color);
+}
