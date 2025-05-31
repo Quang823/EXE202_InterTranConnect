@@ -1,31 +1,109 @@
-import React from 'react';
-import './JobDetails.scss';
+
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./JobDetails.scss";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const JobDetails = () => {
+  const { id } = useParams(); // Get job ID from URL
+  const navigate = useNavigate();
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [applicationMessage, setApplicationMessage] = useState(""); // State for application message
+  const [applyError, setApplyError] = useState(null); // State for application errors
+  const [applySuccess, setApplySuccess] = useState(false); // State for application success
+
+  // Fetch job details from API
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/job/${id}`);
+        setJob(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load job details.");
+        setLoading(false);
+      }
+    };
+
+    fetchJobDetails();
+  }, [id]);
+
+  // Handle Apply Job
+const handleApplyJob = async () => {
+  try {
+    const sessionData = JSON.parse(sessionStorage.getItem("user"));
+    const interpreterId = sessionData?.id;
+
+    if (!interpreterId) {
+      setApplyError("User not logged in.");
+      return;
+    }
+
+    const payload = {
+      jobId: id,
+      interpreterId,
+      message: applicationMessage || "I am interested in applying for this job.",
+    };
+
+    await axios.post(`${API_URL}/api/JobApplication`, payload, {
+      headers: { Authorization: `Bearer ${sessionData.accessToken}` },
+    });
+    setApplySuccess(true);
+    setApplyError(null);
+  } catch (err) {
+    setApplyError("Failed to submit application.");
+    setApplySuccess(false);
+    console.error("Application error:", err);
+  }
+};
+
+  // Handle back button navigation
+  const handleBack = () => {
+    navigate("/translator");
+  };
+
+  // Handle message form submission (optional, if you want to use the form for other purposes)
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    // Add logic for sending a general message if needed
+    alert("Message sent!"); // Placeholder
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !job) {
+    return <div>{error || "Job not found."}</div>;
+  }
+
   return (
     <div className="job-listing-container">
       <header className="header">
-        <button className="back-btn">BACK</button>
+        <button className="back-btn" onClick={handleBack}>
+          BACK
+        </button>
         <button className="next-btn">NEXT</button>
       </header>
 
       <main className="main-content">
         <div className="job-details2">
-          <h1>Marketing Translation</h1>
+          <h1>{job.jobTitle}</h1>
           <div className="job-meta">
-            <span className="status">New Customer</span>
-            <span className="type">Commerce</span>
-            <span className="time">Full time</span>
-            <span className="salary">$4000-$4200</span>
-            <span className="location">Việt Nam</span>
+            <span className="status">{job.customer.fullName}</span>
+            <span className="type">{job.translationType}</span>
+            <span className="time">{new Date(job.createdAt).toLocaleString()}</span>
+            <span className="salary">${job.totalFee}</span>
+            <span className="location">{job.workCity}</span>
           </div>
 
-  
           <section className="section">
             <h2>Job Description</h2>
-            <p>
-              Marketing translation goes beyond simple word-for-word conversion. It involves adapting brand messages, slogans, and promotional content to resonate with different cultural and linguistic audiences. A well-executed marketing translation ensures that the original intent, emotion, and persuasive power remain intact, making it an essential service for businesses expanding into international markets.
-            </p>
+            <p>{job.description}</p>
             <h3>Key Aspects of Marketing Translation:</h3>
             <ul>
               <li><span className="check">✓</span> Localization: Adapting tone, style, and cultural references to match the target market.</li>
@@ -37,7 +115,6 @@ const JobDetails = () => {
             </ul>
           </section>
 
-     
           <section className="section">
             <h2>Key Responsibilities</h2>
             <h3>Translate & Localize Content</h3>
@@ -58,7 +135,6 @@ const JobDetails = () => {
             </ul>
           </section>
 
- 
           <section className="section">
             <h2>Professional Skills</h2>
             <ul>
@@ -69,31 +145,42 @@ const JobDetails = () => {
           </section>
         </div>
 
- 
         <aside className="sidebar">
-          <button className="apply-btn">Apply Job</button>
+          <button className="apply-btn" onClick={handleApplyJob}>
+            Apply Job
+          </button>
+          {applyError && <p className="error">{applyError}</p>}
+          {applySuccess && <p className="success">Application submitted successfully!</p>}
           <div className="job-overview">
             <h2>Job Overview</h2>
             <div className="overview-item">
-              <span className="icon">👤</span> Job Title: Marketing Translation
+              <span className="icon">👤</span> Job Title: {job.jobTitle}
             </div>
             <div className="overview-item">
-              <span className="icon">📂</span> Category: Commerce
+              <span className="icon">📂</span> Category: {job.translationType}
             </div>
             <div className="overview-item">
-              <span className="icon">💰</span> Offered Salary: $4000
+              <span className="icon">💰</span> Offered Salary: ${job.totalFee}
             </div>
             <div className="overview-item">
-              <span className="icon">📍</span> Location: Việt Nam
+              <span className="icon">📍</span> Location: {job.workCity}
             </div>
           </div>
           <div className="message-form">
             <h2>Send Us Message</h2>
-            <input type="text" placeholder="Full Name" />
-            <input type="email" placeholder="Email" />
-            <input type="tel" placeholder="Phone Number" />
-            <textarea placeholder="Message"></textarea>
-            <button className="send-btn">Send Message</button>
+            <form onSubmit={handleSendMessage}>
+              <input type="text" placeholder="Full Name" />
+              <input type="email" placeholder="Email" />
+              <input type="tel" placeholder="Phone Number" />
+              <textarea
+                placeholder="Message for job application"
+                value={applicationMessage}
+                onChange={(e) => setApplicationMessage(e.target.value)}
+              />
+              <button type="submit" className="send-btn">
+                Send Message
+              </button>
+            </form>
           </div>
         </aside>
       </main>
