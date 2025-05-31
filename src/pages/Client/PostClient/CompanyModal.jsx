@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import "./Post_Client.scss";
 
-const CompanyModal = ({ isOpen, onClose, formData, uploadFileUrl }) => {
+const CompanyModal = ({
+  isOpen,
+  onClose,
+  formData,
+  uploadFileUrl,
+  onChange,
+  onFileChange, // Thêm lại prop onFileChange
+}) => {
   if (!isOpen) return null;
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("modal-overlay")) {
-      if (hasChanges) {
-        const confirmClose = window.confirm(
-          "You have made changes. Are you sure you want to close without saving?"
-        );
-        if (!confirmClose) return;
-      }
       onClose();
     }
   };
@@ -42,6 +43,7 @@ const CompanyModal = ({ isOpen, onClose, formData, uploadFileUrl }) => {
               name="companyName"
               placeholder="Enter company name"
               value={formData.companyName}
+              onChange={onChange}
             />
           </div>
           <div className="form-field">
@@ -53,6 +55,7 @@ const CompanyModal = ({ isOpen, onClose, formData, uploadFileUrl }) => {
               name="companyDescription"
               placeholder="Enter company description"
               value={formData.companyDescription}
+              onChange={onChange}
             />
           </div>
           <div className="form-field">
@@ -61,7 +64,12 @@ const CompanyModal = ({ isOpen, onClose, formData, uploadFileUrl }) => {
             </label>
             <div className="upload-section">
               <div className="file-input-wrapper">
-                <input type="file" id="companyLogo" accept="image/*" />
+                <input
+                  type="file"
+                  id="companyLogo"
+                  accept="image/*"
+                  onChange={onFileChange} // Sử dụng onFileChange cho input file
+                />
                 <label htmlFor="companyLogo" className="file-input-label">
                   Choose File
                 </label>

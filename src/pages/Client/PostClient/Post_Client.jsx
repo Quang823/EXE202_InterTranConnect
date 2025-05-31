@@ -41,6 +41,13 @@ const Post_Client = () => {
   const [isSalaryOpen, setIsSalaryOpen] = useState(false);
   const [isWorkLocationOpen, setIsWorkLocationOpen] = useState(false);
   const [isPdfPreviewOpen, setIsPdfPreviewOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Thêm state để theo dõi trạng thái điền thông tin
+  const [isCompanyFilled, setIsCompanyFilled] = useState(false);
+  const [isContactFilled, setIsContactFilled] = useState(false);
+  const [isSalaryFilled, setIsSalaryFilled] = useState(false);
+  const [isWorkLocationFilled, setIsWorkLocationFilled] = useState(false);
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -55,6 +62,7 @@ const Post_Client = () => {
       ...prev,
       salary: { ...prev.salary, [name]: value },
     }));
+    if (value) setIsSalaryFilled(true); // Cập nhật khi có dữ liệu
   };
 
   const handleCompanyChange = (e) => {
@@ -63,6 +71,7 @@ const Post_Client = () => {
       ...prev,
       companyInfo: { ...prev.companyInfo, [name]: value },
     }));
+    if (value) setIsCompanyFilled(true); // Cập nhật khi có dữ liệu
   };
 
   const handleContactChange = (e) => {
@@ -71,6 +80,7 @@ const Post_Client = () => {
       ...prev,
       contactInfo: { ...prev.contactInfo, [name]: value },
     }));
+    if (value) setIsContactFilled(true); // Cập nhật khi có dữ liệu
   };
 
   const handleWorkLocationChange = (e) => {
@@ -79,6 +89,7 @@ const Post_Client = () => {
       ...prev,
       workLocation: { ...prev.workLocation, [name]: value },
     }));
+    if (value) setIsWorkLocationFilled(true); // Cập nhật khi có dữ liệu
   };
 
   const handleFileChange = async (e) => {
@@ -124,9 +135,13 @@ const Post_Client = () => {
       companyInfo: { ...prev.companyInfo, logo: companyLogoUrl },
     }));
     setMessage(`Company logo uploaded successfully: ${companyLogoUrl}`);
+    setIsCompanyFilled(true); // Cập nhật khi upload logo thành công
   };
 
   const handlePostJob = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       const user = JSON.parse(sessionStorage.getItem("user") || "{}");
       const customerId = user.id;
@@ -159,13 +174,44 @@ const Post_Client = () => {
 
       if (!jobData.Title || !jobData.ContactEmail || !jobData.UploadFile) {
         setMessage("Please fill in Title, ContactEmail, and upload a file.");
+        setIsSubmitting(false);
         return;
       }
 
       await createJob(jobData);
       setMessage("Job posted successfully!");
+
+      // Reset form và trạng thái điền thông tin
+      setFormData({
+        jobTitle: "",
+        translationType: "",
+        sourceLanguage: "",
+        translationLanguage: "",
+        description: "",
+        uploadFileUrl: "",
+        companyLogoUrl: "",
+        salary: { hourlyRate: "", platformFee: "", totalFee: "" },
+        companyInfo: { companyName: "", companyDescription: "", logo: "" },
+        contactInfo: { email: "", phone: "", address: "" },
+        workLocation: {
+          workAddressLine: "",
+          city: "",
+          postalCode: "",
+          country: "",
+        },
+        experience: "",
+        education: "",
+        translationForm: "",
+        certificates: "",
+      });
+      setIsCompanyFilled(false);
+      setIsContactFilled(false);
+      setIsSalaryFilled(false);
+      setIsWorkLocationFilled(false);
     } catch (error) {
       setMessage(`Failed to create job: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -322,35 +368,46 @@ const Post_Client = () => {
         <div className="employer-info">
           <div className="employer-info-row">
             <button
-              className="info-link"
+              className={`info-link ${isCompanyFilled ? "filled" : ""}`}
               onClick={() => setIsCompanyOpen(true)}
             >
               <span className="info-icon">📄</span> Company Info
+              {isCompanyFilled && <span className="filled-icon">✓</span>}
               <span className="plus-icon">+</span>
             </button>
             <button
-              className="info-link"
+              className={`info-link ${isContactFilled ? "filled" : ""}`}
               onClick={() => setIsContactOpen(true)}
             >
               <span className="info-icon">📞</span> Contact Info
+              {isContactFilled && <span className="filled-icon">✓</span>}
               <span className="plus-icon">+</span>
             </button>
             <button
-              className="info-link"
+              className={`info-link ${isWorkLocationFilled ? "filled" : ""}`}
               onClick={() => setIsWorkLocationOpen(true)}
             >
               <span className="info-icon">📍</span> Work Location
+              {isWorkLocationFilled && <span className="filled-icon">✓</span>}
               <span className="plus-icon">+</span>
             </button>
-            <button className="info-link" onClick={() => setIsSalaryOpen(true)}>
+            <button
+              className={`info-link ${isSalaryFilled ? "filled" : ""}`}
+              onClick={() => setIsSalaryOpen(true)}
+            >
               <span className="info-icon">💰</span> Salary
+              {isSalaryFilled && <span className="filled-icon">✓</span>}
               <span className="plus-icon">+</span>
             </button>
           </div>
         </div>
 
-        <button className="post-job-btn" onClick={handlePostJob}>
-          POST JOB
+        <button
+          className="post-job-btn"
+          onClick={handlePostJob}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Processing..." : "POST JOB"}
         </button>
         {message && (
           <p className={`message ${message.includes("Failed") ? "error" : ""}`}>

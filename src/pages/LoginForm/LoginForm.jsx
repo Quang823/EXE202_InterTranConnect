@@ -49,6 +49,7 @@ const LoginForm = () => {
   const handleGoogleLoginSuccess = async ({ credential }) => {
     try {
       setIsLoading(true);
+      console.log("credential", credential);
       await googleLogin(credential, loginContext);
     } catch (error) {
       setErrors((prev) => ({

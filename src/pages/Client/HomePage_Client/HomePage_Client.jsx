@@ -137,40 +137,47 @@ const HomePage_Client = () => {
   return (
     <div className="home-page-client">
       {/* Top Translators Section */}
-      <section className="top-translators-section">
+      <section className="hpc-top-translators-section">
         <Container>
-          <h2 className="section-title">Top Translators</h2>
+          <h2 className="hpc-section-title">Top Translators</h2>
           <Row>
             {translators.map((translator, index) => (
-              <Col md={4} key={index} className="translator-card-col">
-                <Card className="translator-card">
-                  <Card.Img
-                    variant="top"
-                    src={translator.image}
-                    className="translator-image"
-                  />
-                  <Card.Body>
-                    <Card.Title>{translator.name}</Card.Title>
+              <Col md={4} key={index} className="hpc-translator-card-col">
+                <Card className="hpc-translator-card shadow">
+                  <div className="hpc-image-wrapper">
+                    <Card.Img
+                      variant="top"
+                      src={translator.image}
+                      className="hpc-translator-image"
+                    />
+                  </div>
+                  <Card.Body className="text-center">
+                    <Card.Title className="fw-bold">
+                      {translator.name}
+                    </Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
                       {translator.title}
                     </Card.Subtitle>
                     <Card.Text>{translator.description}</Card.Text>
-                    <div className="social-links">
+                    <div className="hpc-social-links mb-3">
                       {translator.social.map((social, idx) => (
                         <a
                           href="#"
                           key={idx}
-                          className={`social-icon ${social}`}
+                          className={`hpc-social-icon ${social} me-2`}
                         >
                           <i className={`fab fa-${social}`} />
                         </a>
                       ))}
                     </div>
-                    <div className="card-buttons">
-                      <Button variant="primary" className="view-profile-btn">
+                    <div className="hpc-card-buttons">
+                      <Button
+                        variant="primary"
+                        className="hpc-view-profile-btn me-2"
+                      >
                         View Profile
                       </Button>
-                      <Button variant="success" className="book-now-btn">
+                      <Button variant="success" className="hpc-book-now-btn">
                         Book Now
                       </Button>
                     </div>
@@ -183,105 +190,140 @@ const HomePage_Client = () => {
       </section>
 
       {/* Choose Your Translators Section */}
-      <section className="choose-translators-section">
+      <section className="hpc-choose-translators-section">
         <Container>
-          <h2 className="section-title">Choose Your Translators</h2>
+          <h2 className="hpc-section-title">Choose Your Translators</h2>
           <Row>
             {/* Filters Sidebar */}
-            <Col md={3} className="filters-sidebar">
-              <div className="filter-group">
-                <h4>
-                  <FaFilter /> Looking For
+            <Col md={3} className="hpc-filters-sidebar mb-4">
+              <div className="p-3 bg-light rounded shadow-sm">
+                <h4 className="h6 fw-bold mb-3">
+                  <FaFilter className="me-2" /> Looking For
                 </h4>
-                <Form.Group>
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="text"
                     placeholder="Translator, Interpreter..."
+                    className="rounded-pill"
                   />
                 </Form.Group>
-              </div>
-              <div className="filter-group">
-                <h4>
-                  <FaLanguage /> Source Language
+                <h4 className="h6 fw-bold mb-3">
+                  <FaLanguage className="me-2" /> Source Language
                 </h4>
-                <Form.Control as="select">
+                <Form.Select className="mb-3 rounded-pill">
                   <option>English</option>
                   <option>Vietnamese</option>
                   <option>Spanish</option>
                   <option>French</option>
-                </Form.Control>
-              </div>
-              <div className="filter-group">
-                <h4>
-                  <FaLanguage /> Target Language
+                </Form.Select>
+                <h4 className="h6 fw-bold mb-3">
+                  <FaLanguage className="me-2" /> Target Language
                 </h4>
-                <Form.Control as="select">
+                <Form.Select className="mb-3 rounded-pill">
                   <option>Vietnamese</option>
                   <option>English</option>
                   <option>Spanish</option>
                   <option>French</option>
-                </Form.Control>
-              </div>
-              <div className="filter-group">
-                <h4>
-                  <FaBriefcase /> Experience Level
+                </Form.Select>
+                <h4 className="h6 fw-bold mb-3">
+                  <FaBriefcase className="me-2" /> Experience Level
                 </h4>
-                <Form.Check type="checkbox" label="Beginner (1-3 years)" />
-                <Form.Check type="checkbox" label="Intermediate (3-5 years)" />
-                <Form.Check type="checkbox" label="Expert (5+ years)" />
-              </div>
-              <div className="filter-group">
-                <h4>
-                  <FaUserTie /> Service Type
+                <Form.Check
+                  type="checkbox"
+                  label="Beginner (1-3 years)"
+                  className="mb-2"
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Intermediate (3-5 years)"
+                  className="mb-2"
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Expert (5+ years)"
+                  className="mb-2"
+                />
+                <h4 className="h6 fw-bold mb-3">
+                  <FaUserTie className="me-2" /> Service Type
                 </h4>
-                <Form.Check type="checkbox" label="Translation" />
-                <Form.Check type="checkbox" label="Interpretation" />
-                <Form.Check type="checkbox" label="Both" />
+                <Form.Check
+                  type="checkbox"
+                  label="Translation"
+                  className="mb-2"
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Interpretation"
+                  className="mb-2"
+                />
+                <Form.Check type="checkbox" label="Both" className="mb-2" />
               </div>
             </Col>
 
             {/* Translators List */}
-            <Col md={9} className="translators-list">
+            <Col md={9} className="hpc-translators-list">
               {translatorList.map((translator, index) => (
-                <Card key={index} className="translator-list-item">
-                  <Row>
-                    <Col md={2} className="translator-image-col">
+                <Card
+                  key={index}
+                  className="hpc-translator-list-item mb-3 shadow-sm"
+                  style={{ height: "auto" }}
+                >
+                  <Row className="align-items-center p-2">
+                    <Col md={2} xs={3} className="hpc-translator-image-col">
                       <Card.Img
                         src={translator.image}
-                        className="translator-list-image"
+                        className="hpc-translator-list-image rounded-circle"
                       />
                     </Col>
-                    <Col md={7}>
+                    <Col md={7} xs={9}>
                       <Card.Body>
-                        <Card.Title>{translator.name}</Card.Title>
+                        <Card.Title className="h5 fw-bold">
+                          {translator.name}
+                        </Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">
                           {translator.title}
                         </Card.Subtitle>
-                        <div className="translator-details">
-                          <span className="price">{translator.price}</span>
-                          <span className="rating">
+                        <div className="hpc-translator-details mb-2">
+                          <span className="hpc-price text-primary fw-bold me-3">
+                            {translator.price}
+                          </span>
+                          <span className="hpc-rating text-warning me-3">
                             <FaStar /> 4.9
                           </span>
                           <span
-                            className={`status ${translator.status.toLowerCase()}`}
+                            className={`hpc-status badge ${
+                              translator.status.toLowerCase() === "available"
+                                ? "bg-success"
+                                : "bg-danger"
+                            }`}
                           >
                             {translator.status}
                           </span>
                         </div>
-                        <div className="translator-fields">
+                        <div className="hpc-translator-fields mb-2">
                           {translator.fields.map((field, idx) => (
-                            <span key={idx} className="field-badge">
+                            <span
+                              key={idx}
+                              className="hpc-field-badge badge bg-light text-dark me-2"
+                            >
                               {field}
                             </span>
                           ))}
                         </div>
-                        <Card.Text>
+                        <Card.Text className="text-muted small">
                           Experience: {translator.experience}
                         </Card.Text>
                       </Card.Body>
                     </Col>
-                    <Col md={3} className="book-now-col">
-                      <Button variant="success" className="book-now-btn">
+                    <Col
+                      md={3}
+                      xs={12}
+                      className="hpc-book-now-col text-center"
+                    >
+                      <Button
+                        variant="success"
+                        className="hpc-book-now-btn rounded-pill"
+                      >
                         Book Now
                       </Button>
                     </Col>

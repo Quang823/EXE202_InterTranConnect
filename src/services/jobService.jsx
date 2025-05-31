@@ -1,4 +1,8 @@
-import { postJob } from "../apiHandler/jobAPIHandler";
+import {
+  postJob,
+  getJobsByCustomer,
+  getJobDetailByJobId,
+} from "../apiHandler/jobAPIHandler";
 import { uploadToCloudinaryService } from "../services/uploadToCloudinaryService";
 
 export const createJob = async (jobData) => {
@@ -57,5 +61,31 @@ export const createJob = async (jobData) => {
   } catch (error) {
     console.error("Error in createJob:", error);
     throw new Error(`Failed to create job: ${error.message}`);
+  }
+};
+
+export const getJobsByCustomerService = async (customerId) => {
+  try {
+    if (!customerId) {
+      throw new Error("customerId is required");
+    }
+    const jobs = await getJobsByCustomer(customerId);
+    return jobs;
+  } catch (error) {
+    console.error("Error in getJobsByCustomerService:", error);
+    throw new Error(`Failed to get jobs: ${error.message}`);
+  }
+};
+
+export const getJobDetailByJobIdService = async (id) => {
+  try {
+    if (!id) {
+      throw new Error("JobId is required");
+    }
+    const jobDetails = await getJobDetailByJobId(id);
+    return jobDetails;
+  } catch (error) {
+    console.error("Error in getJobDetailByJobIdService:", error);
+    throw new Error(`Failed to get jobDetails: ${error.message}`);
   }
 };

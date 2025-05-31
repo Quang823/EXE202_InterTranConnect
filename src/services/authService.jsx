@@ -11,11 +11,11 @@ const processLoginResponse = (response, loginContext) => {
   const user = {
     id: response.user.id,
     fullName: response.user.fullName,
-    email: response.user.email,
-    phoneNumber: response.user.phoneNumber,
-    address: response.user.address,
-    gender: response.user.gender,
-    avatarUrl: response.user.avatarUrl,
+    // email: response.user.email,
+    // phoneNumber: response.user.phoneNumber,
+    // address: response.user.address,
+    // gender: response.user.gender,
+    // avatarUrl: response.user.avatarUrl,
   };
 
   const accessToken = response.accessToken;
@@ -40,12 +40,12 @@ const processLoginResponse = (response, loginContext) => {
   return {
     user: {
       id: user.id,
-      email: user.email,
+      // email: user.email,
       role: role,
       userName: user.fullName,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      gender: user.gender,
+      // phoneNumber: user.phoneNumber,
+      // address: user.address,
+      // gender: user.gender,
     },
     token: accessToken,
     refreshToken,
