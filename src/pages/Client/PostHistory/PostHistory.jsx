@@ -10,7 +10,7 @@ import {
   DollarSign,
   Star,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import JobSidebar from "./JobSidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostHistory.scss";

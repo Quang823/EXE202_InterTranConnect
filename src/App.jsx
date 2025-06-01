@@ -63,7 +63,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/selectRole" element={<SelectRole />} />
+          <Route path="/select_role" element={<SelectRole />} />
           <Route
             path="/client/*"
             element={

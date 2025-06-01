@@ -1,3 +1,4 @@
+// LoginForm.jsx
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
@@ -25,18 +26,24 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      const redirectPath =
-        user.role === "Customer"
-          ? "/client/home"
-          : user.role === "Talent"
-          ? "/translator/"
-          : null;
-      if (redirectPath) navigate(redirectPath);
-      else
-        setErrors((prev) => ({
-          ...prev,
-          apiError: "Invalid role. Please contact support.",
-        }));
+      if (user.role === "Unknown") {
+        navigate("/select_role");
+      } else {
+        const redirectPath =
+          user.role === "Customer"
+            ? "/client/home"
+            : user.role === "Talent"
+            ? "/translator/home"
+            : null;
+        if (redirectPath) {
+          navigate(redirectPath);
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            apiError: "Invalid role. Please contact support.",
+          }));
+        }
+      }
     }
   }, [user, navigate]);
 
@@ -49,7 +56,6 @@ const LoginForm = () => {
   const handleGoogleLoginSuccess = async ({ credential }) => {
     try {
       setIsLoading(true);
-      console.log("credential", credential);
       await googleLogin(credential, loginContext);
     } catch (error) {
       setErrors((prev) => ({
@@ -143,8 +149,8 @@ const LoginForm = () => {
           <Col md={6} className="image-section">
             <Image
               src="loginIllustration"
-              alt="Login Illustration"
               className="login-image"
+              alt="Login Illustration"
             />
           </Col>
         </Row>
