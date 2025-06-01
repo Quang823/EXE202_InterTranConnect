@@ -28,7 +28,7 @@ const Header_Translator = () => {
   const scrolling = useScroll(50);
   const handleLogout = () => {
     logout();
-    navigate("/translator/home");
+    navigate("/translator/");
   };
 
   return (
@@ -57,7 +57,7 @@ const Header_Translator = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="header-navbar-nav">
-                  <NavLink to="/translator/home" className="header-nav-item">
+                  <NavLink to="/translator/" className="header-nav-item">
                     Home
                   </NavLink>
                   <NavLink to="/translator/job" className="header-nav-item">
