@@ -68,7 +68,7 @@ const CompanyModal = ({
                   type="file"
                   id="companyLogo"
                   accept="image/*"
-                  onChange={onFileChange} // Sử dụng onFileChange cho input file
+                  onChange={onFileChange}
                 />
                 <label htmlFor="companyLogo" className="file-input-label">
                   Choose File

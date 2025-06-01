@@ -1,21 +1,20 @@
+// authService.js
 import {
   loginUser,
   registerUser,
   googleLogin as googleLoginAPI,
+  getUserByUserId,
+  assignRole as assignRoleAPI,
+  updateUserProfile,
 } from "../apiHandler/authAPIHandler";
 import { jwtDecode } from "jwt-decode";
 
-// Helper function to process login response
+// Helper function to process normal login response
 const processLoginResponse = (response, loginContext) => {
-  // Extract user data from response properties
   const user = {
     id: response.user.id,
     fullName: response.user.fullName,
-    // email: response.user.email,
-    // phoneNumber: response.user.phoneNumber,
-    // address: response.user.address,
-    // gender: response.user.gender,
-    // avatarUrl: response.user.avatarUrl,
+    email: response.user.email,
   };
 
   const accessToken = response.accessToken;
@@ -25,27 +24,57 @@ const processLoginResponse = (response, loginContext) => {
     throw new Error("Invalid login response: Missing user or access token");
   }
 
-  // Decode JWT to extract role
   const decodedToken = jwtDecode(accessToken);
   const roleClaim =
     "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
   const role = decodedToken[roleClaim] || "Unknown";
 
-  // Create user object with role
   const userWithRole = { ...user, role };
 
-  // Store data in AuthContext
   loginContext(userWithRole, accessToken, refreshToken);
 
   return {
     user: {
       id: user.id,
-      // email: user.email,
+      email: user.email,
       role: role,
       userName: user.fullName,
-      // phoneNumber: user.phoneNumber,
-      // address: user.address,
-      // gender: user.gender,
+    },
+    token: accessToken,
+    refreshToken,
+  };
+};
+
+// New helper function to process Google login response
+const processGoogleLoginResponse = (response, loginContext) => {
+  if (!response || !response.id || !response.accessToken) {
+    throw new Error("Invalid Google login response: Missing required fields");
+  }
+
+  const user = {
+    id: response.id,
+    fullName: response.fullName,
+    email: response.email,
+  };
+
+  const accessToken = response.accessToken;
+  const refreshToken = response.refreshToken;
+
+  const decodedToken = jwtDecode(accessToken);
+  const roleClaim =
+    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+  const role = decodedToken[roleClaim] || "Unknown";
+
+  const userWithRole = { ...user, role };
+
+  loginContext(userWithRole, accessToken, refreshToken);
+
+  return {
+    user: {
+      id: user.id,
+      email: user.email,
+      role: role,
+      userName: user.fullName,
     },
     token: accessToken,
     refreshToken,
@@ -81,9 +110,18 @@ export const login = async (email, password, loginContext) => {
 export const googleLogin = async (credential, loginContext) => {
   try {
     const response = await googleLoginAPI(credential);
-    return processLoginResponse(response, loginContext);
+    return processGoogleLoginResponse(response, loginContext); // Use the new function
   } catch (error) {
     return handleAuthError(error, "Google login failed");
+  }
+};
+
+export const assignRole = async (email, role, loginContext) => {
+  try {
+    const response = await assignRoleAPI(email, role);
+    return processLoginResponse(response, loginContext); // Reuse for role assignment
+  } catch (error) {
+    throw new Error(error.message || "Failed to assign role");
   }
 };
 
@@ -132,5 +170,23 @@ export const register = async (userData) => {
       throw new Error(data.message || "Registration failed");
     }
     throw new Error(error.message || "Network error");
+  }
+};
+
+export const getUserInfoByUserIdService = async (id) => {
+  try {
+    const response = await getUserByUserId(id);
+    return response;
+  } catch (error) {
+    throw handleAuthError(error, "Fail to get UserInfo");
+  }
+};
+
+export const updateUserProfileService = async (profileData) => {
+  try {
+    const response = await updateUserProfile(profileData);
+    return response;
+  } catch (error) {
+    throw handleAuthError(error, "Failed to update profile");
   }
 };

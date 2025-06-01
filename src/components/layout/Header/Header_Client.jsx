@@ -144,7 +144,7 @@ const Header_Client = () => {
                     data-bs-theme="light"
                     className="header-account-dropdown"
                   >
-                    <NavDropdown.Item href="/client/edit_profile">
+                    <NavDropdown.Item href="/client/customer_profile">
                       <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/client/post_history">
