@@ -29,7 +29,7 @@ const LoginForm = () => {
         user.role === "Customer"
           ? "/client/home"
           : user.role === "Talent"
-          ? "/translator/home"
+          ? "/translator/"
           : null;
       if (redirectPath) navigate(redirectPath);
       else
