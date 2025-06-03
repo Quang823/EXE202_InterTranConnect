@@ -94,7 +94,7 @@ const handleApplyJob = async () => {
         <div className="job-details2">
           <h1>{job.jobTitle}</h1>
           <div className="job-meta">
-            <span className="status">{job.customer}</span>
+            <span className="status">{job.customer.fullName}</span>
             <span className="type">{job.translationType}</span>
             <span className="time">{new Date(job.createdAt).toLocaleString()}</span>
             <span className="salary">${job.totalFee}</span>
