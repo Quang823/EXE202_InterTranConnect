@@ -6,6 +6,8 @@ import PostHistory from "../../pages/Client/PostHistory/PostHistory";
 import PostDetailHistory from "../../pages/Client/PostDetailHistory/PostDetailHistory";
 import TranslatorProfile from "../../pages/Client/TranslatorProfile/TranslatorProfile";
 import CustomerProfile from "../../pages/Client/CustomerProfile/CustomerProfile";
+import WalletClient from "../../pages/Client/WalletClient/WalletClient";
+
 const ClientRoute = () => {
   return (
     <Routes>
@@ -14,8 +16,12 @@ const ClientRoute = () => {
       <Route path="/create_post" element={<Post_Client />} />
       <Route path="/post_history" element={<PostHistory />} />
       <Route path="/post-detail/:jobId" element={<PostDetailHistory />} />
-      <Route path="/translator_profile" element={<TranslatorProfile />} />
+      <Route
+        path="translator_profile/:interpreterId"
+        element={<TranslatorProfile />}
+      />
       <Route path="/customer_profile" element={<CustomerProfile />} />
+      <Route path="/wallet" element={<WalletClient />} />
     </Routes>
   );
 };

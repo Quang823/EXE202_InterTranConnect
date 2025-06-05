@@ -1,0 +1,392 @@
+// Variables
+$primary-color: #3751e2;
+$secondary-color: #11cdef;
+$accent-color: #fb6340;
+$text-color: #32325d;
+$light-text: #8898aa;
+$white: #ffffff;
+$light-gray: #f6f9fc;
+$border-color: #e9ecef;
+$success-color: #2dce89;
+$warning-color: #fb6340;
+$danger-color: #f5365c;
+
+// Mixins
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin button-style {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Base styles
+.wc-app {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: $text-color;
+  background-color: $light-gray;
+  min-height: 100vh;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.wc-main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wc-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+// Card Section
+.wc-card-section {
+  background-color: $white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.wc-card-header {
+  @include flex-between;
+  margin-bottom: 1.5rem;
+
+  .wc-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-color;
+
+    .wc-highlight {
+      color: $primary-color;
+    }
+  }
+
+  .wc-add-card {
+    @include button-style;
+    background-color: $light-gray;
+    color: $text-color;
+  }
+}
+
+.wc-card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wc-card {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: $white;
+  position: relative;
+  height: 220px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+  }
+
+  .wc-card-balance {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .wc-card-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+
+    .wc-card-amount {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .wc-card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    align-items: center;
+
+    .wc-card-button {
+      @include button-style;
+      padding: 0.5rem 1rem;
+
+      &--deposit {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: $white;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+
+      &--withdraw {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: $white;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    .wc-partner-logo {
+      margin-left: auto;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+    }
+  }
+
+  .wc-card-details {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .wc-card-issuer {
+      font-weight: 700;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .wc-card-number {
+      font-size: 1rem;
+      letter-spacing: 1px;
+
+      .wc-hidden-digits {
+        opacity: 0.7;
+      }
+    }
+
+    .wc-card-network {
+      width: 40px;
+      height: 25px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+    }
+  }
+}
+
+.wc-card-meta {
+  background-color: $light-gray;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .wc-meta-item {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .wc-meta-label {
+      font-size: 0.75rem;
+      color: $light-text;
+      margin-right: 0.5rem;
+    }
+
+    .wc-meta-value {
+      font-weight: 600;
+      color: $text-color;
+
+      &.wc-highlight {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+/* Transaction Section */
+.wc-transaction-section {
+  background-color: $white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.wc-transaction-header {
+  @include flex-between;
+  margin-bottom: 1.5rem;
+
+  .wc-transaction-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-color;
+  }
+
+  .wc-view-report {
+    @include button-style;
+    background-color: $light-gray;
+    color: $text-color;
+  }
+}
+
+.wc-transaction-table {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: $light-gray;
+      color: $light-text;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid $border-color;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba($light-gray, 0.5);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      /* Status Colors */
+      &.status-success {
+        .wc-status {
+          color: $success-color;
+          .wc-status-indicator {
+            background-color: $success-color;
+          }
+        }
+      }
+
+      &.status-pending {
+        .wc-status {
+          color: $warning-color;
+          .wc-status-indicator {
+            background-color: $warning-color;
+          }
+        }
+      }
+
+      &.status-failed {
+        .wc-status {
+          color: $danger-color;
+          .wc-status-indicator {
+            background-color: $danger-color;
+          }
+        }
+      }
+    }
+
+    /* Transaction Type Colors */
+    .wc-type {
+      font-weight: 600;
+      text-transform: capitalize;
+
+      &.type-deposit {
+        color: $success-color;
+      }
+
+      &.type-payment {
+        color: $danger-color;
+      }
+    }
+
+    .wc-amount,
+    .wc-balance {
+      font-weight: 600;
+    }
+
+    .wc-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      text-transform: capitalize;
+
+      .wc-status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+    }
+  }
+}

@@ -1,38 +1,92 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getUserInfoByUserIdService } from "../../../services/authService";
 import "./TranslatorProfile.scss";
 
 const TranslatorProfile = () => {
+  const { interpreterId } = useParams();
+  const [translator, setTranslator] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTranslatorProfile = async () => {
+      if (!interpreterId) {
+        setError("Interpreter ID is missing.");
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const data = await getUserInfoByUserIdService(interpreterId);
+        console.log(data);
+        setTranslator({
+          name: data.fullName || "Unknown Translator",
+          avatar: data.avatarUrl || "https://i.pravatar.cc/150?img=32",
+          role: "English–Vietnamese Translator",
+          email: data.email || "N/A",
+          phone: data.phoneNumber || "N/A",
+          languages: ["English", "Vietnamese"],
+          experience: data.experience || "N/A",
+          location: data.address || "Location not provided",
+          about: data.about || "No about information available",
+          skills: data.skills || ["Legal Translation", "Technical Writing"],
+          certifications: data.certifications || [],
+          experienceDetails: data.experienceDetails || [],
+          education: data.education || [],
+          publications: data.publications || [],
+          superpower: data.superpower || "Clear and precise interpretation",
+          lookingFor: data.lookingFor || "Open to collaborations",
+        });
+      } catch (err) {
+        setError(err.message || "Failed to load translator profile.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTranslatorProfile();
+  }, [interpreterId]);
+
+  if (loading)
+    return <div className="translator-profile-container">Loading...</div>;
+  if (error)
+    return <div className="translator-profile-container">Error: {error}</div>;
+  if (!translator)
+    return (
+      <div className="translator-profile-container">No data available.</div>
+    );
+
   return (
     <div className="translator-profile-container">
       <div className="profile-card">
-        {/* Banner */}
         <div className="profile-banner" />
 
         <div className="profile-content">
-          {/* Left Column */}
           <div className="profile-left">
             <img
-              src="https://i.pravatar.cc/150?img=32"
-              alt="Translator"
+              src={translator.avatar}
+              alt={translator.name}
               className="profile-avatar"
             />
-            <h2 className="profile-name">Sophia Nguyen</h2>
-            <p className="profile-role">English–Vietnamese Translator</p>
+            <h2 className="profile-name">{translator.name}</h2>
+            <p className="profile-role">{translator.role}</p>
             <span className="profile-verified">✔ Verified</span>
 
             <div className="profile-contact">
-              <p>📧 sophia.translator@example.com</p>
-              <p>📞 +84 912 345 678</p>
-              <p>🌐 Languages: English, Vietnamese</p>
-              <p>
-                <strong>Experience:</strong> 5+ years
-              </p>
-              <p>📍 Location: Ho Chi Minh City, Vietnam</p>
+              <p>📧 {translator.email}</p>
+              <p>📞 {translator.phone}</p>
+              <p>🌐 Languages: {translator.languages.join(", ")}</p>
+              <p>💼 Experience: {translator.experience} </p>
+              <p>📍 Location: {translator.location}</p>
             </div>
 
             <div className="profile-links">
               <a
-                href="https://www.linkedin.com/in/sophia-nguyen"
+                href="https://www.linkedin.com/in/sample-translator"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -46,14 +100,14 @@ const TranslatorProfile = () => {
                 🌐 Portfolio
               </a>
               <a
-                href="https://www.facebook.com/sophia.translator"
+                href="https://www.facebook.com/sample.translator"
                 target="_blank"
                 rel="noreferrer"
               >
                 📘 Facebook
               </a>
               <a
-                href="https://www.instagram.com/sophia.translate"
+                href="https://www.instagram.com/sample.translate"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -62,78 +116,65 @@ const TranslatorProfile = () => {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="profile-right">
             <section>
               <h3>About</h3>
-              <p>
-                I’m a certified translator with over 5 years of experience in
-                legal, medical, and technical document translation. My mission
-                is to deliver culturally accurate, clear, and fast translations
-                for businesses and organizations around the world.
-              </p>
+              <p>{translator.about}</p>
             </section>
 
             <section>
               <h3>Skills</h3>
               <div className="profile-skills">
-                <span>Legal Translation</span>
-                <span>Technical Writing</span>
-                <span>Proofreading</span>
-                <span>Localization</span>
-                <span>Medical Terminology</span>
-                <span>CAT Tools (Trados, MemoQ)</span>
+                {translator.skills.map((skill, index) => (
+                  <span key={index}>{skill}</span>
+                ))}
               </div>
             </section>
 
             <section>
               <h3>Certifications</h3>
               <ul>
-                <li>ATA Certified Translator (English ↔ Vietnamese)</li>
-                <li>
-                  Court Certified Interpreter – Vietnam Ministry of Justice
-                </li>
-                <li>Advanced Localization Certification – ProZ Academy</li>
+                {translator.certifications.map((cert, index) => (
+                  <li key={index}>{cert}</li>
+                ))}
               </ul>
             </section>
 
             <section>
               <h3>Experience</h3>
               <ul>
-                <li>
-                  Freelance Interpreter for EU Conferences (Remote + Onsite)
-                </li>
-                <li>Legal Translator at XYZ Law Firm (2019–2022)</li>
-                <li>Interpreter for Fortune 500 Multinationals in Vietnam</li>
+                {translator.experienceDetails.map((exp, index) => (
+                  <li key={index}>{exp}</li>
+                ))}
               </ul>
             </section>
 
             <section>
               <h3>Education</h3>
-              <p>MA in Translation & Interpretation – University of London</p>
-              <p>BA in English Linguistics – Vietnam National University</p>
+              <ul>
+                {translator.education.map((edu, index) => (
+                  <li key={index}>{edu}</li>
+                ))}
+              </ul>
             </section>
 
             <section>
               <h3>Publications & Projects</h3>
               <ul>
-                <li>“Legal Terminology Handbook” – Co-author, 2023</li>
-                <li>Lead translator for WHO Vietnam reports (2022)</li>
+                {translator.publications.map((pub, index) => (
+                  <li key={index}>{pub}</li>
+                ))}
               </ul>
             </section>
 
             <section>
               <h3>Superpower</h3>
-              <p>Clear and precise interpretation with cultural nuance.</p>
+              <p>{translator.superpower}</p>
             </section>
 
             <section>
               <h3>Looking For</h3>
-              <p>
-                I'm currently looking for long-term collaborations with law
-                firms, NGOs, and localization agencies. Interested in
-                AI-assisted tools and remote interpretation projects.
-              </p>
+              <p>{translator.lookingFor}</p>
             </section>
 
             <button className="profile-hire-btn">Hire This Translator</button>

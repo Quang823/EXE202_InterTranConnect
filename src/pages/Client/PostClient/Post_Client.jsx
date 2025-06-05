@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import ISO6391 from "iso-639-1";
 import "./Post_Client.scss";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
@@ -43,13 +44,18 @@ const Post_Client = () => {
   const [isPdfPreviewOpen, setIsPdfPreviewOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Thêm state để theo dõi trạng thái điền thông tin
   const [isCompanyFilled, setIsCompanyFilled] = useState(false);
   const [isContactFilled, setIsContactFilled] = useState(false);
   const [isSalaryFilled, setIsSalaryFilled] = useState(false);
   const [isWorkLocationFilled, setIsWorkLocationFilled] = useState(false);
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+  // Get the list of languages
+  const languages = ISO6391.getAllNames().map((name) => ({
+    value: name,
+    label: name,
+  }));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +68,7 @@ const Post_Client = () => {
       ...prev,
       salary: { ...prev.salary, [name]: value },
     }));
-    if (value) setIsSalaryFilled(true); // Cập nhật khi có dữ liệu
+    if (value) setIsSalaryFilled(true);
   };
 
   const handleCompanyChange = (e) => {
@@ -71,7 +77,7 @@ const Post_Client = () => {
       ...prev,
       companyInfo: { ...prev.companyInfo, [name]: value },
     }));
-    if (value) setIsCompanyFilled(true); // Cập nhật khi có dữ liệu
+    if (value) setIsCompanyFilled(true);
   };
 
   const handleContactChange = (e) => {
@@ -80,7 +86,7 @@ const Post_Client = () => {
       ...prev,
       contactInfo: { ...prev.contactInfo, [name]: value },
     }));
-    if (value) setIsContactFilled(true); // Cập nhật khi có dữ liệu
+    if (value) setIsContactFilled(true);
   };
 
   const handleWorkLocationChange = (e) => {
@@ -89,7 +95,7 @@ const Post_Client = () => {
       ...prev,
       workLocation: { ...prev.workLocation, [name]: value },
     }));
-    if (value) setIsWorkLocationFilled(true); // Cập nhật khi có dữ liệu
+    if (value) setIsWorkLocationFilled(true);
   };
 
   const handleFileChange = async (e) => {
@@ -135,7 +141,7 @@ const Post_Client = () => {
       companyInfo: { ...prev.companyInfo, logo: companyLogoUrl },
     }));
     setMessage(`Company logo uploaded successfully: ${companyLogoUrl}`);
-    setIsCompanyFilled(true); // Cập nhật khi upload logo thành công
+    setIsCompanyFilled(true);
   };
 
   const handlePostJob = async () => {
@@ -181,7 +187,6 @@ const Post_Client = () => {
       await createJob(jobData);
       setMessage("Job posted successfully!");
 
-      // Reset form và trạng thái điền thông tin
       setFormData({
         jobTitle: "",
         translationType: "",
@@ -313,9 +318,12 @@ const Post_Client = () => {
                 value={formData.sourceLanguage}
                 onChange={handleInputChange}
               >
-                <option value="">Translation Language - Select...</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
+                <option value="">Source Language - Select...</option>
+                {languages.map((language) => (
+                  <option key={language.value} value={language.value}>
+                    {language.label}
+                  </option>
+                ))}
               </select>
               <select
                 name="translationForm"
@@ -334,9 +342,12 @@ const Post_Client = () => {
                 value={formData.translationLanguage}
                 onChange={handleInputChange}
               >
-                <option value="">Translation Language - Select...</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
+                <option value="">Target Language - Select...</option>
+                {languages.map((language) => (
+                  <option key={language.value} value={language.value}>
+                    {language.label}
+                  </option>
+                ))}
               </select>
               <select
                 name="certificates"
@@ -415,7 +426,6 @@ const Post_Client = () => {
           </p>
         )}
 
-        {/* PDF Preview Modal */}
         {isPdfPreviewOpen && (
           <div className="modal-overlay" onClick={handleOverlayClick}>
             <div
@@ -451,7 +461,6 @@ const Post_Client = () => {
           </div>
         )}
 
-        {/* Other Modals */}
         <CompanyModal
           isOpen={isCompanyOpen}
           onClose={() => setIsCompanyOpen(false)}

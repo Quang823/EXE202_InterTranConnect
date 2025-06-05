@@ -5,6 +5,7 @@ import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../services/authService";
 import { validateForm } from "../../utils/validate";
+import { login, googleLogin } from "../../services/authService";
 import Image from "../../assets/images/Image";
 import RegisterFormFields from "./RegisterFormFields";
 import RoleSelection from "./RoleSelection";
@@ -55,20 +56,18 @@ const RegisterForm = () => {
     });
   };
 
-  const handleGoogleLoginSuccess = async (credentialResponse) => {
-    // try {
-    //   setIsLoading(true);
-    //   const result = await loginWithGoogle(credentialResponse.credential);
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("Google login error:", error);
-    //   setErrors({
-    //     ...errors,
-    //     apiError: "Google login failed. Please try again.",
-    //   });
-    // } finally {
-    //   setIsLoading(false);
-    // }
+  const handleGoogleLoginSuccess = async ({ credential }) => {
+    try {
+      setIsLoading(true);
+      await googleLogin(credential, loginContext);
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        apiError: error.message || "Google login failed.",
+      }));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleLoginFailure = () => {

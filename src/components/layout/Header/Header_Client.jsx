@@ -150,7 +150,7 @@ const Header_Client = () => {
                     <NavDropdown.Item href="/client/post_history">
                       <FaHistory style={{ marginRight: "8px" }} /> Post History
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/wallet">
+                    <NavDropdown.Item href="/client/wallet">
                       <FaWallet style={{ marginRight: "8px" }} /> Wallet
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
