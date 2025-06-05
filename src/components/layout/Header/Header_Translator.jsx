@@ -127,8 +127,12 @@ const Header_Translator = () => {
                     <NavDropdown.Item href="/translator/edit_profile">
                       <FaUser style={{ marginRight: "8px" }} /> Setting Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/translator/job/applyJob">
+                    <NavDropdown.Item href="/translator/applyJob">
                       <FaBriefcase style={{ marginRight: "8px" }} /> Applied
+                      Jobs
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/translator/jobFavorite">
+                      <FaBriefcase style={{ marginRight: "8px" }} /> Favorite
                       Jobs
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/translator/wallet">

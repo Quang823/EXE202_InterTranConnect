@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart, ExternalLink, Bookmark, Clock, MapPin, DollarSign, Star } from 'lucide-react';
 import "./FavoriteJobs.scss";
+import useScrollToTop from "../../../../hooks/useScrollToTop.jsx";
 
 const CompanyLogos = {
   up: () => <div className="company-logo up"><span>UP</span></div>,
@@ -17,6 +18,9 @@ const FavoriteJobs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJobs, setSelectedJobs] = useState(new Set());
   const jobsPerPage = 5;
+
+  // Add scroll to top when page changes
+  useScrollToTop(currentPage);
 
   const jobs = [
     {

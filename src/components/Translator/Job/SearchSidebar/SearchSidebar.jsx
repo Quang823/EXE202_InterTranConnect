@@ -142,38 +142,6 @@ const SearchSidebar = ({
           </label>
         </div>
       </div>
-
-      <div className="filter-section">
-        <h3>Date Posted</h3>
-        <div className="checkbox-group">
-          <label>
-            <input type="checkbox" />
-            All
-            <span className="count">10</span>
-          </label>
-          <label>
-            <input type="checkbox" />
-            Last Hour
-            <span className="count">10</span>
-          </label>
-          <label>
-            <input type="checkbox" />
-            Last 24 Hours
-            <span className="count">10</span>
-          </label>
-          <label>
-            <input type="checkbox" />
-            Last 7 Days
-            <span className="count">10</span>
-          </label>
-          <label>
-            <input type="checkbox" />
-            Last 30 Days
-            <span className="count">10</span>
-          </label>
-        </div>
-      </div>
-
       <div className="filter-section">
         <h3>Salary</h3>
         <div className="salary-slider">
@@ -191,7 +159,6 @@ const SearchSidebar = ({
           <span>
             Salary: ${salaryRange[0]} - ${salaryRange[1]}
           </span>
-          <button className="apply-btn">Apply</button>
         </div>
       </div>
     </div>

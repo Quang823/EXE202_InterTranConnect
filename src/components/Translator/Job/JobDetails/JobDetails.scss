@@ -67,6 +67,7 @@
       h3 {
         font-size: 16px;
         margin: 10px 0 5px;
+        color: linear-gradient(135deg, #4361ee, #3a0ca3);
       }
   
       p {
@@ -100,7 +101,7 @@
     gap: 20px;
   
     .apply-btn {
-      background-color: #00aaff;
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
       color: white;
       border: none;
       padding: 10px;
@@ -156,7 +157,7 @@
       }
   
       .send-btn {
-        background-color: #00aaff;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
         color: white;
         border: none;
         padding: 10px;

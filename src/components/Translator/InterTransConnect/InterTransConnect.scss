@@ -176,7 +176,7 @@ button {
 
 // Button Styles
 .itc-btn-primary {
-  background: $gradient-primary;
+  background: linear-gradient(135deg, #4361ee, #3a0ca3);
   color: $white;
   padding: 0.9rem 1.8rem;
   border-radius: $radius-full;
@@ -184,6 +184,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  border: 2px solid #5e60ce;
   box-shadow: $shadow-primary;
   position: relative;
   overflow: hidden;
@@ -218,8 +219,6 @@ button {
 }
 
 .itc-btn-secondary {
-  background: transparent;
-  color: $primary-color;
   padding: 0.9rem 1.8rem;
   border-radius: $radius-full;
   font-weight: 600;
@@ -361,13 +360,13 @@ button {
   border-radius: $radius-full;
   @include flex(row, flex-start, center);
   gap: 0.5rem;
-  color: $primary-color;
+  color: white;
   font-weight: 600;
   font-size: 0.9rem;
   box-shadow: $shadow-md;
   
   svg {
-    color: $primary-color;
+    color: white;
   }
 }
 
@@ -1242,7 +1241,7 @@ button {
 // CTA Section
 .itc-cta {
   @include section-padding;
-  background: url('/placeholder.svg?height=1000&width=2000') no-repeat center/cover;
+  background: url('') no-repeat center/cover;
   position: relative;
   
   &::before {
@@ -1252,7 +1251,6 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba($primary-dark, 0.95), rgba($primary-color, 0.85));
     z-index: 1;
   }
 }
@@ -1262,7 +1260,7 @@ button {
   text-align: center;
   position: relative;
   z-index: 2;
-  color: $white;
+  color: black;
   
   h2 {
     font-size: 3rem;
@@ -1299,8 +1297,8 @@ button {
   }
   
   .itc-btn-secondary {
-    border-color: $white;
-    color: $white;
+    background: #ffffff;
+    color: #5e60ce;
     
     &:hover {
       background: rgba($white, 0.1);

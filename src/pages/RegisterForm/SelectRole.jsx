@@ -38,7 +38,7 @@ const SelectRole = () => {
 
       // Redirect based on the selected role
       const redirectPath =
-        selectedRole === "Customer" ? "/client/home" : "/translator/home";
+        selectedRole === "Customer" ? "/client/home" : "/translator/";
       navigate(redirectPath);
     } catch (error) {
       setError(error.message || "Failed to assign role. Please try again.");

@@ -1,127 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Eye, Plus, FileUp, ExternalLink, Search, Filter, MoreHorizontal, Calendar, Clock, CheckCircle } from 'lucide-react';
 import "./ApplyJob.scss";
+import axios from "axios";
+import useScrollToTop from "../../../../hooks/useScrollToTop.jsx";
 
-// Company logos with more professional styling
-const CompanyLogos = {
-  up: () => (
-    <div className="company-logo up">
-      <span>UP</span>
-    </div>
-  ),
-  dribbble: () => (
-    <div className="company-logo dribbble">
-      <span>DB</span>
-    </div>
-  ),
-  apple: () => (
-    <div className="company-logo apple">
-      <span>AP</span>
-    </div>
-  ),
-  microsoft: () => (
-    <div className="company-logo microsoft">
-      <span>MS</span>
-    </div>
-  ),
-  twitter: () => (
-    <div className="company-logo twitter">
-      <span>TW</span>
-    </div>
-  ),
-  facebook: () => (
-    <div className="company-logo facebook">
-      <span>FB</span>
-    </div>
-  ),
-  slack: () => (
-    <div className="company-logo slack">
-      <span>SL</span>
-    </div>
-  ),
-  reddit: () => (
-    <div className="company-logo reddit">
-      <span>RD</span>
-    </div>
-  ),
+const API_URL = import.meta.env.VITE_API_URL;
+
+// Function to generate random RGB gradient
+const getRandomGradient = () => {
+  const getRandomRGB = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+  
+  const angle = Math.floor(Math.random() * 360);
+  const color1 = getRandomRGB();
+  const color2 = getRandomRGB();
+  return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
 };
 
 const ApplyJob = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [jobApplications, setJobApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const jobsPerPage = 6;
 
-  const jobs = [
-    {
-      company: "up",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Feb 2, 2019 19:28",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "dribbble",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Dec 7, 2019 23:26",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "apple",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Feb 2, 2019 19:28",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "microsoft",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Dec 7, 2019 23:26",
-      status: "Active",
-      highlighted: true,
-    },
-    {
-      company: "twitter",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Dec 4, 2019 21:42",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "facebook",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Dec 30, 2019 07:52",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "slack",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Dec 30, 2019 05:18",
-      status: "Active",
-      highlighted: false,
-    },
-    {
-      company: "reddit",
-      title: "Marketing Translation",
-      location: "$50k",
-      date: "Mar 20, 2019 23:14",
-      status: "Active",
-      highlighted: false,
-    },
-  ];
+  // Add scroll to top when page changes
+  useScrollToTop(currentPage);
+
+  useEffect(() => {
+    const fetchJobApplications = async () => {
+      try {
+        const sessionData = JSON.parse(sessionStorage.getItem("user"));
+        const interpreterId = sessionData?.id;
+
+        if (!interpreterId) {
+          setError("User not logged in");
+          return;
+        }
+
+        const response = await axios.get(`${API_URL}/api/JobApplication/interpreter/${interpreterId}`, {
+          headers: { Authorization: `Bearer ${sessionData.accessToken}` }
+        });
+
+        setJobApplications(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch job applications");
+        setLoading(false);
+      }
+    };
+
+    fetchJobApplications();
+  }, []);
 
   // Pagination logic
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+  const totalPages = Math.ceil(jobApplications.length / jobsPerPage);
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const currentJobs = jobApplications.slice(indexOfFirstJob, indexOfLastJob);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -144,9 +84,17 @@ const ApplyJob = () => {
 
   // Extract time from date string
   const extractTime = (dateString) => {
-    const parts = dateString.split(' ');
-    return parts[parts.length - 1];
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="job-tracking-dashboard">
@@ -172,15 +120,17 @@ const ApplyJob = () => {
 
       <div className="job-cards-container">
         {currentJobs.map((job, index) => {
-          const LogoComponent = CompanyLogos[job.company] || CompanyLogos.up;
+          const gradient = getRandomGradient();
           return (
             <div key={index} className={`job-card ${job.highlighted ? 'highlighted' : ''}`}>
               <div className="card-header">
                 <div className="company-info">
-                  <LogoComponent />
+                  <div className="company-logo" style={{ background: gradient }}>
+                    <span>ITC</span>
+                  </div>
                   <div className="company-details">
-                    <h3 className="job-title">{job.title}</h3>
-                    <span className="salary">{job.location}</span>
+                    <h3 className="job-title">{job.jobTitle}</h3>
+                    <span className="salary">{job.price}</span>
                   </div>
                 </div>
                 <div className="card-actions">
@@ -194,11 +144,11 @@ const ApplyJob = () => {
                 <div className="date-info">
                   <div className="date-item">
                     <Calendar size={14} />
-                    <span>{formatDate(job.date)}</span>
+                    <span>{formatDate(job.createdDate)}</span>
                   </div>
                   <div className="date-item">
                     <Clock size={14} />
-                    <span>{extractTime(job.date)}</span>
+                    <span>{extractTime(job.createdDate)}</span>
                   </div>
                 </div>
                 
@@ -230,10 +180,10 @@ const ApplyJob = () => {
         })}
       </div>
 
-      {jobs.length > jobsPerPage && (
+      {jobApplications.length > jobsPerPage && (
         <div className="pagination-container">
           <div className="pagination-info">
-            <span>Showing {indexOfFirstJob + 1}-{Math.min(indexOfLastJob, jobs.length)} of {jobs.length} applications</span>
+            <span>Showing {indexOfFirstJob + 1}-{Math.min(indexOfLastJob, jobApplications.length)} of {jobApplications.length} applications</span>
           </div>
           <div className="pagination-controls">
             <button

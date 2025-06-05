@@ -55,7 +55,7 @@ const InterTransConnect = () => {
             </div>
           </div>
           <div className="itc-hero-image animate">
-            <img src="/placeholder.svg?height=600&width=600" alt="Global translation network" />
+            <img src="https://media.istockphoto.com/id/1364548726/photo/translate-language-online-learning-global-communication.jpg?s=612x612&w=0&k=20&c=KLhACgXNCIFZrABILSbRtT7erpBMWZVHj_AO67g4PWs=" alt="Global translation network" />
             <div className="itc-floating-element itc-float-1">
               <Globe size={24} />
               <span>120+ Languages</span>
@@ -91,16 +91,14 @@ const InterTransConnect = () => {
 
         <div className="itc-about-content">
           <div className="itc-about-image animate">
-            <img src="/placeholder.svg?height=500&width=500" alt="About InterTransConnect" />
+            <img src="https://t4.ftcdn.net/jpg/11/11/01/05/360_F_1111010555_cqd9mAOYvQrI0k8PE8J3hsIP3pYo7Jua.jpg" alt="About InterTransConnect" />
             <div className="itc-image-shape shape-1"></div>
             <div className="itc-image-shape shape-2"></div>
           </div>
           <div className="itc-about-text animate">
             <h3>Our Mission</h3>
             <p>
-              At Inter-TransConnect, we believe that language is the key to global connection. Our mission is to create
-              a seamless platform where translators and interpreters can find meaningful work opportunities while
-              helping businesses communicate effectively across language barriers.
+              Inter-TransConnect: Connecting translators and interpreters with businesses for seamless global communication.
             </p>
 
             <div className="itc-features">
@@ -175,7 +173,7 @@ const InterTransConnect = () => {
             {activeTab === 0 && (
               <div className="itc-tab-panel">
                 <div className="itc-tab-image">
-                  <img src="/placeholder.svg?height=400&width=400" alt="Translation services" />
+                  <img src="https://media.istockphoto.com/id/452753401/photo/hello.jpg?s=612x612&w=0&k=20&c=RBTDtJ0zrEqi8MjISgWXz7CW9OOVeHgZGrdxklphxAQ=" alt="Translation services" />
                   <div className="itc-image-accent"></div>
                 </div>
                 <div className="itc-tab-text">
@@ -214,7 +212,7 @@ const InterTransConnect = () => {
             {activeTab === 1 && (
               <div className="itc-tab-panel">
                 <div className="itc-tab-image">
-                  <img src="/placeholder.svg?height=400&width=400" alt="Interpretation services" />
+                  <img src="https://www.lionbridge.com/content/lionbridge/en/content-transformation-services/interpretation-services/_jcr_content/root/responsivegrid/teaser_1366313247_co.coreimg.100.1440.jpeg/1746707209371/opi-web-healthcare-feature-800x694.jpeg" alt="Interpretation services" />
                   <div className="itc-image-accent"></div>
                 </div>
                 <div className="itc-tab-text">
@@ -253,7 +251,7 @@ const InterTransConnect = () => {
             {activeTab === 2 && (
               <div className="itc-tab-panel">
                 <div className="itc-tab-image">
-                  <img src="/placeholder.svg?height=400&width=400" alt="Localization services" />
+                  <img src="https://www.crystalhues.com/images/UploadedImages/BlogDocuments/ef49d5c0af.jpg" alt="Localization services" />
                   <div className="itc-image-accent"></div>
                 </div>
                 <div className="itc-tab-text">
@@ -292,7 +290,7 @@ const InterTransConnect = () => {
             {activeTab === 3 && (
               <div className="itc-tab-panel">
                 <div className="itc-tab-image">
-                  <img src="/placeholder.svg?height=400&width=400" alt="Content creation services" />
+                  <img src="https://keycontent.com/wp-content/uploads/2023/06/AdobeStock_288510230.jpg" alt="Content creation services" />
                   <div className="itc-image-accent"></div>
                 </div>
                 <div className="itc-tab-text">

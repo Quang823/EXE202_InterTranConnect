@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./JobTranslator.scss";
 import TranslatorLayout from "../../../routes/TranslatorRoute/TranslatorLayout";
 import SearchSidebar from "./SearchSidebar/SearchSidebar";
+import useScrollToTop from "../../../hooks/useScrollToTop.jsx";
 import {
   TagIcon,
   LanguagesIcon,
@@ -23,8 +23,28 @@ const JobTranslator = () => {
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
+  // Add scroll to top when page changes
+  useScrollToTop(currentPage);
+
   // Pagination settings
   const itemsPerPage = 6;
+
+  // Function to generate random RGB color
+  const getRandomRGBColor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
+  // Function to generate random gradient
+  const getRandomGradient = () => {
+    const color1 = getRandomRGBColor();
+    const color2 = getRandomRGBColor();
+    const color3 = getRandomRGBColor();
+    const angle = Math.floor(Math.random() * 360);
+    return `linear-gradient(${angle}deg, ${color1}, ${color2}, ${color3})`;
+  };
 
   // Fetch jobs from API
   useEffect(() => {
@@ -121,7 +141,12 @@ const JobTranslator = () => {
             <div className="job-card" key={job.id}>
               <div className="job-header-trans">
                 <div className="job-logo">
-                  <div className={`logo-circle category-${job.id}`}></div>
+                  <div 
+                    className="logo-circle" 
+                    style={{ background: getRandomGradient() }}
+                  >
+                    <span style={{ color: '#fff', fontWeight: 'bold' }}>ITC</span>
+                  </div>
                 </div>
                 <div className="job-title-info">
                   <h3>{job.title}</h3>

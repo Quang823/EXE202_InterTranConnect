@@ -333,11 +333,11 @@ body {
         }
         
         &.pending {
-          background-color: var(--warning-light);
-          color: var(--warning-color);
+          background: linear-gradient(135deg, #4361ee, #3a0ca3);
+          color: white;
           
           svg {
-            color: var(--warning-color);
+            color: white;
           }
         }
         
@@ -426,7 +426,7 @@ body {
 .company-logo {
   width: 48px;
   height: 48px;
-  border-radius: var(--radius-md);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -435,36 +435,9 @@ body {
   color: white;
   box-shadow: var(--shadow-sm);
   
-  &.up {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-  }
-  
-  &.dribbble {
-    background: linear-gradient(135deg, #ea4c89, #c32361);
-  }
-  
-  &.apple {
-    background: linear-gradient(135deg, #333333, #000000);
-  }
-  
-  &.microsoft {
-    background: linear-gradient(135deg, #00a4ef, #0078d4);
-  }
-  
-  &.twitter {
-    background: linear-gradient(135deg, #1da1f2, #0c85d0);
-  }
-  
-  &.facebook {
-    background: linear-gradient(135deg, #1877f2, #0a58ca);
-  }
-  
-  &.slack {
-    background: linear-gradient(135deg, #4a154b, #36103a);
-  }
-  
-  &.reddit {
-    background: linear-gradient(135deg, #ff4500, #d63600);
+  span {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 }
 
