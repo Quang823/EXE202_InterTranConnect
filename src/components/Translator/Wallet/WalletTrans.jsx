@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight, Plus, FileText, Eye, EyeOff, Copy, TrendingUp, WalletIcon, MoreHorizontal, Send, CreditCard } from 'lucide-react'
+import { ArrowDownLeft, ArrowUpRight, Plus, FileText, Eye, EyeOff, Copy, TrendingUp, WalletIcon, MoreHorizontal, Send, CreditCard, Edit3, Trash2, X, Check } from 'lucide-react'
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -13,9 +13,35 @@ const WalletTrans = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   
-  // Get interpreterId from sessionStorage
+  // Get interpreterId and accessToken from sessionStorage
   const sessionData = JSON.parse(sessionStorage.getItem("user"))
   const interpreterId = sessionData?.id
+  const accessToken = sessionData?.accessToken
+
+  console.log("check accessToken",accessToken);
+  
+  // Bank Cards State
+  const [showAddCard, setShowAddCard] = useState(false)
+  const [editingCard, setEditingCard] = useState(null)
+  const [selectedCard, setSelectedCard] = useState(0)
+  const [error, setError] = useState("")
+  
+  const [bankCards, setBankCards] = useState([
+    {
+      id: 1,
+      bankAccountNumber: "4787874984034787",
+      bankName: "MB Bank",
+      bankAccountHolderName: "Nguyen Van Nam",
+      balance: 12847650,
+      isDefault: true
+    }
+  ])
+
+  const [newCard, setNewCard] = useState({
+    bankAccountNumber: "",
+    bankName: "",
+    bankAccountHolderName: ""
+  })
   
   const transactions = [
     { id: "#7890328", description: "Salary Deposit", amount: "5,200,000", date: "Today, 09:15 AM", status: "completed", type: "incoming", category: "Salary" },
@@ -26,7 +52,6 @@ const WalletTrans = () => {
     { id: "#2980298", description: "Uber Ride", amount: "127,500", date: "Dec 1, 2024", status: "completed", type: "outgoing", category: "Transport" },
   ]
 
-  const balance = 12847650
   const totalIncome = 7250000
   const totalExpenses = 414850
 
@@ -34,8 +59,8 @@ const WalletTrans = () => {
     setIsBalanceVisible(!isBalanceVisible)
   }
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText("4787 8749 8403 4787")
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text || "4787874984034787")
   }
 
   // Check for pending deposit when component mounts
@@ -92,10 +117,180 @@ const WalletTrans = () => {
     }
   }
 
+  // Card Management Functions
+  const handleAddCard = async () => {
+    if (newCard.bankAccountNumber && newCard.bankName && newCard.bankAccountHolderName) {
+      try {
+        setLoading(true)
+        setError("")
+        
+        const response = await axios.put(
+          'http://localhost:5000/api/auth/bank-account',
+          {
+            bankAccountNumber: newCard.bankAccountNumber,
+            bankName: newCard.bankName,
+            bankAccountHolderName: newCard.bankAccountHolderName
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+
+        if (response.status === 200) {
+          const card = {
+            id: Date.now(),
+            ...newCard,
+            balance: 0,
+            isDefault: bankCards.length === 0
+          }
+          setBankCards([...bankCards, card])
+          setNewCard({ bankAccountNumber: "", bankName: "", bankAccountHolderName: "" })
+          setShowAddCard(false)
+        }
+      } catch (error) {
+        console.error("Error adding bank card:", error)
+        setError(error.response?.data?.message || "Failed to add bank card")
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  const handleEditCard = async (cardId, updatedCard) => {
+    try {
+      setLoading(true)
+      setError("")
+      
+      const response = await axios.put(
+        'http://localhost:5000/api/auth/bank-account',
+        {
+          bankAccountNumber: updatedCard.bankAccountNumber,
+          bankName: updatedCard.bankName,
+          bankAccountHolderName: updatedCard.bankAccountHolderName
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      if (response.status === 200) {
+        setBankCards(bankCards.map(card => 
+          card.id === cardId ? { ...card, ...updatedCard } : card
+        ))
+        setEditingCard(null)
+      }
+    } catch (error) {
+      console.error("Error updating bank card:", error)
+      setError(error.response?.data?.message || "Failed to update bank card")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteCard = (cardId) => {
+    setBankCards(bankCards.filter(card => card.id !== cardId))
+    if (selectedCard >= bankCards.length - 1) {
+      setSelectedCard(Math.max(0, bankCards.length - 2))
+    }
+  }
+
+  const formatCardNumber = (number) => {
+    return number.replace(/(\d{4})(?=\d)/g, '$1 ')
+  }
+
+  const maskCardNumber = (number) => {
+    return number.slice(0, 4) + ' •••• •••• ' + number.slice(-4)
+  }
+
   return (
     <div className="wt-app">
       <div className="wt-main">
         <main className="wt-content">
+          {/* Bank Cards Section */}
+          <div className="wt-cards-section">
+            <div className="wt-cards-header">
+              <h2>My Cards</h2>
+              <button className="wt-add-card-btn" onClick={() => setShowAddCard(true)}>
+                <Plus size={16} />
+                Add Card
+              </button>
+            </div>
+
+            {/* Card Carousel */}
+            <div className="wt-cards-carousel">
+              {bankCards.map((card, index) => (
+                <div 
+                  key={card.id} 
+                  className={`wt-bank-card ${selectedCard === index ? 'active' : ''}`}
+                  onClick={() => setSelectedCard(index)}
+                >
+                  <div className="wt-card-actions">
+                    <button 
+                      className="wt-card-action-btn"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setEditingCard(card)
+                      }}
+                    >
+                      <Edit3 size={16} />
+                    </button>
+                    {bankCards.length > 1 && (
+                      <button 
+                        className="wt-card-action-btn wt-delete-btn"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDeleteCard(card.id)
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="wt-card-content">
+                    <div className="wt-card-balance">
+                      <span className="wt-card-label">Balance</span>
+                      <span className="wt-card-amount">
+                        {isBalanceVisible ? `${card.balance.toLocaleString('vi-VN')} VND` : '••••••••'}
+                      </span>
+                    </div>
+
+                    <div className="wt-card-info">
+                      <div className="wt-card-number">
+                        {maskCardNumber(card.bankAccountNumber)}
+                      </div>
+                      <div className="wt-card-details">
+                        <div className="wt-card-holder">{card.bankAccountHolderName}</div>
+                        <div className="wt-card-bank">{card.bankName}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {card.isDefault && <div className="wt-default-badge">Default</div>}
+                </div>
+              ))}
+            </div>
+
+            {/* Card Navigation Dots */}
+            {bankCards.length > 1 && (
+              <div className="wt-card-dots">
+                {bankCards.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`wt-dot ${selectedCard === index ? 'active' : ''}`}
+                    onClick={() => setSelectedCard(index)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Premium Balance Card */}
           <div className="wt-balance-card">
             <div className="wt-balance-header">
@@ -117,7 +312,10 @@ const WalletTrans = () => {
                   </button>
                 </div>
                 <div className="wt-balance-amount">
-                  {isBalanceVisible ? `${balance.toLocaleString('vi-VN')} VND` : '••••••••'}
+                  {isBalanceVisible ? 
+                    `${bankCards.reduce((sum, card) => sum + card.balance, 0).toLocaleString('vi-VN')} VND` : 
+                    '••••••••'
+                  }
                 </div>
                 <div className="wt-balance-growth">
                   <TrendingUp size={16} />
@@ -126,8 +324,8 @@ const WalletTrans = () => {
               </div>
 
               <div className="wt-wallet-address">
-                <span>4787 •••• •••• 4787</span>
-                <button className="wt-copy-btn" onClick={copyToClipboard}>
+                <span>{bankCards.length > 0 ? maskCardNumber(bankCards[selectedCard]?.bankAccountNumber || '') : 'No cards'}</span>
+                <button className="wt-copy-btn" onClick={() => copyToClipboard(bankCards[selectedCard]?.bankAccountNumber)}>
                   <Copy size={14} />
                 </button>
               </div>
@@ -150,41 +348,6 @@ const WalletTrans = () => {
               </button>
             </div>
           </div>
-
-          {/* Deposit Modal */}
-          {isDepositModalOpen && (
-            <div className="wt-modal-overlay">
-              <div className="wt-modal">
-                <div className="wt-modal-content">
-                  <input
-                    type="number"
-                    placeholder="Enter amount (VND)"
-                    value={depositAmount}
-                    onChange={(e) => setDepositAmount(e.target.value)}
-                    className="wt-amount-input"
-                  />
-                  <div className="wt-modal-actions">
-                    <button 
-                      className="wt-modal-cancel"
-                      onClick={() => {
-                        setIsDepositModalOpen(false)
-                        setDepositAmount("")
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    <button 
-                      className="wt-modal-confirm"
-                      onClick={handleDeposit}
-                      disabled={!depositAmount || loading}
-                    >
-                      {loading ? "Processing..." : "Deposit"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Statistics Cards */}
           <div className="wt-stats-section">
@@ -265,6 +428,152 @@ const WalletTrans = () => {
           </div>
         </main>
       </div>
+
+      {/* Deposit Modal */}
+      {isDepositModalOpen && (
+        <div className="wt-modal-overlay">
+          <div className="wt-modal">
+            <div className="wt-modal-content">
+              <input
+                type="number"
+                placeholder="Enter amount (VND)"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.target.value)}
+                className="wt-amount-input"
+              />
+              <div className="wt-modal-actions">
+                <button 
+                  className="wt-modal-cancel"
+                  onClick={() => {
+                    setIsDepositModalOpen(false)
+                    setDepositAmount("")
+                  }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className="wt-modal-confirm"
+                  onClick={handleDeposit}
+                  disabled={!depositAmount || loading}
+                >
+                  {loading ? "Processing..." : "Deposit"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Card Modal */}
+      {showAddCard && (
+        <div className="wt-modal-overlay">
+          <div className="wt-modal">
+            <div className="wt-modal-header">
+              <h3>Add New Card</h3>
+              <button className="wt-modal-close" onClick={() => setShowAddCard(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            {error && <div className="wt-error-message">{error}</div>}
+            <div className="wt-modal-content">
+              <div className="wt-form-group">
+                <label>Bank Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter bank name"
+                  value={newCard.bankName}
+                  onChange={(e) => setNewCard({...newCard, bankName: e.target.value})}
+                />
+              </div>
+              <div className="wt-form-group">
+                <label>Account Number</label>
+                <input
+                  type="text"
+                  placeholder="Enter account number"
+                  value={newCard.bankAccountNumber}
+                  onChange={(e) => setNewCard({...newCard, bankAccountNumber: e.target.value})}
+                />
+              </div>
+              <div className="wt-form-group">
+                <label>Account Holder Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter account holder name"
+                  value={newCard.bankAccountHolderName}
+                  onChange={(e) => setNewCard({...newCard, bankAccountHolderName: e.target.value})}
+                />
+              </div>
+            </div>
+            <div className="wt-modal-footer">
+              <button className="wt-btn wt-btn-secondary" onClick={() => setShowAddCard(false)}>
+                Cancel
+              </button>
+              <button 
+                className="wt-btn wt-btn-primary" 
+                onClick={handleAddCard}
+                disabled={loading}
+              >
+                <Check size={16} />
+                {loading ? "Adding..." : "Add Card"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Card Modal */}
+      {editingCard && (
+        <div className="wt-modal-overlay">
+          <div className="wt-modal">
+            <div className="wt-modal-header">
+              <h3>Edit Card</h3>
+              <button className="wt-modal-close" onClick={() => setEditingCard(null)}>
+                <X size={20} />
+              </button>
+            </div>
+            {error && <div className="wt-error-message">{error}</div>}
+            <div className="wt-modal-content">
+              <div className="wt-form-group">
+                <label>Bank Name</label>
+                <input
+                  type="text"
+                  value={editingCard.bankName}
+                  onChange={(e) => setEditingCard({...editingCard, bankName: e.target.value})}
+                />
+              </div>
+              <div className="wt-form-group">
+                <label>Account Number</label>
+                <input
+                  type="text"
+                  value={editingCard.bankAccountNumber}
+                  onChange={(e) => setEditingCard({...editingCard, bankAccountNumber: e.target.value})}
+                />
+              </div>
+              <div className="wt-form-group">
+                <label>Account Holder Name</label>
+                <input
+                  type="text"
+                  value={editingCard.bankAccountHolderName}
+                  onChange={(e) => setEditingCard({...editingCard, bankAccountHolderName: e.target.value})}
+                />
+              </div>
+            </div>
+            <div className="wt-modal-footer">
+              <button className="wt-btn wt-btn-secondary" onClick={() => setEditingCard(null)}>
+                Cancel
+              </button>
+              <button 
+                className="wt-btn wt-btn-primary" 
+                onClick={() => handleEditCard(editingCard.id, editingCard)}
+                disabled={loading}
+              >
+                <Check size={16} />
+                {loading ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
