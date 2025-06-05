@@ -1,255 +1,273 @@
-// Variables
-$primary-color: #3751e2;
-$secondary-color: #11cdef;
-$accent-color: #fb6340;
-$text-color: #32325d;
-$light-text: #8898aa;
-$white: #ffffff;
-$light-gray: #f6f9fc;
-$border-color: #e9ecef;
-$success-color: #2dce89;
-$warning-color: #fb6340;
-$danger-color: #f5365c;
-
-// Mixins
-@mixin flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-@mixin button-style {
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: none;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-}
-
-// Base styles
 .wt-app {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: $text-color;
-  background-color: $light-gray;
   min-height: 100vh;
-  padding: 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f3e8ff 100%);
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .wt-main {
-  max-width: 1200px;
+  max-width: 80%;
   margin: 0 auto;
 }
 
 .wt-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-// Card Section
-.wt-card-section {
-  background-color: $white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-}
-
-.wt-card-header {
-  @include flex-between;
-  margin-bottom: 1.5rem;
-  
-  .wt-card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: $text-color;
-    
-    .wt-highlight {
-      color: $primary-color;
-    }
-  }
-  
-  .wt-add-card {
-    @include button-style;
-    background-color: $light-gray;
-    color: $text-color;
-  }
-}
-
-.wt-card-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.wt-card {
-  background: linear-gradient(135deg, #4361ee, #3a0ca3);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  color: $white;
+// Premium Balance Card
+.wt-balance-card {
+  background: linear-gradient(135deg, #1e293b 0%, #7c3aed 50%, #1e293b 100%);
+  border-radius: 20px;
+  padding: 24px;
+  color: white;
   position: relative;
-  height: 220px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   
   &::before {
     content: '';
     position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 0;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(236, 72, 153, 0.2) 100%);
+    pointer-events: none;
   }
   
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -80px;
-    left: -80px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    z-index: 0;
-  }
-  
-  .wt-card-balance {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    
-    .wt-card-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.8;
-    }
-    
-    .wt-card-amount {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-top: 0.25rem;
-    }
-  }
-  
-  .wt-card-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    align-items: center;
-    
-    .wt-card-button {
-      @include button-style;
-      padding: 0.5rem 1rem;
-      
-      &--deposit {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: $white;
-        
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.3);
-        }
-      }
-      
-      &--withdraw {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: $white;
-        
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.3);
-        }
-      }
-    }
-    
-    .wt-partner-logo {
-      margin-left: auto;
-      width: 40px;
-      height: 40px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-    }
-  }
-  
-  .wt-card-details {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
+  .wt-balance-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
     
-    .wt-card-issuer {
-      font-weight: 700;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-    
-    .wt-card-number {
-      font-size: 1rem;
-      letter-spacing: 1px;
+    .wt-balance-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       
-      .wt-hidden-digits {
-        opacity: 0.7;
+      h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
       }
     }
     
-    .wt-card-network {
-      width: 40px;
-      height: 25px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 4px;
+    .wt-menu-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+  
+  .wt-balance-content {
+    position: relative;
+    z-index: 1;
+    
+    .wt-balance-info {
+      margin-bottom: 16px;
+      
+      .wt-balance-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 8px;
+        
+        .wt-visibility-btn {
+          background: none;
+          border: none;
+          color: rgba(255, 255, 255, 0.7);
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+          }
+        }
+      }
+      
+      .wt-balance-amount {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      
+      .wt-balance-growth {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+        color: #10b981;
+      }
+    }
+    
+    .wt-wallet-address {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      
+      .wt-copy-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
     }
   }
 }
 
-.wt-card-meta {
-  background-color: $light-gray;
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+// Quick Actions
+.wt-actions-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   
-  .wt-meta-item {
-    margin-bottom: 1rem;
+  .wt-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
     
-    &:last-child {
-      margin-bottom: 0;
-    }
-    
-    .wt-meta-label {
-      font-size: 0.75rem;
-      color: $light-text;
-      margin-right: 0.5rem;
-    }
-    
-    .wt-meta-value {
-      font-weight: 600;
-      color: $text-color;
+    .wt-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+      font-weight: 500;
       
-      &.wt-highlight {
-        color: $primary-color;
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      &.wt-action-send:hover {
+        border-color: #3b82f6;
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+      
+      &.wt-action-receive:hover {
+        border-color: #10b981;
+        background: #ecfdf5;
+        color: #10b981;
+      }
+      
+      &.wt-action-card:hover {
+        border-color: #8b5cf6;
+        background: #f5f3ff;
+        color: #8b5cf6;
+      }
+      
+      &.wt-action-topup:hover {
+        border-color: #f59e0b;
+        background: #fffbeb;
+        color: #f59e0b;
+      }
+    }
+  }
+}
+
+// Statistics Cards
+.wt-stats-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  
+  .wt-stat-card {
+    border-radius: 16px;
+    padding: 20px;
+    
+    &.wt-stat-income {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 1px solid #a7f3d0;
+      
+      .wt-stat-icon {
+        background: #d1fae5;
+        color: #059669;
+      }
+      
+      .wt-stat-label {
+        color: #059669;
+      }
+      
+      .wt-stat-amount {
+        color: #047857;
+      }
+    }
+    
+    &.wt-stat-expense {
+      background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+      border: 1px solid #fca5a5;
+      
+      .wt-stat-icon {
+        background: #fecaca;
+        color: #dc2626;
+      }
+      
+      .wt-stat-label {
+        color: #dc2626;
+      }
+      
+      .wt-stat-amount {
+        color: #b91c1c;
+      }
+    }
+    
+    .wt-stat-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .wt-stat-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        
+        .wt-stat-label {
+          font-size: 14px;
+          font-weight: 500;
+        }
+        
+        .wt-stat-amount {
+          font-size: 20px;
+          font-weight: 700;
+        }
+      }
+      
+      .wt-stat-icon {
+        padding: 12px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
@@ -257,121 +275,338 @@ $danger-color: #f5365c;
 
 // Transaction Section
 .wt-transaction-section {
-  background-color: $white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-}
-
-.wt-transaction-header {
-  @include flex-between;
-  margin-bottom: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   
-  .wt-transaction-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $text-color;
-  }
-  
-  .wt-view-report {
-    @include button-style;
-    background-color: $light-gray;
-    color: $text-color;
-  }
-}
-
-.wt-transaction-table {
-  overflow-x: auto;
-  
-  table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+  .wt-transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
     
-    th, td {
-      padding: 1rem;
-      text-align: left;
-    }
-    
-    th {
-      background-color: $light-gray;
-      color: $light-text;
+    .wt-transaction-title {
+      font-size: 18px;
       font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      
-      &:first-child {
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-      }
-      
-      &:last-child {
-        border-top-right-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
-      }
+      margin: 0 0 4px 0;
+      color: #1f2937;
     }
     
-    tbody tr {
-      border-bottom: 1px solid $border-color;
-      transition: background-color 0.2s ease;
-      
-      &:hover {
-        background-color: rgba($light-gray, 0.5);
-      }
-      
-      &:last-child {
-        border-bottom: none;
-      }
-      
-      &.status-completed {
-        .wt-status {
-          color: $success-color;
-          
-          .wt-status-indicator {
-            background-color: $success-color;
-          }
-        }
-      }
-      
-      &.status-pending {
-        .wt-status {
-          color: $warning-color;
-          
-          .wt-status-indicator {
-            background-color: $warning-color;
-          }
-        }
-      }
-      
-      &.status-failed {
-        .wt-status {
-          color: $danger-color;
-          
-          .wt-status-indicator {
-            background-color: $danger-color;
-          }
-        }
-      }
+    .wt-transaction-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0;
     }
     
-    .wt-amount {
-      font-weight: 600;
-    }
-    
-    .wt-status {
+    .wt-view-report {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-      text-transform: capitalize;
+      gap: 8px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s;
       
-      .wt-status-indicator {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
+      &:hover {
+        transform: translateY(-1px);
       }
     }
+  }
+  
+  .wt-transaction-tabs {
+    display: flex;
+    gap: 4px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+    
+    .wt-tab {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &.wt-tab-active {
+        background: white;
+        color: #1f2937;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      
+      &:not(.wt-tab-active) {
+        color: #6b7280;
+        
+        &:hover {
+          color: #374151;
+        }
+      }
+    }
+  }
+  
+  .wt-transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    
+    .wt-transaction-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: #f9fafb;
+        border-color: #d1d5db;
+      }
+      
+      .wt-transaction-icon {
+        padding: 12px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      &.wt-transaction-incoming .wt-transaction-icon {
+        background: #d1fae5;
+        color: #059669;
+      }
+      
+      &.wt-transaction-outgoing .wt-transaction-icon {
+        background: #fecaca;
+        color: #dc2626;
+      }
+      
+      .wt-transaction-details {
+        flex: 1;
+        
+        .wt-transaction-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 4px;
+          
+          .wt-transaction-description {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+          }
+          
+          .wt-transaction-amount {
+            font-weight: 700;
+            font-size: 14px;
+          }
+        }
+        
+        .wt-transaction-meta {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px;
+          
+          .wt-transaction-date {
+            color: #6b7280;
+          }
+          
+          .wt-transaction-status {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            
+            &.wt-status-completed {
+              background: #d1fae5;
+              color: #047857;
+            }
+            
+            &.wt-status-pending {
+              background: #fef3c7;
+              color: #d97706;
+            }
+            
+            &.wt-status-failed {
+              background: #fecaca;
+              color: #b91c1c;
+            }
+          }
+          
+          .wt-transaction-category {
+            color: #6b7280;
+          }
+        }
+      }
+      
+      &.wt-transaction-incoming .wt-transaction-amount {
+        color: #059669;
+      }
+      
+      &.wt-transaction-outgoing .wt-transaction-amount {
+        color: #dc2626;
+      }
+    }
+  }
+  
+  .wt-view-all-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 480px) {
+  .wt-app {
+    padding: 16px;
+  }
+  
+  .wt-content {
+    gap: 16px;
+  }
+  
+  .wt-balance-card,
+  .wt-actions-section,
+  .wt-transaction-section {
+    padding: 16px;
+  }
+  
+  .wt-balance-amount {
+    font-size: 24px !important;
+  }
+  
+  .wt-actions-grid {
+    gap: 12px;
+    
+    .wt-action-btn {
+      padding: 16px 8px;
+      font-size: 11px;
+    }
+  }
+  
+  .wt-stats-section {
+    gap: 12px;
+    
+    .wt-stat-card {
+      padding: 16px;
+      
+      .wt-stat-amount {
+        font-size: 16px !important;
+      }
+    }
+  }
+}
+
+.wt-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.wt-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.wt-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.wt-amount-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #3b82f6;
+  }
+}
+
+.wt-modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.wt-modal-cancel {
+  background: #e2e8f0;
+  color: #1e293b;
+  border: none;
+
+  &:hover {
+    background: #cbd5e1;
+  }
+}
+
+.wt-modal-confirm {
+  background: linear-gradient(135deg, #4361ee, #3a0ca3);
+  color: white;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
   }
 }

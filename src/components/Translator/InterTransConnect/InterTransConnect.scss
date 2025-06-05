@@ -184,6 +184,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  border: 2px solid #5e60ce;
   box-shadow: $shadow-primary;
   position: relative;
   overflow: hidden;
@@ -218,8 +219,6 @@ button {
 }
 
 .itc-btn-secondary {
-  background: transparent;
-  color: $primary-color;
   padding: 0.9rem 1.8rem;
   border-radius: $radius-full;
   font-weight: 600;
@@ -1252,7 +1251,6 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba($primary-dark, 0.95), rgba($primary-color, 0.85));
     z-index: 1;
   }
 }
@@ -1262,7 +1260,7 @@ button {
   text-align: center;
   position: relative;
   z-index: 2;
-  color: $white;
+  color: black;
   
   h2 {
     font-size: 3rem;
@@ -1299,8 +1297,8 @@ button {
   }
   
   .itc-btn-secondary {
-    border-color: $white;
-    color: $white;
+    background: #ffffff;
+    color: #5e60ce;
     
     &:hover {
       background: rgba($white, 0.1);
