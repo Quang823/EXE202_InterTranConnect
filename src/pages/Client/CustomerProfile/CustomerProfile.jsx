@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Check, Eye, EyeOff } from "lucide-react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { FaCamera } from "react-icons/fa";
 import {
   getUserInfoByUserIdService,
   updateUserProfileService,
@@ -187,10 +188,14 @@ const CustomerProfile = () => {
         <div className="cp-header">
           <h2>{`${userData.firstName} ${userData.lastName}`}</h2>
           <div className="cp-avatar-section">
-            <div className="cp-avatar-wrapper">
-              <img src={userData.avatarUrl} alt="Avatar" />
-              <div className="cp-avatar-overlay" onClick={handleEditProfile}>
-                <span>Update Photo</span>
+            <div className="cp-avatar-section">
+              <div className="cp-avatar-wrapper">
+                <img src={userData.avatarUrl} alt="Avatar" />
+
+                <div className="cp-avatar-overlay" onClick={handleEditProfile}>
+                  <FaCamera className="cp-camera-icon" />
+                  <span>Update Photo</span>
+                </div>
               </div>
             </div>
           </div>
@@ -290,9 +295,12 @@ const CustomerProfile = () => {
               <div className="cp-avatar-section cp-modal-avatar">
                 <div className="cp-avatar-wrapper">
                   <img src={editData.avatarUrl} alt="Avatar" />
+
                   <label htmlFor="avatarInput" className="cp-avatar-overlay">
+                    <FaCamera className="cp-camera-icon" />
                     <span>{uploading ? "Uploading..." : "Update Photo"}</span>
                   </label>
+
                   <input
                     type="file"
                     id="avatarInput"
@@ -303,6 +311,7 @@ const CustomerProfile = () => {
                   />
                 </div>
               </div>
+
               <div className="cp-name-section">
                 <div className="cp-input-group1">
                   <label htmlFor="firstName">First Name</label>

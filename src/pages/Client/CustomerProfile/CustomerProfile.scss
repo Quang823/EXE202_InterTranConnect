@@ -1,5 +1,5 @@
 :root {
-  --cp-primary-gradient: linear-gradient(135deg, #7f3bff, #ff4da6);
+  --cp-primary-gradient: linear-gradient(135deg, #3b6cff, #4db8ff);
   --cp-secondary-gradient: linear-gradient(135deg, #ff8c00, #ffd700);
   --cp-success-gradient: linear-gradient(135deg, #2ecc71, #1abc9c);
   --cp-primary-color: #7f3bff;
@@ -175,17 +175,13 @@
   .cp-avatar-section {
     .cp-avatar-wrapper {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 130px;
+      height: 130px;
       border-radius: var(--cp-radius-full);
       overflow: hidden;
       border: 3px solid var(--cp-primary-color);
       margin-left: 16px;
       transition: transform var(--cp-transition-normal);
-
-      &:hover {
-        transform: scale(1.05);
-      }
 
       img {
         width: 100%;
@@ -201,11 +197,18 @@
         height: 100%;
         background: var(--cp-primary-gradient);
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         opacity: 0;
         transition: opacity var(--cp-transition-normal);
         cursor: pointer;
+
+        .cp-camera-icon {
+          color: var(--cp-bg-primary);
+          font-size: 20px;
+          margin-bottom: 4px;
+        }
 
         span {
           color: var(--cp-bg-primary);
@@ -247,6 +250,56 @@
     padding: 24px;
 
     .cp-edit-form {
+      .cp-avatar-wrapper {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: var(--cp-radius-full);
+        overflow: hidden;
+        border: 3px solid var(--cp-primary-color);
+
+        transition: transform var(--cp-transition-normal);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .cp-avatar-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--cp-primary-gradient);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+          transition: opacity var(--cp-transition-normal);
+          cursor: pointer;
+
+          span {
+            color: var(--cp-bg-primary);
+            font-size: 10px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          }
+
+          .cp-camera-icon {
+            font-size: 15px;
+            color: var(--cp-bg-primary);
+            margin-bottom: 4px;
+          }
+        }
+
+        &:hover .cp-avatar-overlay {
+          opacity: 0.9;
+        }
+      }
+
       .cp-name-section {
         display: grid;
         grid-template-columns: 1fr 1fr;

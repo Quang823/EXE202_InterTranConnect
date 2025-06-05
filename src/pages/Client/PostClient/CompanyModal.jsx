@@ -7,7 +7,7 @@ const CompanyModal = ({
   formData,
   uploadFileUrl,
   onChange,
-  onFileChange, // Thêm lại prop onFileChange
+  onFileChange,
 }) => {
   if (!isOpen) return null;
 

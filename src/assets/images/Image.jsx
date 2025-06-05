@@ -13,6 +13,8 @@ const IMAGES = {
   talentAvatar2:
     "https://res.cloudinary.com/dk3yac2ie/image/upload/v1744270074/Anh-CV-chuyen-nghiep-min-1.jpg_exzc9m_Circle_miymix.webp",
   placeholder: "https://via.placeholder.com/150",
+  defaultAvatar:
+    "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
 };
 
 const Image = ({ src, className = "", alt = "", ...props }) => {

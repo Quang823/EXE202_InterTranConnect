@@ -51,7 +51,7 @@ const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
         <div className="form-fields">
           <div className="salary-input-section">
             <label htmlFor="hourlyRate" className="salary-label">
-              Hourly Rate for Translator ($/hr)
+              Hourly Rate for Translator (VND/hr)
             </label>
             <input
               type="number"
@@ -70,18 +70,34 @@ const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
             <div className="breakdown-item">
               <span className="breakdown-label">Hourly Rate:</span>
               <span className="breakdown-value">
-                ${formData.hourlyRate || "0.00"}/hr
+                {formData.hourlyRate.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }) || "0.00"}
+                VND/hr
               </span>
             </div>
             <div className="breakdown-item">
               <span className="breakdown-label">
                 Platform Service Fee (30%):
               </span>
-              <span className="breakdown-value">${platformFee}/hr</span>
+              <span className="breakdown-value">
+                {platformFee.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+                VND/hr
+              </span>
             </div>
             <div className="breakdown-item total">
               <span className="breakdown-label">Total Fee:</span>
-              <span className="breakdown-value">${totalFee}/hr</span>
+              <span className="breakdown-value">
+                {totalFee.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+                VND/hr
+              </span>
             </div>
             <p className="breakdown-note">
               Note: The Platform Service Fee is automatically calculated as 30%

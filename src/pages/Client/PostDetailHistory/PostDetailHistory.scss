@@ -35,6 +35,11 @@
   --post-history-detail-transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --post-history-detail-font-sans: "Inter", -apple-system, BlinkMacSystemFont,
     sans-serif;
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --gradient-start: #007bff;
+  --gradient-end: #0056b3;
+  --shadow-color: rgba(0, 123, 255, 0.3);
 }
 
 .post-history-detail-container {
@@ -294,10 +299,6 @@
   border-radius: var(--post-history-detail-radius-sm);
 }
 
-.post-history-detail-applications {
-  margin-bottom: 32px;
-}
-
 .post-history-detail-no-data {
   font-size: 15px;
   color: var(--post-history-detail-text-tertiary);
@@ -311,6 +312,14 @@
 .post-history-detail-translators {
   display: grid;
   gap: 16px;
+}
+
+.post-history-detail-error {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+  background-color: #f8d7da;
 }
 
 .post-history-detail-translator-card {
@@ -388,8 +397,36 @@
   }
 }
 
-.post-history-detail-apply-section {
-  margin-bottom: 32px;
+.post-history-detail-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.post-history-detail-select-btn {
+  padding: 8px 16px;
+  background-color: #2ecc71; /* Green for selection */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #27ae60;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+}
+
+.post-history-detail-error {
+  margin-top: 10px;
+  font-size: 0.875rem;
 }
 
 .post-history-detail-apply-btn {
@@ -538,4 +575,110 @@
 
 .post-history-detail-error {
   color: var(--post-history-detail-danger);
+}
+
+.custom-payment-modal {
+  .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto; // Ensure the modal is centered vertically and horizontally
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+    @media (max-width: 576px) {
+      max-width: 90%; // Responsive width for smaller screens
+      margin: 1rem auto;
+    }
+  }
+
+  .modal-content {
+    border: none; // Remove default border for a cleaner look
+    border-radius: 15px;
+  }
+
+  .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #007bff;
+    border-radius: 15px 15px 0 0;
+
+    .modal-title {
+      color: #007bff;
+      font-weight: bold;
+    }
+  }
+
+  .modal-body {
+    background-color: #ffffff;
+    padding: 20px;
+    font-size: 16px;
+    color: #333;
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+
+      li {
+        margin-bottom: 10px;
+      }
+    }
+
+    .notes-section {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+
+      h5 {
+        color: #343a40;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      ul,
+      p {
+        font-size: 14px;
+        color: #555;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+          color: #0056b3;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 2px solid #007bff;
+    border-radius: 0 0 15px 15px;
+    justify-content: space-between;
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
+
+// Ensure the parent container doesn't interfere with modal positioning
+.post-history-detail-applications {
+  position: static; // Prevent parent positioning from affecting the modal
 }
