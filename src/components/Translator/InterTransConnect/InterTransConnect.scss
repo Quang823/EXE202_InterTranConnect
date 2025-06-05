@@ -176,7 +176,7 @@ button {
 
 // Button Styles
 .itc-btn-primary {
-  background: $gradient-primary;
+  background: linear-gradient(135deg, #4361ee, #3a0ca3);
   color: $white;
   padding: 0.9rem 1.8rem;
   border-radius: $radius-full;
@@ -360,13 +360,13 @@ button {
   border-radius: $radius-full;
   @include flex(row, flex-start, center);
   gap: 0.5rem;
-  color: $primary-color;
+  color: white;
   font-weight: 600;
   font-size: 0.9rem;
   box-shadow: $shadow-md;
   
   svg {
-    color: $primary-color;
+    color: white;
   }
 }
 
@@ -1241,7 +1241,7 @@ button {
 // CTA Section
 .itc-cta {
   @include section-padding;
-  background: url('/placeholder.svg?height=1000&width=2000') no-repeat center/cover;
+  background: url('') no-repeat center/cover;
   position: relative;
   
   &::before {
