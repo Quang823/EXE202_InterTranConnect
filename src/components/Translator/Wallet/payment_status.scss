@@ -1,0 +1,46 @@
+.payment-status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.payment-status-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+
+  h1 {
+    margin: 20px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  p {
+    color: #6c757d;
+    margin: 10px 0;
+    line-height: 1.5;
+  }
+
+  .redirect-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #adb5bd;
+  }
+
+  .status-icon {
+    &.success {
+      color: #28a745;
+    }
+
+    &.failure {
+      color: #dc3545;
+    }
+  }
+} 
