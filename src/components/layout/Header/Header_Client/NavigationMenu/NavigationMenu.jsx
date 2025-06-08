@@ -17,7 +17,7 @@ const NavigationMenu = ({
       requiresAuth: true,
       onClick: onPostClick,
     },
-    { path: "/client/news-blog", label: "News & Blog" },
+    { path: "/client/news_blog", label: "News & Blog" },
     { path: "/client/aboutUs", label: "About Us" },
     { path: "/client/contactPages", label: "Contact Us" },
     { path: "/client/subscriptionPlan", label: "Pricing" },

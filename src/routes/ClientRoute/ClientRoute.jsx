@@ -11,6 +11,7 @@ import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/Subscripti
 import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
+import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
 
 const ClientRoute = () => {
   return (
@@ -30,6 +31,7 @@ const ClientRoute = () => {
       <Route path="/contactPages" element={<ContactPages />} />
       <Route path="/forum" element={<Forums />} />
       <Route path="/aboutUs" element={<InterTransConnects />} />
+      <Route path="/news_blog" element={<NewsBlog />} />
     </Routes>
   );
 };
