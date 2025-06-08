@@ -1,0 +1,426 @@
+.itc-hero {
+  position: relative;
+  text-align: center;
+
+  .itc-hero__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* Main Content */
+  .itc-hero__content {
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out;
+  }
+
+  .itc-hero__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+
+    @media (min-width: 768px) {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+    }
+
+    @media (min-width: 1024px) {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+    }
+  }
+
+  @keyframes gradient-move {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .itc-hero__title-line {
+    display: block;
+    background: linear-gradient(135deg, #1e3a8a, #1e40af, #3b82f6);
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    animation: gradient-move 4s ease infinite;
+  }
+
+  .itc-hero__title-highlight {
+    display: block;
+    position: relative;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa, #93c5fd);
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    animation: gradient-move 5s ease-in-out infinite;
+  }
+
+  .itc-hero__sparkle {
+    position: absolute;
+    top: -0.5rem;
+    right: -1rem;
+    animation: bounce 2s infinite;
+
+    @media (min-width: 768px) {
+      top: -0.75rem;
+      right: -1.5rem;
+    }
+  }
+
+  .itc-hero__sparkle-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #60a5fa;
+
+    @media (min-width: 768px) {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  .itc-hero__subtitle {
+    font-size: 1.25rem;
+    color: #6b7280;
+    margin-bottom: 3rem;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .itc-hero__highlight {
+    font-weight: 600;
+
+    &.itc-hero__highlight--blue {
+      color: #3b82f6;
+    }
+
+    &.itc-hero__highlight--purple {
+      color: #60a5fa;
+    }
+  }
+
+  .itc-hero__cta {
+    margin-bottom: 4rem;
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+
+  .itc-hero__button {
+    position: relative;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, #1e40af, #3b82f6);
+    color: white;
+    border-radius: 9999px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(45deg, #1e3a8a, #2563eb);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.itc-hero__button--loading {
+      pointer-events: none;
+    }
+  }
+
+  .itc-hero__button-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .itc-hero__button-arrow {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.3s ease;
+
+    .itc-hero__button:hover & {
+      transform: translateX(0.25rem);
+    }
+  }
+
+  .itc-hero__button-glow {
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(45deg, #1e40af, #3b82f6);
+    border-radius: 9999px;
+    filter: blur(8px);
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+
+    .itc-hero__button:hover & {
+      opacity: 0.5;
+    }
+  }
+
+  .itc-hero__button-loading {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, #1e40af, #3b82f6);
+    border-radius: 9999px;
+  }
+
+  .itc-hero__button-loading-animation {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  .itc-hero__stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 64rem;
+    margin: 0 auto;
+    animation: fadeInUp 1s ease-out 0.5s both;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .itc-hero__stat {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    border-radius: 1rem;
+    border: 1px solid rgba(229, 231, 235, 0.2);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+    }
+  }
+
+  .itc-hero__stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .itc-hero__stat-icon {
+    padding: 0.75rem;
+    background: linear-gradient(
+      45deg,
+      rgba(59, 130, 246, 0.1),
+      rgba(96, 165, 250, 0.1)
+    );
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+
+    .itc-hero__stat:hover & {
+      background: linear-gradient(
+        45deg,
+        rgba(59, 130, 246, 0.2),
+        rgba(96, 165, 250, 0.2)
+      );
+    }
+  }
+
+  .itc-hero__stat-icon-svg {
+    width: 2rem;
+    height: 2rem;
+    color: #3b82f6;
+  }
+
+  .itc-hero__stat-info {
+    text-align: center;
+  }
+
+  .itc-hero__stat-number {
+    font-size: 1.875rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #1e40af, #3b82f6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .itc-hero__stat-label {
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .itc-hero__floating {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .itc-hero__floating-dot {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+
+    &.itc-hero__floating-dot--1 {
+      top: 10rem;
+      left: 5rem;
+      width: 1rem;
+      height: 1rem;
+      background: #3b82f6;
+      animation: bounce 3s infinite 1s;
+
+      @media (max-width: 1024px) {
+        display: none;
+      }
+    }
+
+    &.itc-hero__floating-dot--2 {
+      top: 15rem;
+      right: 8rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: #60a5fa;
+      animation: bounce 3s infinite 2s;
+
+      @media (max-width: 1024px) {
+        display: none;
+      }
+    }
+
+    &.itc-hero__floating-dot--3 {
+      bottom: 10rem;
+      left: 25%;
+      width: 0.75rem;
+      height: 0.75rem;
+      background: #93c5fd;
+      animation: bounce 3s infinite 3s;
+
+      @media (max-width: 1024px) {
+        display: none;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -10px, 0);
+  }
+  70% {
+    transform: translate3d(0, -5px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .itc-hero {
+    padding: 6rem 1rem 4rem;
+
+    .itc-hero__cta {
+      margin-bottom: 3rem;
+    }
+
+    .itc-hero__button {
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    .itc-hero__stats {
+      gap: 1.5rem;
+    }
+
+    .itc-hero__stat {
+      padding: 1.25rem;
+    }
+
+    .itc-hero__stat-number {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .itc-hero {
+    padding: 5rem 0.75rem 3rem;
+
+    .itc-hero__subtitle {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+    }
+
+    .itc-hero__button {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    .itc-hero__sparkle {
+      top: -0.25rem;
+      right: -0.75rem;
+    }
+
+    .itc-hero__sparkle-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 :root {
-  --primary-color: #1e3a8a;
+  --primary-color: #2445a1;
   --secondary-color: #f97316;
   --background-color: #f3f4f6;
-  --header-background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  --header-background: linear-gradient(45deg, #1e40af, #3b82f6);
   --text-color: #ffffff;
   --text-color-dark: #1f2937;
   --border-color: #ddd;
@@ -120,6 +120,7 @@
   font-weight: 600;
   color: var(--primary-color);
   text-transform: uppercase;
+  font-weight: 900;
 }
 
 .register-container {
@@ -157,7 +158,7 @@
 
     h1 {
       font-size: 28px;
-      font-weight: 500;
+      font-weight: 900;
       color: var(--text-color);
       margin-bottom: 10px;
       letter-spacing: 0.5px;
@@ -468,7 +469,7 @@
 
   .register-btn {
     width: 100%;
-    background: var(--primary-color);
+    background: var(--header-background);
     border: none;
     padding: 15px;
     font-size: 17px;

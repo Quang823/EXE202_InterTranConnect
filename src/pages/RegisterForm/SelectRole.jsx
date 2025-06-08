@@ -3,22 +3,22 @@ import React, { useState } from "react";
 import Image from "../../assets/images/Image";
 import { useNavigate } from "react-router-dom";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
-import { assignRole } from "../../services/authService"; // Import the new function
-import useAuth from "../../hooks/useAuth"; // To access the user's email
+import { assignRole } from "../../services/authService";
+import useAuth from "../../hooks/useAuth";
 import "./SelectRole.scss";
 
 const SelectRole = () => {
   const navigate = useNavigate();
-  const { user, login: loginContext } = useAuth(); // Access user data from context
+  const { user, login: loginContext } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(""); // Track the selected role
-  const [error, setError] = useState(""); // Track errors
+  const [selectedRole, setSelectedRole] = useState("");
+  const [error, setError] = useState("");
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.id === "client" ? "Customer" : "Talent");
-    setError(""); // Clear any previous errors
+    setError("");
   };
 
   const handleContinue = async () => {
@@ -33,12 +33,9 @@ const SelectRole = () => {
     }
 
     try {
-      // Call the assignRole function with the email, selected role, and loginContext
       await assignRole(user.email, selectedRole, loginContext);
-
-      // Redirect based on the selected role
       const redirectPath =
-        selectedRole === "Customer" ? "/client/home" : "/translator/";
+        selectedRole === "Customer" ? "/client/" : "/translator/";
       navigate(redirectPath);
     } catch (error) {
       setError(error.message || "Failed to assign role. Please try again.");

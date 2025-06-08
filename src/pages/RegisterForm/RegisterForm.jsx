@@ -10,6 +10,7 @@ import Image from "../../assets/images/Image";
 import RegisterFormFields from "./RegisterFormFields";
 import RoleSelection from "./RoleSelection";
 import ToastManager from "../../components/common/Toast/ToastManager";
+import { ToastContainer } from "react-toastify";
 import "./RegisterForm.scss";
 
 const RegisterForm = () => {
@@ -113,9 +114,9 @@ const RegisterForm = () => {
 
         await register(userData);
         ToastManager.showSuccess(
-          "Registration successful! Please log in to continue."
+          "Registration successful! Please verify your email to continue."
         );
-        navigate("/login");
+        navigate("/verify_email", { state: { email: formData.email } });
       } catch (error) {
         console.error("Error during registration:", error);
         setErrors({
@@ -140,10 +141,7 @@ const RegisterForm = () => {
       <div className="dark-mode-toggle" onClick={toggleDarkMode}>
         {darkMode ? <MdLightMode size={30} /> : <MdDarkMode size={30} />}
       </div>
-      <div
-        className="home-logo-wrapper"
-        onClick={() => navigate("/client/home")}
-      >
+      <div className="home-logo-wrapper" onClick={() => navigate("/client/")}>
         <div className="home-logo">
           <Image src="logo" alt="Inter-Trans Connect Logo" />
         </div>

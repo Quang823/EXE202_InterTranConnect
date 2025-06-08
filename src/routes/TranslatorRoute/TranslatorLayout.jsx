@@ -1,4 +1,4 @@
-import Header_Translator from "../../components/layout/Header/Header_Translator";
+import Header_Translator from "../../components/layout/Header/Header_Translator/Header_Translator";
 import Footer from "../../components/layout/Footer/Footer";
 
 const TranslatorLayout = ({

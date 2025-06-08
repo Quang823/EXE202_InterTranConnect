@@ -14,6 +14,7 @@
   border-radius: 8px;
   padding: 20px;
   background: #ffffff; /* secondary-light */
+  margin-top: 80px;
 
   h2 {
     font-size: 16px;
@@ -87,9 +88,7 @@
 
   .location-icon {
     margin-right: 5px;
-    color: #6c757d
-
-; /* text-tertiary */
+    color: #6c757d; /* text-tertiary */
     transition: color 0.2s;
   }
 
@@ -143,7 +142,11 @@
   font-size: 14px;
 
   &:hover {
-    background: linear-gradient(135deg, #4895ef, #3a0ca3); /* Adjusted hover with primary-light */
+    background: linear-gradient(
+      135deg,
+      #4895ef,
+      #3a0ca3
+    ); /* Adjusted hover with primary-light */
   }
 }
 
@@ -177,7 +180,11 @@
   color: #495057; /* text-secondary */
 
   .apply-btn {
-    background: linear-gradient(135deg, #4361ee, #3a0ca3); /* primary-gradient */
+    background: linear-gradient(
+      135deg,
+      #4361ee,
+      #3a0ca3
+    ); /* primary-gradient */
     color: white;
     border: none;
     border-radius: 5px;
@@ -186,7 +193,11 @@
     font-size: 12px;
 
     &:hover {
-      background: linear-gradient(135deg, #4895ef, #3a0ca3); /* Adjusted hover with primary-light */
+      background: linear-gradient(
+        135deg,
+        #4895ef,
+        #3a0ca3
+      ); /* Adjusted hover with primary-light */
     }
   }
 }
@@ -194,6 +205,7 @@
 .results-container {
   flex: 1;
   margin-left: 20px;
+  margin-top: 80px;
 }
 
 .results-header {
@@ -278,30 +290,50 @@
       font-size: 14px;
       font-weight: bold;
       text-align: center;
-      
+
       span {
         color: white;
         letter-spacing: 1px;
       }
 
       &.category-1 {
-        background: linear-gradient(135deg, #4361ee, #3a0ca3); /* primary-gradient */
+        background: linear-gradient(
+          135deg,
+          #4361ee,
+          #3a0ca3
+        ); /* primary-gradient */
       }
 
       &.category-2 {
-        background: linear-gradient(135deg, #ea4c89, #c32361); /* Dribbble-inspired */
+        background: linear-gradient(
+          135deg,
+          #ea4c89,
+          #c32361
+        ); /* Dribbble-inspired */
       }
 
       &.category-3 {
-        background: linear-gradient(135deg, #2ec4b6, #1a8e84); /* Success-inspired */
+        background: linear-gradient(
+          135deg,
+          #2ec4b6,
+          #1a8e84
+        ); /* Success-inspired */
       }
 
       &.category-4 {
-        background: linear-gradient(135deg, #ff9f1c, #d17e15); /* Warning-inspired */
+        background: linear-gradient(
+          135deg,
+          #ff9f1c,
+          #d17e15
+        ); /* Warning-inspired */
       }
 
       &.category-5 {
-        background: linear-gradient(135deg, #1da1f2, #0c85d0); /* Twitter-inspired */
+        background: linear-gradient(
+          135deg,
+          #1da1f2,
+          #0c85d0
+        ); /* Twitter-inspired */
       }
     }
   }
@@ -324,9 +356,7 @@
 
 .job-details-trans {
   display: flex;
-  flex-wrap:
-
- wrap;
+  flex-wrap: wrap;
   gap: 10px 20px;
   margin-bottom: 15px;
 
@@ -369,7 +399,11 @@
   justify-content: flex-end;
 
   .details-btn {
-    background: linear-gradient(135deg, #4361ee, #3a0ca3); /* primary-gradient */
+    background: linear-gradient(
+      135deg,
+      #4361ee,
+      #3a0ca3
+    ); /* primary-gradient */
     color: white;
     border: none;
     border-radius: 5px;
@@ -379,7 +413,11 @@
     font-weight: 500;
 
     &:hover {
-      background: linear-gradient(135deg, #4895ef, #3a0ca3); /* Adjusted hover with primary-light */
+      background: linear-gradient(
+        135deg,
+        #4895ef,
+        #3a0ca3
+      ); /* Adjusted hover with primary-light */
     }
   }
 }
@@ -409,7 +447,11 @@
     }
 
     &.active {
-      background: linear-gradient(135deg, #4361ee, #3a0ca3); /* primary-gradient */
+      background: linear-gradient(
+        135deg,
+        #4361ee,
+        #3a0ca3
+      ); /* primary-gradient */
       color: white;
       border-color: #4361ee;
     }

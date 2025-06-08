@@ -7,6 +7,7 @@ import {
 import { createDepositDetail } from "../../../services/paymentService";
 import { Modal, Button, Form } from "react-bootstrap";
 import "./WalletClient.scss";
+import Loading from "../../../components/common/Loading/Loading";
 
 const WalletClient = () => {
   const [wallet, setWallet] = useState(null);
@@ -17,11 +18,9 @@ const WalletClient = () => {
   const [depositError, setDepositError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Get accountId from sessionStorage
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const accountId = user?.id;
 
-  // Fetch wallet and transactions on mount
   useEffect(() => {
     const fetchData = async () => {
       if (!accountId) {
@@ -51,7 +50,6 @@ const WalletClient = () => {
     fetchData();
   }, [accountId]);
 
-  // Handle payment initiation
   const handleDeposit = async (e) => {
     e.preventDefault();
     setDepositError(null);
@@ -63,7 +61,6 @@ const WalletClient = () => {
     }
 
     try {
-      // Step 1: Create deposit detail to get checkoutUrl
       const paymentData = { accountId, price: amount };
       const paymentResponse = await createDepositDetail(paymentData);
 
@@ -83,7 +80,6 @@ const WalletClient = () => {
     }
   };
 
-  // Open and close modal
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -101,7 +97,11 @@ const WalletClient = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="wc-app">
+        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />{" "}
+      </div>
+    );
   }
 
   if (error) {
@@ -170,7 +170,6 @@ const WalletClient = () => {
             </div>
           </div>
 
-          {/* Modal for Deposit Form using react-bootstrap */}
           <Modal
             show={isModalOpen}
             onHide={closeModal}

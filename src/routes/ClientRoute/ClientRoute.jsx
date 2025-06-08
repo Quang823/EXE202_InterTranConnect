@@ -7,21 +7,29 @@ import PostDetailHistory from "../../pages/Client/PostDetailHistory/PostDetailHi
 import TranslatorProfile from "../../pages/Client/TranslatorProfile/TranslatorProfile";
 import CustomerProfile from "../../pages/Client/CustomerProfile/CustomerProfile";
 import WalletClient from "../../pages/Client/WalletClient/WalletClient";
+import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/SubscriptionPlan";
+import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
+import Forums from "../../pages/Translator/Forums/Forums";
+import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 
 const ClientRoute = () => {
   return (
     <Routes>
-      <Route path="/home" element={<HomePage_Client />} />
-      <Route path="/edit_profile" element={<ProfileTranslator />} />
+      <Route path="/" element={<HomePage_Client />} />
+      <Route path="/view_profile" element={<ProfileTranslator />} />
       <Route path="/create_post" element={<Post_Client />} />
       <Route path="/post_history" element={<PostHistory />} />
-      <Route path="/post-detail/:jobId" element={<PostDetailHistory />} />
+      <Route path="/post_detail/:jobId" element={<PostDetailHistory />} />
       <Route
         path="translator_profile/:interpreterId"
         element={<TranslatorProfile />}
       />
       <Route path="/customer_profile" element={<CustomerProfile />} />
       <Route path="/wallet" element={<WalletClient />} />
+      <Route path="/subscriptionPlan" element={<SubscriptionPlan />} />
+      <Route path="/contactPages" element={<ContactPages />} />
+      <Route path="/forum" element={<Forums />} />
+      <Route path="/aboutUs" element={<InterTransConnects />} />
     </Routes>
   );
 };

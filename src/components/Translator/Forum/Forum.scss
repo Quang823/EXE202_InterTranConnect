@@ -3,7 +3,8 @@
   min-height: 100vh;
   background: #1a1a2e;
   color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
+  margin-top: 60px;
 }
 
 .smapp-sidebar {
@@ -89,7 +90,8 @@
   }
 }
 
-.smapp-tag-item, .smapp-group-item {
+.smapp-tag-item,
+.smapp-group-item {
   display: flex;
   align-items: center;
   padding: 8px;
@@ -102,7 +104,8 @@
     background: #1e2a44;
   }
 
-  .smapp-tag-icon, .smapp-group-icon {
+  .smapp-tag-icon,
+  .smapp-group-icon {
     width: 32px;
     height: 32px;
     border-radius: 6px;
@@ -118,7 +121,8 @@
     }
   }
 
-  .smapp-tag-content, .smapp-group-content {
+  .smapp-tag-content,
+  .smapp-group-content {
     h3 {
       font-size: 14px;
       margin: 0;
@@ -147,7 +151,7 @@
   background: #16213e;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -217,7 +221,7 @@
   background: #16213e;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   padding: 15px;

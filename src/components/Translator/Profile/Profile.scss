@@ -1,11 +1,11 @@
-
 // Define some variables for consistent theming
 $primary-color: #4a90e2;
 $secondary-color: #333;
 $background-color: #f9fafb;
 $border-color: #e0e0e0;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  sans-serif;
 
 .ep-container {
   display: flex;
@@ -14,6 +14,7 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
   background-color: $background-color;
   padding: 20px;
   font-family: $font-family;
+  margin-top: 50px;
 }
 
 .ep-card {
@@ -64,9 +65,9 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
           margin-bottom: 8px;
         }
 
-        input[type='text'],
-        input[type='email'],
-        input[type='password'] {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
           width: 93%;
           max-width: 96%;
           padding: 12px;
@@ -94,9 +95,9 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
           position: relative;
           max-width: 100%;
 
-          input[type='text'],
-          input[type='email'],
-          input[type='password'] {
+          input[type="text"],
+          input[type="email"],
+          input[type="password"] {
             width: 100%;
             padding-right: 70px;
           }
@@ -147,9 +148,9 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
           margin-bottom: 8px;
         }
 
-        input[type='text'],
-        input[type='email'],
-        input[type='password'] {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
           width: 96%;
           max-width: 97%;
           padding: 12px;
@@ -177,9 +178,9 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
           position: relative;
           max-width: 100%;
 
-          input[type='text'],
-          input[type='email'],
-          input[type='password'] {
+          input[type="text"],
+          input[type="email"],
+          input[type="password"] {
             width: 100%;
             padding-right: 70px;
           }
@@ -335,4 +336,3 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
     }
   }
 }
-

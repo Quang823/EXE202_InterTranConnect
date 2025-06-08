@@ -3,7 +3,8 @@
   justify-content: center;
   align-items: center;
   min-height: 90vh;
-   background: linear-gradient(to right, #9a75f1, #F472B6, #FBBF24);
+  background: linear-gradient(to right, #9a75f1, #f472b6, #fbbf24);
+  margin-top: 60px;
 }
 
 .sub-plans-wrapper {
@@ -12,7 +13,7 @@
   gap: 2rem;
   max-width: 100%;
   width: 100%;
-  align-items: flex-end; /* Align cards at the bottom to allow elevation */
+  align-items: flex-end;
 }
 
 .sub-plan-card {
@@ -29,7 +30,7 @@
 }
 
 .sub-plan-elevated {
-  transform: translateY(-60px); /* Elevate the middle card */
+  transform: translateY(-60px);
 }
 
 .sub-plan-card:hover {

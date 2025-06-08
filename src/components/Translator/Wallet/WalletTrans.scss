@@ -2,7 +2,8 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f3e8ff 100%);
   padding: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin-top: 50px;
 }
 
 .wt-main {
@@ -24,34 +25,39 @@
   color: white;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(236, 72, 153, 0.2) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.2) 0%,
+      rgba(147, 51, 234, 0.2) 50%,
+      rgba(236, 72, 153, 0.2) 100%
+    );
     pointer-events: none;
   }
-  
+
   .wt-balance-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     z-index: 1;
-    
+
     .wt-balance-title {
       display: flex;
       align-items: center;
       gap: 8px;
-      
+
       h2 {
         font-size: 18px;
         font-weight: 600;
         margin: 0;
       }
     }
-    
+
     .wt-menu-btn {
       background: rgba(255, 255, 255, 0.1);
       border: none;
@@ -60,20 +66,20 @@
       color: white;
       cursor: pointer;
       transition: background-color 0.2s;
-      
+
       &:hover {
         background: rgba(255, 255, 255, 0.2);
       }
     }
   }
-  
+
   .wt-balance-content {
     position: relative;
     z-index: 1;
-    
+
     .wt-balance-info {
       margin-bottom: 16px;
-      
+
       .wt-balance-label {
         display: flex;
         justify-content: space-between;
@@ -81,7 +87,7 @@
         font-size: 14px;
         color: rgba(255, 255, 255, 0.7);
         margin-bottom: 8px;
-        
+
         .wt-visibility-btn {
           background: none;
           border: none;
@@ -90,19 +96,19 @@
           padding: 4px;
           border-radius: 4px;
           transition: background-color 0.2s;
-          
+
           &:hover {
             background: rgba(255, 255, 255, 0.1);
           }
         }
       }
-      
+
       .wt-balance-amount {
         font-size: 32px;
         font-weight: 700;
         margin-bottom: 8px;
       }
-      
+
       .wt-balance-growth {
         display: flex;
         align-items: center;
@@ -111,14 +117,14 @@
         color: #10b981;
       }
     }
-    
+
     .wt-wallet-address {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 14px;
       color: rgba(255, 255, 255, 0.7);
-      
+
       .wt-copy-btn {
         background: none;
         border: none;
@@ -127,7 +133,7 @@
         padding: 4px;
         border-radius: 4px;
         transition: background-color 0.2s;
-        
+
         &:hover {
           background: rgba(255, 255, 255, 0.1);
         }
@@ -142,12 +148,12 @@
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  
+
   .wt-actions-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    
+
     .wt-action-btn {
       display: flex;
       flex-direction: column;
@@ -161,30 +167,30 @@
       transition: all 0.2s;
       font-size: 12px;
       font-weight: 500;
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
-      
+
       &.wt-action-send:hover {
         border-color: #3b82f6;
         background: #eff6ff;
         color: #3b82f6;
       }
-      
+
       &.wt-action-receive:hover {
         border-color: #10b981;
         background: #ecfdf5;
         color: #10b981;
       }
-      
+
       &.wt-action-card:hover {
         border-color: #8b5cf6;
         background: #f5f3ff;
         color: #8b5cf6;
       }
-      
+
       &.wt-action-topup:hover {
         border-color: #f59e0b;
         background: #fffbeb;
@@ -199,68 +205,68 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  
+
   .wt-stat-card {
     border-radius: 16px;
     padding: 20px;
-    
+
     &.wt-stat-income {
       background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
       border: 1px solid #a7f3d0;
-      
+
       .wt-stat-icon {
         background: #d1fae5;
         color: #059669;
       }
-      
+
       .wt-stat-label {
         color: #059669;
       }
-      
+
       .wt-stat-amount {
         color: #047857;
       }
     }
-    
+
     &.wt-stat-expense {
       background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
       border: 1px solid #fca5a5;
-      
+
       .wt-stat-icon {
         background: #fecaca;
         color: #dc2626;
       }
-      
+
       .wt-stat-label {
         color: #dc2626;
       }
-      
+
       .wt-stat-amount {
         color: #b91c1c;
       }
     }
-    
+
     .wt-stat-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
+
       .wt-stat-info {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        
+
         .wt-stat-label {
           font-size: 14px;
           font-weight: 500;
         }
-        
+
         .wt-stat-amount {
           font-size: 20px;
           font-weight: 700;
         }
       }
-      
+
       .wt-stat-icon {
         padding: 12px;
         border-radius: 50%;
@@ -278,26 +284,26 @@
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  
+
   .wt-transaction-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 24px;
-    
+
     .wt-transaction-title {
       font-size: 18px;
       font-weight: 600;
       margin: 0 0 4px 0;
       color: #1f2937;
     }
-    
+
     .wt-transaction-subtitle {
       font-size: 14px;
       color: #6b7280;
       margin: 0;
     }
-    
+
     .wt-view-report {
       display: flex;
       align-items: center;
@@ -311,13 +317,13 @@
       font-weight: 500;
       cursor: pointer;
       transition: transform 0.2s;
-      
+
       &:hover {
         transform: translateY(-1px);
       }
     }
   }
-  
+
   .wt-transaction-tabs {
     display: flex;
     gap: 4px;
@@ -325,7 +331,7 @@
     border-radius: 8px;
     padding: 4px;
     margin-bottom: 24px;
-    
+
     .wt-tab {
       flex: 1;
       padding: 8px 16px;
@@ -336,29 +342,29 @@
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
-      
+
       &.wt-tab-active {
         background: white;
         color: #1f2937;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
-      
+
       &:not(.wt-tab-active) {
         color: #6b7280;
-        
+
         &:hover {
           color: #374151;
         }
       }
     }
   }
-  
+
   .wt-transaction-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-bottom: 24px;
-    
+
     .wt-transaction-item {
       display: flex;
       align-items: center;
@@ -367,12 +373,12 @@
       border: 1px solid #e5e7eb;
       border-radius: 12px;
       transition: all 0.2s;
-      
+
       &:hover {
         background: #f9fafb;
         border-color: #d1d5db;
       }
-      
+
       .wt-transaction-icon {
         padding: 12px;
         border-radius: 50%;
@@ -380,86 +386,86 @@
         align-items: center;
         justify-content: center;
       }
-      
+
       &.wt-transaction-incoming .wt-transaction-icon {
         background: #d1fae5;
         color: #059669;
       }
-      
+
       &.wt-transaction-outgoing .wt-transaction-icon {
         background: #fecaca;
         color: #dc2626;
       }
-      
+
       .wt-transaction-details {
         flex: 1;
-        
+
         .wt-transaction-main {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 4px;
-          
+
           .wt-transaction-description {
             font-weight: 600;
             font-size: 14px;
             color: #1f2937;
           }
-          
+
           .wt-transaction-amount {
             font-weight: 700;
             font-size: 14px;
           }
         }
-        
+
         .wt-transaction-meta {
           display: flex;
           align-items: center;
           gap: 8px;
           font-size: 12px;
-          
+
           .wt-transaction-date {
             color: #6b7280;
           }
-          
+
           .wt-transaction-status {
             padding: 2px 8px;
             border-radius: 12px;
             font-weight: 500;
             text-transform: capitalize;
-            
+
             &.wt-status-completed {
               background: #d1fae5;
               color: #047857;
             }
-            
+
             &.wt-status-pending {
               background: #fef3c7;
               color: #d97706;
             }
-            
+
             &.wt-status-failed {
               background: #fecaca;
               color: #b91c1c;
             }
           }
-          
+
           .wt-transaction-category {
             color: #6b7280;
           }
         }
       }
-      
+
       &.wt-transaction-incoming .wt-transaction-amount {
         color: #059669;
       }
-      
+
       &.wt-transaction-outgoing .wt-transaction-amount {
         color: #dc2626;
       }
     }
   }
-  
+
   .wt-view-all-btn {
     width: 100%;
     display: flex;
@@ -475,7 +481,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: transform 0.2s;
-    
+
     &:hover {
       transform: translateY(-1px);
     }
@@ -487,36 +493,36 @@
   .wt-app {
     padding: 16px;
   }
-  
+
   .wt-content {
     gap: 16px;
   }
-  
+
   .wt-balance-card,
   .wt-actions-section,
   .wt-transaction-section {
     padding: 16px;
   }
-  
+
   .wt-balance-amount {
     font-size: 24px !important;
   }
-  
+
   .wt-actions-grid {
     gap: 12px;
-    
+
     .wt-action-btn {
       padding: 16px 8px;
       font-size: 11px;
     }
   }
-  
+
   .wt-stats-section {
     gap: 12px;
-    
+
     .wt-stat-card {
       padding: 16px;
-      
+
       .wt-stat-amount {
         font-size: 16px !important;
       }
@@ -623,19 +629,18 @@
 }
 // Bank Cards Section
 .wt-cards-section {
-
   .wt-cards-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     h2 {
       font-size: 20px;
       font-weight: 600;
       margin: 0;
       color: #1f2937;
     }
-    
+
     .wt-add-card-btn {
       display: flex;
       align-items: center;
@@ -649,35 +654,35 @@
       font-weight: 500;
       cursor: pointer;
       transition: transform 0.2s;
-      
+
       &:hover {
         transform: translateY(-1px);
       }
     }
   }
-  
+
   .wt-cards-carousel {
     display: flex;
     gap: 16px;
     overflow-x: auto;
     padding-bottom: 8px;
     margin-bottom: 16px;
-    
+
     &::-webkit-scrollbar {
       height: 4px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: #f1f5f9;
       border-radius: 2px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 2px;
     }
   }
-  
+
   .wt-bank-card {
     min-width: 320px;
     background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
@@ -688,28 +693,33 @@
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.1) 0%,
+        rgba(147, 51, 234, 0.1) 100%
+      );
       opacity: 0;
       transition: opacity 0.3s;
     }
-    
-    &:hover, &.active {
+
+    &:hover,
+    &.active {
       transform: translateY(-4px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      
+
       &::before {
         opacity: 1;
       }
     }
-    
+
     .wt-card-actions {
       position: absolute;
       top: 16px;
@@ -719,7 +729,7 @@
       opacity: 0;
       transition: opacity 0.3s;
       z-index: 2;
-      
+
       .wt-card-action-btn {
         background: rgba(255, 255, 255, 0.2);
         border: none;
@@ -728,61 +738,61 @@
         color: white;
         cursor: pointer;
         transition: background-color 0.2s;
-        
+
         &:hover {
           background: rgba(255, 255, 255, 0.3);
         }
-        
+
         &.wt-delete-btn:hover {
           background: rgba(239, 68, 68, 0.8);
         }
       }
     }
-    
+
     &:hover .wt-card-actions {
       opacity: 1;
     }
-    
+
     .wt-card-content {
       position: relative;
       z-index: 1;
-      
+
       .wt-card-balance {
         margin-bottom: 24px;
-        
+
         .wt-card-label {
           display: block;
           font-size: 14px;
           color: rgba(255, 255, 255, 0.7);
           margin-bottom: 4px;
         }
-        
+
         .wt-card-amount {
           font-size: 24px;
           font-weight: 700;
         }
       }
-      
+
       .wt-card-info {
         .wt-card-number {
           font-size: 18px;
           font-weight: 600;
           letter-spacing: 2px;
           margin-bottom: 16px;
-          font-family: 'Courier New', monospace;
+          font-family: "Courier New", monospace;
         }
-        
+
         .wt-card-details {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
-          
+
           .wt-card-holder {
             font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
           }
-          
+
           .wt-card-bank {
             font-size: 16px;
             font-weight: 600;
@@ -791,7 +801,7 @@
         }
       }
     }
-    
+
     .wt-default-badge {
       position: absolute;
       top: 16px;
@@ -805,12 +815,12 @@
       z-index: 2;
     }
   }
-  
+
   .wt-card-dots {
     display: flex;
     justify-content: center;
     gap: 8px;
-    
+
     .wt-dot {
       width: 8px;
       height: 8px;
@@ -819,7 +829,7 @@
       background: #cbd5e1;
       cursor: pointer;
       transition: all 0.2s;
-      
+
       &.active {
         background: #3b82f6;
         transform: scale(1.2);
@@ -834,14 +844,14 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  
+
   h3 {
     font-size: 18px;
     font-weight: 600;
     margin: 0;
     color: #1f2937;
   }
-  
+
   .wt-modal-close {
     background: none;
     border: none;
@@ -850,7 +860,7 @@
     padding: 4px;
     border-radius: 4px;
     transition: background-color 0.2s;
-    
+
     &:hover {
       background: #f3f4f6;
     }
@@ -859,7 +869,7 @@
 
 .wt-form-group {
   margin-bottom: 20px;
-  
+
   label {
     display: block;
     font-size: 14px;
@@ -867,7 +877,7 @@
     color: #374151;
     margin-bottom: 8px;
   }
-  
+
   input {
     width: 100%;
     padding: 12px 16px;
@@ -875,12 +885,12 @@
     border-radius: 8px;
     font-size: 14px;
     transition: border-color 0.2s;
-    
+
     &:focus {
       outline: none;
       border-color: #3b82f6;
     }
-    
+
     &::placeholder {
       color: #9ca3af;
     }
@@ -891,7 +901,7 @@
   display: flex;
   gap: 12px;
   margin-top: 24px;
-  
+
   .wt-btn {
     flex: 1;
     padding: 12px 24px;
@@ -904,22 +914,22 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    
+
     &.wt-btn-secondary {
       background: #f3f4f6;
       color: #374151;
       border: 1px solid #d1d5db;
-      
+
       &:hover {
         background: #e5e7eb;
       }
     }
-    
+
     &.wt-btn-primary {
       background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
       color: white;
       border: none;
-      
+
       &:hover {
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
@@ -934,11 +944,11 @@
     .wt-bank-card {
       min-width: 280px;
       padding: 20px;
-      
+
       .wt-card-balance .wt-card-amount {
         font-size: 20px;
       }
-      
+
       .wt-card-info .wt-card-number {
         font-size: 16px;
       }

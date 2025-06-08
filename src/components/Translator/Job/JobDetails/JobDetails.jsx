@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Loading from "../../../common/Loading/Loading";
 import axios from "axios";
 import "./JobDetails.scss";
 
@@ -33,33 +33,34 @@ const JobDetails = () => {
   }, [id]);
 
   // Handle Apply Job
-const handleApplyJob = async () => {
-  try {
-    const sessionData = JSON.parse(sessionStorage.getItem("user"));
-    const interpreterId = sessionData?.id;
+  const handleApplyJob = async () => {
+    try {
+      const sessionData = JSON.parse(sessionStorage.getItem("user"));
+      const interpreterId = sessionData?.id;
 
-    if (!interpreterId) {
-      setApplyError("User not logged in.");
-      return;
+      if (!interpreterId) {
+        setApplyError("User not logged in.");
+        return;
+      }
+
+      const payload = {
+        jobId: id,
+        interpreterId,
+        message:
+          applicationMessage || "I am interested in applying for this job.",
+      };
+
+      await axios.post(`${API_URL}/api/JobApplication`, payload, {
+        headers: { Authorization: `Bearer ${sessionData.accessToken}` },
+      });
+      setApplySuccess(true);
+      setApplyError(null);
+    } catch (err) {
+      setApplyError("Failed to submit application.");
+      setApplySuccess(false);
+      console.error("Application error:", err);
     }
-
-    const payload = {
-      jobId: id,
-      interpreterId,
-      message: applicationMessage || "I am interested in applying for this job.",
-    };
-
-    await axios.post(`${API_URL}/api/JobApplication`, payload, {
-      headers: { Authorization: `Bearer ${sessionData.accessToken}` },
-    });
-    setApplySuccess(true);
-    setApplyError(null);
-  } catch (err) {
-    setApplyError("Failed to submit application.");
-    setApplySuccess(false);
-    console.error("Application error:", err);
-  }
-};
+  };
 
   // Handle back button navigation
   const handleBack = () => {
@@ -74,7 +75,11 @@ const handleApplyJob = async () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />
+      </div>
+    );
   }
 
   if (error || !job) {
@@ -96,7 +101,9 @@ const handleApplyJob = async () => {
           <div className="job-meta">
             <span className="status">{job.customer.fullName}</span>
             <span className="type">{job.translationType}</span>
-            <span className="time">{new Date(job.createdAt).toLocaleString()}</span>
+            <span className="time">
+              {new Date(job.createdAt).toLocaleString()}
+            </span>
             <span className="salary">${job.totalFee}</span>
             <span className="location">{job.workCity}</span>
           </div>
@@ -106,12 +113,33 @@ const handleApplyJob = async () => {
             <p>{job.description}</p>
             <h3>Key Aspects of Marketing Translation:</h3>
             <ul>
-              <li><span className="check">✓</span> Localization: Adapting tone, style, and cultural references to match the target market.</li>
-              <li><span className="check">✓</span> Brand Consistency: Ensuring the message aligns with the company’s identity across languages.</li>
-              <li><span className="check">✓</span> SEO Optimization: Translating and adapting keywords for global search rankings.</li>
-              <li><span className="check">✓</span> Creative Adaptation: Maintaining emotional impact while adjusting phrasing for different audiences.</li>
-              <li><span className="check">✓</span> Cross-Channel Integration: Applying translated content across websites, social media, and advertising.</li>
-              <li><span className="check">✓</span> Marketing translation helps brands connect with international customers, increase engagement, and build trust across diverse markets.</li>
+              <li>
+                <span className="check">✓</span> Localization: Adapting tone,
+                style, and cultural references to match the target market.
+              </li>
+              <li>
+                <span className="check">✓</span> Brand Consistency: Ensuring the
+                message aligns with the company’s identity across languages.
+              </li>
+              <li>
+                <span className="check">✓</span> SEO Optimization: Translating
+                and adapting keywords for global search rankings.
+              </li>
+              <li>
+                <span className="check">✓</span> Creative Adaptation:
+                Maintaining emotional impact while adjusting phrasing for
+                different audiences.
+              </li>
+              <li>
+                <span className="check">✓</span> Cross-Channel Integration:
+                Applying translated content across websites, social media, and
+                advertising.
+              </li>
+              <li>
+                <span className="check">✓</span> Marketing translation helps
+                brands connect with international customers, increase
+                engagement, and build trust across diverse markets.
+              </li>
             </ul>
           </section>
 
@@ -119,28 +147,55 @@ const handleApplyJob = async () => {
             <h2>Key Responsibilities</h2>
             <h3>Translate & Localize Content</h3>
             <ul>
-              <li><span className="check">✓</span> Convert marketing materials (ads, brochures, websites, social media posts, product descriptions) while maintaining cultural and brand consistency.</li>
+              <li>
+                <span className="check">✓</span> Convert marketing materials
+                (ads, brochures, websites, social media posts, product
+                descriptions) while maintaining cultural and brand consistency.
+              </li>
             </ul>
             <h3>Ensure Brand Voice & Tone</h3>
             <ul>
-              <li><span className="check">✓</span> Adapt messaging to fit the target audience while preserving the brand’s unique voice and style.</li>
+              <li>
+                <span className="check">✓</span> Adapt messaging to fit the
+                target audience while preserving the brand’s unique voice and
+                style.
+              </li>
             </ul>
             <h3>SEO & Keyword Optimization</h3>
             <ul>
-              <li><span className="check">✓</span> Translate and optimize keywords for search engines to improve online visibility in different languages.</li>
+              <li>
+                <span className="check">✓</span> Translate and optimize keywords
+                for search engines to improve online visibility in different
+                languages.
+              </li>
             </ul>
             <h3>Transcreation & Copywriting</h3>
             <ul>
-              <li><span className="check">✓</span> Rewrite slogans, taglines, and promotional content to evoke the same emotions as the original.</li>
+              <li>
+                <span className="check">✓</span> Rewrite slogans, taglines, and
+                promotional content to evoke the same emotions as the original.
+              </li>
             </ul>
           </section>
 
           <section className="section">
             <h2>Professional Skills</h2>
             <ul>
-              <li><span className="check">✓</span> Language Proficiency: Fluent in both the source and target languages, with strong grammar, vocabulary, and writing skills.</li>
-              <li><span className="check">✓</span> Marketing & Branding Knowledge: Understanding of marketing strategies, consumer psychology, and brand positioning across cultures.</li>
-              <li><span className="check">✓</span> Transcreation & Copywriting: Ability to create and adapt slogans, taglines, and marketing messages while maintaining the original intent.</li>
+              <li>
+                <span className="check">✓</span> Language Proficiency: Fluent in
+                both the source and target languages, with strong grammar,
+                vocabulary, and writing skills.
+              </li>
+              <li>
+                <span className="check">✓</span> Marketing & Branding Knowledge:
+                Understanding of marketing strategies, consumer psychology, and
+                brand positioning across cultures.
+              </li>
+              <li>
+                <span className="check">✓</span> Transcreation & Copywriting:
+                Ability to create and adapt slogans, taglines, and marketing
+                messages while maintaining the original intent.
+              </li>
             </ul>
           </section>
         </div>
@@ -150,7 +205,9 @@ const handleApplyJob = async () => {
             Apply Job
           </button>
           {applyError && <p className="error">{applyError}</p>}
-          {applySuccess && <p className="success">Application submitted successfully!</p>}
+          {applySuccess && (
+            <p className="success">Application submitted successfully!</p>
+          )}
           <div className="job-overview">
             <h2>Job Overview</h2>
             <div className="overview-item">
