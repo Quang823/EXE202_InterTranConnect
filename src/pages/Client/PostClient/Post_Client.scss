@@ -1,9 +1,10 @@
 .post-job-container {
   min-height: 100vh;
-  background: linear-gradient(145deg, #e6f0fa 0%, #f1f5f9 100%);
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  margin-top: 50px;
   padding: 30px 20px;
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -26,7 +27,7 @@
   text-align: center;
   margin-bottom: 40px;
   letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  background: linear-gradient(45deg, #1e40af, #3b82f6);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -220,6 +221,39 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  .input-with-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .input-with-label label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-with-label input[type="date"],
+  .input-with-label input[type="datetime-local"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .full-width-input {
+    width: 100% !important;
+  }
+
+  .post-job-field-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
 }
 
 .post-job-field-row input,
@@ -324,7 +358,7 @@
   margin-left: 33%;
   width: 33%;
   padding: 16px;
-  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  background: linear-gradient(45deg, #1e40af, #3b82f6);
   color: #ffffff;
   border: none;
   border-radius: 12px;

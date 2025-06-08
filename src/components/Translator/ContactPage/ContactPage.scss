@@ -1,8 +1,9 @@
 .contact-container {
   width: 100%;
   background-color: #f8f9fa;
-  margin: 2% 0;
-  
+  margin-top: 10px;
+  padding: 1rem;
+
   @media (max-width: 768px) {
     padding: 2rem 1rem;
   }
@@ -17,7 +18,7 @@
   border: 1px solid rgb(226, 214, 214);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  
+
   @media (max-width: 992px) {
     flex-direction: column;
   }
@@ -28,7 +29,7 @@
   padding: 3rem;
   background: linear-gradient(135deg, #4361ee, #3a0ca3);
   color: #fff;
-  
+
   @media (max-width: 768px) {
     padding: 2rem;
   }
@@ -39,12 +40,12 @@
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  
+
   span {
     display: block;
     color: #3498db;
   }
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
@@ -67,9 +68,9 @@
   margin-bottom: 1.5rem;
   position: relative;
   padding-bottom: 0.75rem;
-  
+
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -84,7 +85,7 @@
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, auto);
   gap: 1.5rem;
-  
+
   @media (max-width: 576px) {
     grid-template-columns: 1fr;
   }
@@ -93,7 +94,7 @@
 .benefit-item {
   display: flex;
   align-items: flex-start;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -118,7 +119,7 @@
     font-weight: 600;
     margin: 0 0 0.25rem;
   }
-  
+
   p {
     font-size: 14px;
     margin: 0;
@@ -134,9 +135,9 @@
     margin-bottom: 1.5rem;
     position: relative;
     padding-bottom: 0.75rem;
-    
+
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
@@ -151,7 +152,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  
+
   @media (max-width: 576px) {
     grid-template-columns: 1fr;
   }
@@ -160,20 +161,20 @@
 .info-item {
   display: flex;
   align-items: flex-start;
-  
+
   .info-icon {
     width: 24px;
     height: 24px;
     margin-right: 0.75rem;
     color: #3498db;
   }
-  
+
   h4 {
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 0.25rem;
   }
-  
+
   p {
     font-size: 14px;
     margin: 0;
@@ -185,7 +186,7 @@
   flex: 1;
   padding: 3rem;
   background-color: #fff;
-  
+
   @media (max-width: 768px) {
     padding: 2rem;
   }
@@ -214,17 +215,17 @@
     display: flex;
     gap: 1rem;
     margin-bottom: 1.5rem;
-    
+
     @media (max-width: 576px) {
       flex-direction: column;
       gap: 1.5rem;
     }
   }
-  
+
   .form-group {
     flex: 1;
     margin-bottom: 1.5rem;
-    
+
     label {
       display: block;
       font-size: 0.9rem;
@@ -232,31 +233,32 @@
       color: #2c3e50;
       margin-bottom: 0.5rem;
     }
-    
-    input, textarea {
+
+    input,
+    textarea {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid #e0e0e0;
       border-radius: 8px;
       font-size: 1rem;
       transition: all 0.3s ease;
-      
+
       &:focus {
         outline: none;
         border-color: #3498db;
         box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
       }
-      
+
       &::placeholder {
         color: #bdc3c7;
       }
     }
-    
+
     textarea {
       resize: vertical;
     }
   }
-  
+
   .submit-button {
     display: inline-block;
     background: linear-gradient(135deg, #4361ee, #3a0ca3);
@@ -269,13 +271,13 @@
     margin-left: 30%;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background-color: #2980b9;
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
     }
-    
+
     &:active {
       transform: translateY(0);
     }

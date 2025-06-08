@@ -1,9 +1,9 @@
 // Import fonts
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 // Variables
-$font-primary: 'Manrope', sans-serif;
-$font-secondary: 'Inter', sans-serif;
+$font-primary: "Manrope", sans-serif;
+$font-secondary: "Inter", sans-serif;
 
 // Color Palette - Modern and Professional
 $primary-color: #5e60ce;
@@ -26,7 +26,11 @@ $gradient-secondary: linear-gradient(135deg, $secondary-color, $accent-color);
 $gradient-accent: linear-gradient(135deg, $accent-color, $accent-secondary);
 $gradient-dark: linear-gradient(135deg, $dark-bg, #2d3250);
 $gradient-light: linear-gradient(135deg, $white, $off-white);
-$gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+$gradient-glass: linear-gradient(
+  135deg,
+  rgba(255, 255, 255, 0.2),
+  rgba(255, 255, 255, 0.05)
+);
 
 // Shadows
 $shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -129,9 +133,15 @@ body {
 .itc-container {
   overflow-x: hidden;
   font-family: $font-secondary;
+  margin-top: 50px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $font-primary;
   font-weight: 700;
   line-height: 1.2;
@@ -165,9 +175,9 @@ button {
 .animate {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
   &.animate-in {
     opacity: 1;
     transform: translateY(0);
@@ -189,9 +199,9 @@ button {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -202,16 +212,16 @@ button {
     opacity: 0;
     transition: $transition-normal;
   }
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba($primary-color, 0.4);
-    
+
     &::before {
       opacity: 1;
     }
   }
-  
+
   &:active {
     transform: translateY(-1px);
     box-shadow: 0 5px 15px rgba($primary-color, 0.4);
@@ -229,9 +239,9 @@ button {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -243,16 +253,16 @@ button {
     transform-origin: right;
     transition: transform 0.3s ease;
   }
-  
+
   &:hover {
     transform: translateY(-3px);
-    
+
     &::before {
       transform: scaleX(1);
       transform-origin: left;
     }
   }
-  
+
   &:active {
     transform: translateY(-1px);
   }
@@ -265,21 +275,22 @@ button {
   background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
     width: 50%;
     height: 100%;
-    background: url('/placeholder.svg?height=1000&width=1000') no-repeat center/cover;
+    background: url("/placeholder.svg?height=1000&width=1000") no-repeat
+      center/cover;
     opacity: 0.05;
     z-index: 0;
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -150px;
     left: -150px;
@@ -305,13 +316,13 @@ button {
     font-size: 4rem;
     margin-bottom: 1.5rem;
     line-height: 1.1;
-    
+
     span {
       @include text-gradient($gradient-primary);
       display: block;
     }
   }
-  
+
   p {
     font-size: 1.2rem;
     color: $text-medium;
@@ -328,9 +339,9 @@ button {
 
 .itc-hero-image {
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20px;
     right: -20px;
@@ -341,12 +352,12 @@ button {
     z-index: -1;
     animation: pulse 4s infinite alternate ease-in-out;
   }
-  
+
   img {
     border-radius: $radius-lg;
     box-shadow: $shadow-lg;
     transition: $transition-normal;
-    
+
     &:hover {
       transform: scale(1.02) rotate(1deg);
     }
@@ -364,7 +375,7 @@ button {
   font-weight: 600;
   font-size: 0.9rem;
   box-shadow: $shadow-md;
-  
+
   svg {
     color: white;
   }
@@ -419,9 +430,9 @@ button {
   box-shadow: $shadow-lg;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -435,21 +446,26 @@ button {
   text-align: center;
   padding: 1.5rem;
   position: relative;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 20%;
     right: 0;
     width: 1px;
     height: 60%;
-    background: linear-gradient(to bottom, transparent, rgba($text-light, 0.3), transparent);
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba($text-light, 0.3),
+      transparent
+    );
   }
-  
+
   &:last-child::after {
     display: none;
   }
-  
+
   .itc-stat-number {
     display: block;
     font-size: 3rem;
@@ -458,7 +474,7 @@ button {
     margin-bottom: 0.5rem;
     font-family: $font-primary;
   }
-  
+
   .itc-stat-label {
     font-size: 1rem;
     color: $text-medium;
@@ -472,15 +488,15 @@ button {
 .itc-section-header {
   text-align: center;
   margin-bottom: 5rem;
-  
+
   h2 {
     font-size: 2.8rem;
     margin-bottom: 1rem;
     position: relative;
     display: inline-block;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -15px;
       left: 50%;
@@ -491,7 +507,7 @@ button {
       border-radius: 2px;
     }
   }
-  
+
   p {
     font-size: 1.2rem;
     color: $text-medium;
@@ -506,9 +522,9 @@ button {
   background: $light-bg;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -100px;
     right: -100px;
@@ -518,9 +534,9 @@ button {
     background: $gradient-secondary;
     opacity: 0.1;
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -100px;
     left: -100px;
@@ -542,24 +558,24 @@ button {
 
 .itc-about-image {
   position: relative;
-  
+
   img {
     border-radius: $radius-lg;
     box-shadow: $shadow-lg;
     position: relative;
     z-index: 2;
     transition: $transition-normal;
-    
+
     &:hover {
       transform: scale(1.03) rotate(-1deg);
     }
   }
-  
+
   .itc-image-shape {
     position: absolute;
     border-radius: $radius-lg;
     z-index: 1;
-    
+
     &.shape-1 {
       bottom: -20px;
       left: -20px;
@@ -569,7 +585,7 @@ button {
       opacity: 0.8;
       animation: float 8s infinite alternate ease-in-out;
     }
-    
+
     &.shape-2 {
       top: -15px;
       right: -15px;
@@ -589,9 +605,9 @@ button {
     color: $text-dark;
     position: relative;
     padding-bottom: 1rem;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
@@ -601,7 +617,7 @@ button {
       border-radius: 2px;
     }
   }
-  
+
   p {
     margin-bottom: 2.5rem;
     color: $text-medium;
@@ -620,17 +636,17 @@ button {
   @include flex(row, flex-start, flex-start);
   gap: 1rem;
   transition: $transition-normal;
-  
+
   &:hover {
     transform: translateY(-5px);
-    
+
     .itc-feature-icon {
       background: $gradient-primary;
       color: $white;
       transform: scale(1.1);
     }
   }
-  
+
   .itc-feature-icon {
     background: rgba($primary-color, 0.1);
     color: $primary-color;
@@ -641,14 +657,14 @@ button {
     flex-shrink: 0;
     transition: $transition-normal;
   }
-  
+
   .itc-feature-text {
     h4 {
       font-size: 1.1rem;
       margin-bottom: 0.5rem;
       color: $text-dark;
     }
-    
+
     p {
       font-size: 0.95rem;
       margin-bottom: 0;
@@ -664,15 +680,16 @@ button {
   background: $white;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/placeholder.svg?height=1000&width=1000') no-repeat center/cover;
+    background: url("/placeholder.svg?height=1000&width=1000") no-repeat
+      center/cover;
     opacity: 0.02;
     z-index: 0;
   }
@@ -689,7 +706,7 @@ button {
   gap: 1rem;
   margin-bottom: 4rem;
   flex-wrap: wrap;
-  
+
   button {
     padding: 1rem 1.8rem;
     background: transparent;
@@ -699,9 +716,9 @@ button {
     color: $text-medium;
     position: relative;
     transition: $transition-normal;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -712,20 +729,20 @@ button {
       transition: $transition-normal;
       border-radius: 3px;
     }
-    
+
     &:hover {
       color: $primary-color;
-      
+
       &::after {
         width: 30px;
       }
     }
-    
+
     &.active {
       color: $primary-color;
       background: rgba($primary-color, 0.08);
       border-color: rgba($primary-color, 0.2);
-      
+
       &::after {
         width: 50px;
       }
@@ -752,17 +769,17 @@ button {
 
 .itc-tab-image {
   position: relative;
-  
+
   img {
     border-radius: $radius-lg;
     box-shadow: $shadow-lg;
     transition: $transition-normal;
-    
+
     &:hover {
       transform: scale(1.03);
     }
   }
-  
+
   .itc-image-accent {
     position: absolute;
     width: 80%;
@@ -784,9 +801,9 @@ button {
     color: $text-dark;
     position: relative;
     padding-bottom: 1rem;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
@@ -796,7 +813,7 @@ button {
       border-radius: 2px;
     }
   }
-  
+
   p {
     margin-bottom: 2rem;
     color: $text-medium;
@@ -810,18 +827,18 @@ button {
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
   margin-bottom: 2.5rem;
-  
+
   li {
     @include flex(row, flex-start, center);
     gap: 0.8rem;
     font-weight: 500;
     color: $text-dark;
     transition: $transition-normal;
-    
+
     &:hover {
       transform: translateX(5px);
     }
-    
+
     svg {
       color: $primary-color;
       background: rgba($primary-color, 0.1);
@@ -837,15 +854,16 @@ button {
   background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
     width: 100%;
     height: 100%;
-    background: url('/placeholder.svg?height=1000&width=1000') no-repeat center/cover;
+    background: url("/placeholder.svg?height=1000&width=1000") no-repeat
+      center/cover;
     opacity: 0.03;
     z-index: 0;
   }
@@ -872,17 +890,17 @@ button {
   z-index: 2;
   transition: $transition-normal;
   border-left: 5px solid $primary-color;
-  
+
   &:hover {
     transform: translateY(-5px) translateX(5px);
     box-shadow: $shadow-lg;
     border-left-width: 10px;
-    
+
     .itc-step-number {
       transform: scale(1.1) rotate(10deg);
     }
   }
-  
+
   .itc-step-number {
     width: 70px;
     height: 70px;
@@ -897,14 +915,14 @@ button {
     transition: $transition-normal;
     font-family: $font-primary;
   }
-  
+
   .itc-step-content {
     h3 {
       font-size: 1.5rem;
       margin-bottom: 0.8rem;
       color: $text-dark;
     }
-    
+
     p {
       color: $text-medium;
       margin: 0;
@@ -921,9 +939,10 @@ button {
   margin-left: calc(2rem + 35px);
   position: relative;
   z-index: 1;
-  
-  &::before, &::after {
-    content: '';
+
+  &::before,
+  &::after {
+    content: "";
     position: absolute;
     width: 12px;
     height: 12px;
@@ -931,11 +950,11 @@ button {
     border-radius: 50%;
     left: -4.5px;
   }
-  
+
   &::before {
     top: 0;
   }
-  
+
   &::after {
     bottom: 0;
   }
@@ -947,34 +966,38 @@ button {
   text-align: center;
   position: relative;
   z-index: 1;
-  
+
   .itc-video-thumbnail {
     position: relative;
     border-radius: $radius-lg;
     overflow: hidden;
     box-shadow: $shadow-lg;
     margin-bottom: 1.5rem;
-    
+
     img {
       width: 100%;
       transition: $transition-normal;
-      
+
       &:hover {
         transform: scale(1.05);
       }
     }
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.5)
+      );
       z-index: 1;
     }
-    
+
     .itc-play-button {
       position: absolute;
       top: 50%;
@@ -989,14 +1012,14 @@ button {
       cursor: pointer;
       transition: $transition-bounce;
       z-index: 2;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
-      
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+
       &:hover {
         transform: translate(-50%, -50%) scale(1.1);
         background: $primary-color;
         box-shadow: 0 0 40px rgba($primary-color, 0.5);
       }
-      
+
       svg {
         width: 30px;
         height: 30px;
@@ -1004,7 +1027,7 @@ button {
       }
     }
   }
-  
+
   h3 {
     font-size: 1.4rem;
     color: $text-dark;
@@ -1018,15 +1041,16 @@ button {
   background: $white;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/placeholder.svg?height=1000&width=1000') no-repeat center/cover;
+    background: url("/placeholder.svg?height=1000&width=1000") no-repeat
+      center/cover;
     opacity: 0.02;
     z-index: 0;
   }
@@ -1048,9 +1072,9 @@ button {
   box-shadow: $shadow-md;
   transition: $transition-normal;
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -1061,21 +1085,21 @@ button {
     opacity: 0.5;
     transition: $transition-normal;
   }
-  
+
   &:hover {
     transform: translateY(-15px);
     box-shadow: $shadow-lg;
-    
+
     &::before {
       opacity: 1;
     }
   }
-  
+
   .itc-testimonial-content {
     position: relative;
     padding-top: 2rem;
     margin-bottom: 2.5rem;
-    
+
     &::before {
       content: '"';
       position: absolute;
@@ -1087,7 +1111,7 @@ button {
       line-height: 1;
       opacity: 0.3;
     }
-    
+
     p {
       font-style: italic;
       color: $text-dark;
@@ -1095,11 +1119,11 @@ button {
       line-height: 1.8;
     }
   }
-  
+
   .itc-testimonial-author {
     @include flex(row, flex-start, center);
     gap: 1rem;
-    
+
     img {
       width: 60px;
       height: 60px;
@@ -1108,13 +1132,13 @@ button {
       border: 3px solid $white;
       box-shadow: $shadow-md;
     }
-    
+
     h4 {
       font-size: 1.1rem;
       margin-bottom: 0.2rem;
       color: $text-dark;
     }
-    
+
     p {
       font-size: 0.9rem;
       color: $text-medium;
@@ -1128,14 +1152,15 @@ button {
   background: $light-bg;
   position: relative;
   overflow: hidden;
-  
-  &::before, &::after {
-    content: '';
+
+  &::before,
+  &::after {
+    content: "";
     position: absolute;
     border-radius: 50%;
     z-index: 0;
   }
-  
+
   &::before {
     top: -100px;
     right: -100px;
@@ -1144,7 +1169,7 @@ button {
     background: $gradient-secondary;
     opacity: 0.1;
   }
-  
+
   &::after {
     bottom: -100px;
     left: -100px;
@@ -1175,23 +1200,23 @@ button {
   cursor: pointer;
   transition: $transition-normal;
   border-left: 0 solid $primary-color;
-  
+
   &:hover {
     transform: translateX(5px);
     box-shadow: $shadow-lg;
     border-left-width: 5px;
   }
-  
+
   .itc-faq-question {
     padding: 1.8rem 2rem;
     @include flex(row, space-between, center);
-    
+
     h3 {
       font-size: 1.2rem;
       font-weight: 600;
       color: $text-dark;
     }
-    
+
     .itc-faq-icon {
       color: $primary-color;
       transition: $transition-normal;
@@ -1202,13 +1227,13 @@ button {
       @include flex;
     }
   }
-  
+
   .itc-faq-answer {
     padding: 0 2rem;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
-    
+
     p {
       color: $text-medium;
       padding-bottom: 1.8rem;
@@ -1216,20 +1241,20 @@ button {
       font-size: 1.05rem;
     }
   }
-  
+
   &.active {
     border-left-width: 5px;
-    
+
     .itc-faq-question {
       border-bottom: 1px solid rgba($text-light, 0.1);
-      
+
       .itc-faq-icon {
         background: $primary-color;
         color: $white;
         transform: rotate(90deg);
       }
     }
-    
+
     .itc-faq-answer {
       max-height: 500px;
       padding-top: 1.5rem;
@@ -1241,11 +1266,11 @@ button {
 // CTA Section
 .itc-cta {
   @include section-padding;
-  background: url('') no-repeat center/cover;
+  background: url("") no-repeat center/cover;
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -1261,13 +1286,13 @@ button {
   position: relative;
   z-index: 2;
   color: black;
-  
+
   h2 {
     font-size: 3rem;
     margin-bottom: 1.5rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   p {
     font-size: 1.3rem;
     margin-bottom: 3rem;
@@ -1281,25 +1306,25 @@ button {
 .itc-cta-buttons {
   @include flex(row, center, center);
   gap: 1.5rem;
-  
+
   .itc-btn-primary {
     background: $white;
     color: $primary-color;
-    
+
     &::before {
       background: rgba($white, 0.2);
     }
-    
+
     &:hover {
       background: $white;
       color: $primary-color;
     }
   }
-  
+
   .itc-btn-secondary {
     background: #ffffff;
     color: #5e60ce;
-    
+
     &:hover {
       background: rgba($white, 0.1);
     }
@@ -1311,12 +1336,12 @@ button {
   .itc-hero-text h1 {
     font-size: 3.5rem;
   }
-  
+
   .itc-section-header h2,
   .itc-cta-content h2 {
     font-size: 2.5rem;
   }
-  
+
   .itc-about-text h3,
   .itc-tab-text h3 {
     font-size: 2rem;
@@ -1324,36 +1349,36 @@ button {
 }
 
 @media (max-width: 992px) {
-  .itc-hero-content, 
-  .itc-about-content, 
+  .itc-hero-content,
+  .itc-about-content,
   .itc-tab-panel {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-  
+
   .itc-hero-text {
     text-align: center;
-    
+
     p {
       max-width: 100%;
     }
   }
-  
+
   .itc-hero-buttons {
     justify-content: center;
   }
-  
+
   .itc-hero-image {
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .itc-about-image {
     order: -1;
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .itc-section-header {
     margin-bottom: 3rem;
   }
@@ -1363,49 +1388,49 @@ button {
   .itc-hero-text h1 {
     font-size: 2.8rem;
   }
-  
+
   .itc-section-header h2 {
     font-size: 2.2rem;
   }
-  
+
   .itc-hero-stats {
     flex-direction: column;
     gap: 2rem;
-    
+
     .itc-stat::after {
       display: none;
     }
   }
-  
+
   .itc-process-step {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
     padding: 2rem;
-    
+
     .itc-step-number {
       margin: 0 auto;
     }
   }
-  
+
   .itc-process-connector {
     margin: 0 auto;
     height: 30px;
   }
-  
+
   .itc-check-list {
     grid-template-columns: 1fr;
   }
-  
+
   .itc-tab-headers button {
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
   }
-  
+
   .itc-cta-content h2 {
     font-size: 2.2rem;
   }
-  
+
   .itc-cta-content p {
     font-size: 1.1rem;
   }
@@ -1415,57 +1440,62 @@ button {
   .itc-hero-text h1 {
     font-size: 2.2rem;
   }
-  
+
   .itc-section-header h2 {
     font-size: 1.8rem;
   }
-  
+
   .itc-about-text h3,
   .itc-tab-text h3 {
     font-size: 1.8rem;
   }
-  
+
   .itc-cta-buttons {
     flex-direction: column;
     gap: 1rem;
-    
+
     button {
       width: 100%;
     }
   }
-  
+
   .itc-hero-buttons {
     flex-direction: column;
     gap: 1rem;
-    
+
     button {
       width: 100%;
     }
   }
-  
+
   .itc-floating-element {
     display: none;
   }
-  
+
   .itc-tab-headers {
     flex-direction: column;
     gap: 0.5rem;
-    
+
     button {
       width: 100%;
     }
   }
-  
+
   .itc-process-step {
     padding: 1.5rem;
   }
-  
+
   .itc-faq-question h3 {
     font-size: 1rem;
   }
 }
 @media (min-width: 1400px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-        max-width: 100%;
-    }
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 100%;
+  }
 }

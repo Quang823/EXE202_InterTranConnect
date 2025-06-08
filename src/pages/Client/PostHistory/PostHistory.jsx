@@ -16,7 +16,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./PostHistory.scss";
 import "./JobSidebar.scss";
 import { getJobsByCustomerService } from "../../../services/jobService";
-
+import Loading from "../../../components/common/Loading/Loading";
 const PostHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPosts, setSelectedPosts] = useState(new Set());
@@ -24,7 +24,7 @@ const PostHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const postsPerPage = 5;
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -37,8 +37,6 @@ const PostHistory = () => {
         }
 
         const fetchedJobs = await getJobsByCustomerService(customerId);
-        console.log(fetchedJobs);
-
         const transformedPosts = fetchedJobs.map((job) => ({
           jobId: job.id,
           company: job.companyName.toLowerCase(),
@@ -78,8 +76,7 @@ const PostHistory = () => {
   };
 
   const handleViewDetail = (post) => {
-    // Navigate to the PostDetailHistory page with the jobId
-    navigate(`/client/post-detail/${post.jobId}`);
+    navigate(`/client/post_detail/${post.jobId}`);
   };
 
   const togglePostSelection = (index) => {
@@ -130,7 +127,12 @@ const PostHistory = () => {
           </div>
           <div className="col-md-9">
             <div className="ph-post-history-container">
-              <p>Loading posts...</p>
+              <Loading
+                isLoading={loading}
+                fullScreen
+                size="medium"
+                color="#3b82f6"
+              />
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ const LoginForm = () => {
       } else {
         const redirectPath =
           user.role === "Customer"
-            ? "/client/home"
+            ? "/client/"
             : user.role === "Talent"
             ? "/translator/"
             : null;
@@ -100,7 +100,7 @@ const LoginForm = () => {
         {darkMode ? <MdLightMode size={30} /> : <MdDarkMode size={30} />}
       </div>
 
-      <div className="logo-wrapper" onClick={() => navigate("/client/home")}>
+      <div className="logo-wrapper" onClick={() => navigate("/client/")}>
         <div className="logo">
           <Image src="logo" alt="Inter-Trans Connect Logo" />
         </div>

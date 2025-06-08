@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Eye, Plus, FileUp, ExternalLink, Search, Filter, MoreHorizontal, Calendar, Clock, CheckCircle } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Plus,
+  FileUp,
+  ExternalLink,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Calendar,
+  Clock,
+  CheckCircle,
+} from "lucide-react";
 import "./ApplyJob.scss";
 import axios from "axios";
 import useScrollToTop from "../../../../hooks/useScrollToTop.jsx";
-
+import Loading from "../../../common/Loading/Loading.jsx";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Function to generate random RGB gradient
@@ -14,7 +27,7 @@ const getRandomGradient = () => {
     const b = Math.floor(Math.random() * 256);
     return `rgb(${r}, ${g}, ${b})`;
   };
-  
+
   const angle = Math.floor(Math.random() * 360);
   const color1 = getRandomRGB();
   const color2 = getRandomRGB();
@@ -42,9 +55,12 @@ const ApplyJob = () => {
           return;
         }
 
-        const response = await axios.get(`${API_URL}/api/JobApplication/interpreter/${interpreterId}`, {
-          headers: { Authorization: `Bearer ${sessionData.accessToken}` }
-        });
+        const response = await axios.get(
+          `${API_URL}/api/JobApplication/interpreter/${interpreterId}`,
+          {
+            headers: { Authorization: `Bearer ${sessionData.accessToken}` },
+          }
+        );
 
         setJobApplications(response.data);
         setLoading(false);
@@ -78,18 +94,25 @@ const ApplyJob = () => {
   // Format date to be more readable
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    const options = { month: "short", day: "numeric", year: "numeric" };
+    return date.toLocaleDateString("en-US", options);
   };
 
   // Extract time from date string
   const extractTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />
+      </div>
+    );
   }
 
   if (error) {
@@ -105,7 +128,11 @@ const ApplyJob = () => {
         <div className="header-right">
           <div className="search-wrapper">
             <Search className="search-icon" size={18} />
-            <input type="text" placeholder="Search applications..." className="search-input-app" />
+            <input
+              type="text"
+              placeholder="Search applications..."
+              className="search-input-app"
+            />
           </div>
           <button className="filter-button">
             <Filter size={16} />
@@ -122,10 +149,16 @@ const ApplyJob = () => {
         {currentJobs.map((job, index) => {
           const gradient = getRandomGradient();
           return (
-            <div key={index} className={`job-card ${job.highlighted ? 'highlighted' : ''}`}>
+            <div
+              key={index}
+              className={`job-card ${job.highlighted ? "highlighted" : ""}`}
+            >
               <div className="card-header">
                 <div className="company-info">
-                  <div className="company-logo" style={{ background: gradient }}>
+                  <div
+                    className="company-logo"
+                    style={{ background: gradient }}
+                  >
                     <span>ITC</span>
                   </div>
                   <div className="company-details">
@@ -139,7 +172,7 @@ const ApplyJob = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="card-content">
                 <div className="date-info">
                   <div className="date-item">
@@ -151,15 +184,17 @@ const ApplyJob = () => {
                     <span>{extractTime(job.createdDate)}</span>
                   </div>
                 </div>
-                
+
                 <div className="status-section">
-                  <div className={`status-indicator ${job.status.toLowerCase()}`}>
+                  <div
+                    className={`status-indicator ${job.status.toLowerCase()}`}
+                  >
                     <CheckCircle size={14} />
                     <span>{job.status}</span>
                   </div>
                 </div>
               </div>
-              
+
               <div className="card-footer">
                 <button className="action-button view">
                   <Eye size={16} />
@@ -172,7 +207,11 @@ const ApplyJob = () => {
                 <label className="action-button upload">
                   <FileUp size={16} />
                   <span>Upload</span>
-                  <input type="file" className="file-input" onChange={handleFileUpload} />
+                  <input
+                    type="file"
+                    className="file-input"
+                    onChange={handleFileUpload}
+                  />
                 </label>
               </div>
             </div>
@@ -183,7 +222,11 @@ const ApplyJob = () => {
       {jobApplications.length > jobsPerPage && (
         <div className="pagination-container">
           <div className="pagination-info">
-            <span>Showing {indexOfFirstJob + 1}-{Math.min(indexOfLastJob, jobApplications.length)} of {jobApplications.length} applications</span>
+            <span>
+              Showing {indexOfFirstJob + 1}-
+              {Math.min(indexOfLastJob, jobApplications.length)} of{" "}
+              {jobApplications.length} applications
+            </span>
           </div>
           <div className="pagination-controls">
             <button
@@ -194,19 +237,23 @@ const ApplyJob = () => {
               <ChevronLeft size={16} />
               <span>Previous</span>
             </button>
-            
+
             <div className="pagination-numbers">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`page-number ${currentPage === page ? "active" : ""}`}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    className={`page-number ${
+                      currentPage === page ? "active" : ""
+                    }`}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
             </div>
-            
+
             <button
               className="pagination-button next"
               onClick={() => handlePageChange(currentPage + 1)}
@@ -215,7 +262,7 @@ const ApplyJob = () => {
               <span>Next</span>
               <ChevronRight size={16} />
             </button>
-          </div>  
+          </div>
         </div>
       )}
     </div>

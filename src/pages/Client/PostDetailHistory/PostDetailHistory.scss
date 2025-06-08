@@ -52,7 +52,7 @@
   font-family: var(--post-history-detail-font-sans);
   color: var(--post-history-detail-text-primary);
   animation: fadeIn 0.6s ease-out;
-
+  margin-top: 80px;
   @media (max-width: 768px) {
     margin: 24px;
     padding: 24px;

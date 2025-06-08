@@ -11,6 +11,7 @@ import "./CustomerProfile.scss";
 import ToastManager from "../../../components/common/Toast/ToastManager";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "../../../components/common/Loading/Loading";
 
 const CustomerProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -73,7 +74,9 @@ const CustomerProfile = () => {
           address: response.address || "",
           bio: response.bio || "",
           password: "",
-          avatarUrl: response.avatarUrl || "/api/placeholder/120/120",
+          avatarUrl:
+            response.avatarUrl ||
+            "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
           dateOfBirth: response.dateOfBirth || "Not specified",
           gender: response.gender || "Not specified",
           studentId: response.studentId || "Add student ID",
@@ -160,7 +163,7 @@ const CustomerProfile = () => {
         setShowModal(false);
       }
     } catch (error) {
-      alert("Failed to update profile: " + error.message);
+      ToastManager.showError("Failed to update profile: " + error.message);
     }
   };
 
@@ -175,7 +178,11 @@ const CustomerProfile = () => {
   };
 
   if (loading) {
-    return <div className="cp-loading">Loading...</div>;
+    return (
+      <div className="cp-container">
+        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />{" "}
+      </div>
+    );
   }
 
   if (error) {
@@ -492,6 +499,7 @@ const CustomerProfile = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

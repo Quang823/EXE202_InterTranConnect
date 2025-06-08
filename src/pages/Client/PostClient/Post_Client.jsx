@@ -34,6 +34,8 @@ const Post_Client = () => {
     education: "",
     translationForm: "",
     certificates: "",
+    deadline: "",
+    workingTime: "",
   });
 
   const [message, setMessage] = useState("");
@@ -51,7 +53,6 @@ const Post_Client = () => {
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-  // Get the list of languages
   const languages = ISO6391.getAllNames().map((name) => ({
     value: name,
     label: name,
@@ -152,39 +153,64 @@ const Post_Client = () => {
       const user = JSON.parse(sessionStorage.getItem("user") || "{}");
       const customerId = user.id;
       const jobData = {
-        Title: formData.jobTitle,
-        TranslationType: formData.translationType,
-        SourceLanguage: formData.sourceLanguage,
-        TranslationLanguage: formData.translationLanguage,
-        Description: formData.description,
-        UploadFile: formData.uploadFileUrl,
-        CompanyLogo: formData.companyLogoUrl,
-        HourlyRate: formData.salary.hourlyRate,
-        PlatformServiceFee: formData.salary.platformFee,
-        TotalFee: formData.salary.totalFee,
-        CompanyName: formData.companyInfo.companyName,
-        CompanyDescription: formData.companyInfo.companyDescription,
-        ContactEmail: formData.contactInfo.email,
-        ContactPhone: formData.contactInfo.phone,
-        ContactAddress: formData.contactInfo.address,
-        WorkAddressLine: formData.workLocation.workAddressLine,
-        WorkCity: formData.workLocation.city,
-        WorkPostalCode: formData.workLocation.postalCode,
-        WorkCountry: formData.workLocation.country,
-        CustomerId: customerId,
-        Experience: formData.experience,
-        Education: formData.education,
-        TranslationForm: formData.translationForm,
-        Certificates: formData.certificates,
+        jobTitle: formData.jobTitle,
+        translationType: formData.translationType,
+        sourceLanguage: formData.sourceLanguage,
+        targetLanguage: formData.translationLanguage,
+        description: formData.description,
+        uploadFileUrl: formData.uploadFileUrl,
+        hourlyRate: parseFloat(formData.salary.hourlyRate) || 0,
+        platformServiceFee: parseFloat(formData.salary.platformFee) || 0,
+        totalFee: parseFloat(formData.salary.totalFee) || 0,
+        companyName: formData.companyInfo.companyName,
+        companyDescription: formData.companyInfo.companyDescription,
+        companyLogoUrl: formData.companyLogoUrl,
+        contactEmail: formData.contactInfo.email,
+        contactPhone: formData.contactInfo.phone || "",
+        contactAddress: formData.contactInfo.address,
+        workAddressLine: formData.workLocation.workAddressLine,
+        workCity: formData.workLocation.city,
+        workPostalCode: formData.workLocation.postalCode || "",
+        workCountry: formData.workLocation.country || "",
+        customerId: customerId,
+        ...(formData.translationType === "Written" && {
+          deadline: formData.deadline,
+        }),
+        ...(formData.translationType === "Oral" && {
+          workingTime: formData.workingTime,
+        }),
       };
 
-      if (!jobData.Title || !jobData.ContactEmail || !jobData.UploadFile) {
+      if (
+        !jobData.jobTitle ||
+        !jobData.contactEmail ||
+        !jobData.uploadFileUrl
+      ) {
         setMessage("Please fill in Title, ContactEmail, and upload a file.");
         setIsSubmitting(false);
         return;
       }
 
-      await createJob(jobData);
+      if (formData.translationType === "Oral" && !jobData.workingTime) {
+        setMessage("Please specify the working time for Oral translation.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (
+        !jobData.hourlyRate ||
+        !jobData.platformServiceFee ||
+        !jobData.totalFee ||
+        !jobData.companyName
+      ) {
+        setMessage(
+          "Please fill in Hourly Rate, Platform Fee, Total Fee, and Company Name."
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      const response = await createJob(jobData);
       setMessage("Job posted successfully!");
 
       setFormData({
@@ -208,13 +234,20 @@ const Post_Client = () => {
         education: "",
         translationForm: "",
         certificates: "",
+        deadline: "",
+        workingTime: "",
       });
       setIsCompanyFilled(false);
       setIsContactFilled(false);
       setIsSalaryFilled(false);
       setIsWorkLocationFilled(false);
     } catch (error) {
-      setMessage(`Failed to create job: ${error.message}`);
+      console.error("Error posting job:", error);
+      setMessage(
+        `Failed to create job: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -271,104 +304,181 @@ const Post_Client = () => {
 
           <div className="post-job-form-fields">
             <div className="post-job-field-row">
-              <input
-                type="text"
-                name="jobTitle"
-                placeholder="Title/Headline"
-                value={formData.jobTitle}
-                onChange={handleInputChange}
-              />
-              <select
-                name="translationType"
-                value={formData.translationType}
-                onChange={handleInputChange}
-              >
-                <option value="">Work Type - Select...</option>
-                <option value="Written">Written</option>
-                <option value="Oral">Oral</option>
-              </select>
+              <div className="input-with-label">
+                <label htmlFor="jobTitle">Job Title</label>
+                <input
+                  type="text"
+                  id="jobTitle"
+                  name="jobTitle"
+                  placeholder="Title/Headline"
+                  value={formData.jobTitle}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                />
+              </div>
+              <div className="input-with-label">
+                <label htmlFor="translationType">Work Type</label>
+                <select
+                  id="translationType"
+                  name="translationType"
+                  value={formData.translationType}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Work Type - Select...</option>
+                  <option value="Written">Written - With Deadline Time</option>
+                  <option value="Oral">Oral - With Working Time</option>
+                </select>
+              </div>
+            </div>
+
+            {formData.translationType === "Written" && (
+              <div className="post-job-field-row">
+                <div className="input-with-label">
+                  <label htmlFor="deadline">Deadline</label>
+                  <input
+                    type="date"
+                    id="deadline"
+                    name="deadline"
+                    value={formData.deadline}
+                    onChange={handleInputChange}
+                    className="full-width-input"
+                    placeholder="Select Deadline"
+                  />
+                </div>
+              </div>
+            )}
+
+            {formData.translationType === "Oral" && (
+              <div className="post-job-field-row">
+                <div className="input-with-label">
+                  <label htmlFor="workingTime">Working Time</label>
+                  <input
+                    type="datetime-local"
+                    id="workingTime"
+                    name="workingTime"
+                    value={formData.workingTime}
+                    onChange={handleInputChange}
+                    className="full-width-input"
+                    placeholder="Select Working Time"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="post-job-field-row">
+              <div className="input-with-label">
+                <label htmlFor="experience">Experience Requirement</label>
+                <select
+                  id="experience"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Experience Requirement - Select...</option>
+                  <option value="Entry">Entry Level</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Expert">Expert</option>
+                </select>
+              </div>
+              <div className="input-with-label">
+                <label htmlFor="education">Education (Optional)</label>
+                <select
+                  id="education"
+                  name="education"
+                  value={formData.education}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Education (Optional) - Select...</option>
+                  <option value="HighSchool">High School</option>
+                  <option value="Bachelor">Bachelor's Degree</option>
+                  <option value="Master">Master's Degree</option>
+                </select>
+              </div>
             </div>
 
             <div className="post-job-field-row">
-              <select
-                name="experience"
-                value={formData.experience}
-                onChange={handleInputChange}
-              >
-                <option value="">Experience Requirement - Select...</option>
-                <option value="Entry">Entry Level</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Expert">Expert</option>
-              </select>
-              <select
-                name="education"
-                value={formData.education}
-                onChange={handleInputChange}
-              >
-                <option value="">Education (Optional) - Select...</option>
-                <option value="HighSchool">High School</option>
-                <option value="Bachelor">Bachelor's Degree</option>
-                <option value="Master">Master's Degree</option>
-              </select>
+              <div className="input-with-label">
+                <label htmlFor="sourceLanguage">Source Language</label>
+                <select
+                  id="sourceLanguage"
+                  name="sourceLanguage"
+                  value={formData.sourceLanguage}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Source Language - Select...</option>
+                  {languages.map((language) => (
+                    <option key={language.value} value={language.value}>
+                      {language.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="input-with-label">
+                <label htmlFor="translationForm">Translation Form</label>
+                <select
+                  id="translationForm"
+                  name="translationForm"
+                  value={formData.translationForm}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Translation Form - Select...</option>
+                  <option value="Document">Document</option>
+                  <option value="Live">Live Interpretation</option>
+                </select>
+              </div>
             </div>
 
             <div className="post-job-field-row">
-              <select
-                name="sourceLanguage"
-                value={formData.sourceLanguage}
-                onChange={handleInputChange}
-              >
-                <option value="">Source Language - Select...</option>
-                {languages.map((language) => (
-                  <option key={language.value} value={language.value}>
-                    {language.label}
+              <div className="input-with-label">
+                <label htmlFor="translationLanguage">Target Language</label>
+                <select
+                  id="translationLanguage"
+                  name="translationLanguage"
+                  value={formData.translationLanguage}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Target Language - Select...</option>
+                  {languages.map((language) => (
+                    <option key={language.value} value={language.value}>
+                      {language.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="input-with-label">
+                <label htmlFor="certificates">Relevant Certificates</label>
+                <select
+                  id="certificates"
+                  name="certificates"
+                  value={formData.certificates}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                >
+                  <option value="">Relevant Certificates - Select...</option>
+                  <option value="None">None</option>
+                  <option value="CertifiedTranslator">
+                    Certified Translator
                   </option>
-                ))}
-              </select>
-              <select
-                name="translationForm"
-                value={formData.translationForm}
-                onChange={handleInputChange}
-              >
-                <option value="">Translation Form - Select...</option>
-                <option value="Document">Document</option>
-                <option value="Live">Live Interpretation</option>
-              </select>
-            </div>
-
-            <div className="post-job-field-row">
-              <select
-                name="translationLanguage"
-                value={formData.translationLanguage}
-                onChange={handleInputChange}
-              >
-                <option value="">Target Language - Select...</option>
-                {languages.map((language) => (
-                  <option key={language.value} value={language.value}>
-                    {language.label}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="certificates"
-                value={formData.certificates}
-                onChange={handleInputChange}
-              >
-                <option value="">Relevant Certificates - Select...</option>
-                <option value="None">None</option>
-                <option value="CertifiedTranslator">
-                  Certified Translator
-                </option>
-                <option value="ATA">ATA Certification</option>
-              </select>
+                  <option value="ATA">ATA Certification</option>
+                </select>
+              </div>
             </div>
 
             <div className="post-job-description">
+              <label htmlFor="description">Job Description</label>
               <textarea
+                id="description"
                 name="description"
                 placeholder="Job Description"
                 value={formData.description}
                 onChange={handleInputChange}
+                className="full-width-input"
               ></textarea>
             </div>
           </div>
@@ -394,14 +504,16 @@ const Post_Client = () => {
               {isContactFilled && <span className="filled-icon">✓</span>}
               <span className="plus-icon">+</span>
             </button>
-            <button
-              className={`info-link ${isWorkLocationFilled ? "filled" : ""}`}
-              onClick={() => setIsWorkLocationOpen(true)}
-            >
-              <span className="info-icon">📍</span> Work Location
-              {isWorkLocationFilled && <span className="filled-icon">✓</span>}
-              <span className="plus-icon">+</span>
-            </button>
+            {formData.translationType === "Oral" && (
+              <button
+                className={`info-link ${isWorkLocationFilled ? "filled" : ""}`}
+                onClick={() => setIsWorkLocationOpen(true)}
+              >
+                <span className="info-icon">📍</span> Work Location
+                {isWorkLocationFilled && <span className="filled-icon">✓</span>}
+                <span className="plus-icon">+</span>
+              </button>
+            )}
             <button
               className={`info-link ${isSalaryFilled ? "filled" : ""}`}
               onClick={() => setIsSalaryOpen(true)}
