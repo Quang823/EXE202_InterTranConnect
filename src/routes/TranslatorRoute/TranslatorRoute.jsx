@@ -11,6 +11,7 @@ import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 import AdminDashboards from "../../pages/Translator/AdminDashboards/AdminDashboards";
+import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
 const TranslatorRoute = () => {
   return (
     <Routes>
@@ -26,6 +27,7 @@ const TranslatorRoute = () => {
       <Route path="/forum" element={<Forums />} />
       <Route path="/aboutUs" element={<InterTransConnects />} />
       <Route path="/dashboard" element={<AdminDashboards />} />
+      <Route path="/news_blog" element={<NewsBlog />} />
     </Routes>
   );
 };

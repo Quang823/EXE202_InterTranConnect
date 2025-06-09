@@ -77,7 +77,10 @@ const NewsBlog = () => {
         <div className="blog-layout">
           <main className="blog-main">
             <div className="blog-header">
-              <h2>Latest Articles</h2>
+              <h2>
+                <span className="header-part1">Latest</span>
+                <span className="header-part2">Articles</span>
+              </h2>
               <p>
                 Stay updated with the latest knowledge and experiences in the
                 translation field

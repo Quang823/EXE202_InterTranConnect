@@ -5,8 +5,6 @@ const rootAuth = `${API_URL}/api/auth`;
 
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem("accessToken");
-  console.log(sessionStorage.getItem("accessToken"));
-
   return {
     Authorization: token ? `Bearer ${token}` : "",
     Accept: "application/json",
