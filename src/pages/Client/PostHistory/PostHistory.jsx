@@ -17,6 +17,7 @@ import "./PostHistory.scss";
 import "./JobSidebar.scss";
 import { getJobsByCustomerService } from "../../../services/jobService";
 import Loading from "../../../components/common/Loading/Loading";
+
 const PostHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPosts, setSelectedPosts] = useState(new Set());
@@ -43,7 +44,7 @@ const PostHistory = () => {
           title: job.jobTitle,
           location: job.workCity || "Not specified",
           date: job.createdAt,
-          status: job.status === 0 ? "Active" : "Booked",
+          status: getJobStatus(job.status),
           highlighted: false,
           rating: 4.5,
           applicants: job.applications.length,
@@ -118,6 +119,25 @@ const PostHistory = () => {
     return stars;
   };
 
+  const getJobStatus = (status) => {
+    switch (status) {
+      case 0:
+        return "Open";
+      case 1:
+        return "Awaiting Payment";
+      case 2:
+        return "Paid";
+      case 3:
+        return "In Progress";
+      case 4:
+        return "Completed";
+      case 5:
+        return "Canceled";
+      default:
+        return "Unknown";
+    }
+  };
+
   if (loading) {
     return (
       <div className="container-fluid">
@@ -176,16 +196,25 @@ const PostHistory = () => {
                     Discover and apply to your dream positions
                   </p>
                 </div>
-                <div className="ph-header-stats">
-                  <div className="ph-stat-item">
+                <div className="ph-header-stats flex justify-center gap-6">
+                  <div className="ph-stat-item text-center">
                     <span className="ph-stat-number">{posts.length}</span>
                     <span className="ph-stat-label">Saved Posts</span>
                   </div>
-                  <div className="ph-stat-item">
+                  <div className="ph-stat-item text-center">
                     <span className="ph-stat-number">
-                      {posts.filter((post) => post.status === "Active").length}
+                      {posts.filter((post) => post.status === "Open").length}
                     </span>
                     <span className="ph-stat-label">Active</span>
+                  </div>
+                  <div className="ph-stat-item text-center">
+                    <span className="ph-stat-number">
+                      {
+                        posts.filter((post) => post.status === "Completed")
+                          .length
+                      }
+                    </span>
+                    <span className="ph-stat-label">Completed</span>
                   </div>
                 </div>
               </div>

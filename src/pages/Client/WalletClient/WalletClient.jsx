@@ -222,6 +222,7 @@ const WalletClient = () => {
               <table>
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Type</th>
                     <th>Amount</th>
                     <th>Balance</th>
