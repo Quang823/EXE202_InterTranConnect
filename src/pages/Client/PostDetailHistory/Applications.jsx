@@ -45,16 +45,16 @@ const Applications = ({ job }) => {
           name: app.interpreter?.fullName || "Unknown Translator",
           avatar:
             app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
-          experience: "Experience not provided",
+          email: app.interpreter?.email,
           status:
             app.status === "0"
               ? "Pending"
-              : app.status === "1"
+              : app.status === "2"
               ? "Accepted"
               : "Unknown Status",
           online: false,
         }));
-        console.log("Fetched translators:", mappedTranslators);
+
         setTranslators(mappedTranslators);
       } catch (err) {
         setError(err.message || "Failed to load applications.");
@@ -71,10 +71,6 @@ const Applications = ({ job }) => {
   };
 
   const handleSelectTranslator = async (interpreterId) => {
-    console.log("Selecting translator with parameters:", {
-      jobId,
-      interpreterId,
-    });
     setSelectingId(interpreterId);
     setSelectError(null);
     setInsufficientFundsMessage(null);
@@ -82,16 +78,17 @@ const Applications = ({ job }) => {
     try {
       await selectTranslator(jobId, interpreterId);
       const applications = await fetchJobApplications(jobId);
+
       const mappedTranslators = applications.map((app) => ({
         interpreterId: app.interpreter?.id,
         name: app.interpreter?.fullName || "Unknown Translator",
         avatar:
           app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
-        experience: "Experience not provided",
+        email: app.interpreter?.email,
         status:
           app.status === "0"
             ? "Pending"
-            : app.status === "1"
+            : app.status === "2"
             ? "Accepted"
             : "Unknown Status",
         online: false,
@@ -177,7 +174,7 @@ const Applications = ({ job }) => {
                   )}
                 </div>
                 <div className="post-history-detail-translator-experience">
-                  {translator.experience}
+                  {translator.email}
                 </div>
                 <div className="post-history-detail-translator-status">
                   Status: <span>{translator.status}</span>
@@ -190,20 +187,19 @@ const Applications = ({ job }) => {
                 >
                   View Profile
                 </button>
-                <button
-                  className="post-history-detail-view-profile-btn"
-                  onClick={() =>
-                    handleSelectTranslator(translator.interpreterId)
-                  }
-                  disabled={
-                    selectingId === translator.interpreterId ||
-                    translator.status === "Accepted"
-                  }
-                >
-                  {selectingId === translator.interpreterId
-                    ? "Selecting..."
-                    : "Select"}
-                </button>
+                {translator.status !== "Accepted" && (
+                  <button
+                    className="post-history-detail-view-profile-btn"
+                    onClick={() =>
+                      handleSelectTranslator(translator.interpreterId)
+                    }
+                    disabled={selectingId === translator.interpreterId}
+                  >
+                    {selectingId === translator.interpreterId
+                      ? "Selecting..."
+                      : "Select"}
+                  </button>
+                )}
               </div>
             </div>
           ))}

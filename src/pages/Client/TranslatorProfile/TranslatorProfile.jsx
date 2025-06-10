@@ -19,7 +19,7 @@ import {
   Search,
 } from "lucide-react";
 import "./TranslatorProfile.scss";
-
+import { getUserInfoByUserIdService } from "../../../services/authService";
 const TranslatorProfile = () => {
   const { interpreterId } = useParams();
   const [translator, setTranslator] = useState(null);
@@ -38,15 +38,15 @@ const TranslatorProfile = () => {
       setError(null);
 
       try {
-        // Simulate API call with mock data for demo
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
+        const response = await getUserInfoByUserIdService(interpreterId);
+        console.log("res", response);
         setTranslator({
-          name: "Sarah Johnson",
+          name: response.fullName,
           avatar:
+            response?.avatarUrl ||
             "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=300&fit=crop&crop=face",
           role: "English–Vietnamese Translator",
-          email: "sarah.johnson@email.com",
+          email: response.email,
           phone: "+1 (555) 123-4567",
           languages: ["English", "Vietnamese", "French"],
           experience: "8+ years",
@@ -255,7 +255,7 @@ const TranslatorProfile = () => {
                   </div>
                 </div>
 
-                <button className="hire-button">Hire This Translator</button>
+                {/* <button className="hire-button">Hire This Translator</button> */}
               </div>
             </div>
           </div>

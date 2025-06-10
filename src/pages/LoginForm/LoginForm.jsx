@@ -9,6 +9,7 @@ import { validateForm } from "../../utils/validate";
 import useAuth from "../../hooks/useAuth";
 import Image from "../../assets/images/Image";
 import LoginFormFields from "./LoginFormField";
+import AnimatedImageSection from "./AnimatedImageSection";
 import "./LoginForm.scss";
 
 const LoginForm = () => {
@@ -112,7 +113,7 @@ const LoginForm = () => {
       <Container className="login-container">
         <Row className="login-row">
           <Col md={6} className="form-section">
-            <h3>Sign In</h3>
+            <h3>Welcome Back</h3>
             <div className="google-login">
               <GoogleOAuthProvider
                 clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
@@ -149,11 +150,12 @@ const LoginForm = () => {
           </Col>
 
           <Col md={6} className="image-section">
-            <Image
+            {/* <Image
               src="loginIllustration"
               className="login-image"
               alt="Login Illustration"
-            />
+            /> */}
+            <AnimatedImageSection />
           </Col>
         </Row>
       </Container>
