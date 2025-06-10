@@ -136,9 +136,9 @@ const PostDetailHistory = () => {
                 <DocumentPreview job={job} />
               </div>
               <div className="col-md-6">
-                <p className="post-history-detail-description">
+                {/* <p className="post-history-detail-description">
                   {job.description}
-                </p>
+                </p> */}
                 <OrderDetails job={job} formatDate={formatDate} />
                 <ContactInfo job={job} />
                 <ProgressTimeline job={job} formatDate={formatDate} />
