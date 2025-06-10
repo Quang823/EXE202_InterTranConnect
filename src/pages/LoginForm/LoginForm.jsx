@@ -34,6 +34,8 @@ const LoginForm = () => {
             ? "/client/"
             : user.role === "Talent"
             ? "/translator/"
+            : user.role === "Admin"
+            ? "/admin/"
             : null;
         if (redirectPath) {
           navigate(redirectPath);
