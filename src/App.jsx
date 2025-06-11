@@ -9,6 +9,8 @@ import ClientLayout from "./routes/ClientRoute/ClientLayout";
 import ClientRoute from "./routes/ClientRoute/ClientRoute";
 import TranslatorLayout from "./routes/TranslatorRoute/TranslatorLayout";
 import TranslatorRoute from "./routes/TranslatorRoute/TranslatorRoute";
+import StaffLayout from "./routes/StaffRoute/StaffLayout";
+import StaffRoute from "./routes/StaffRoute/StaffRoute";
 import AdminLayout from "./routes/AdminRoute/AdminLayout";
 import AdminRoute from "./routes/AdminRoute/AdminRoute";
 import RegisterForm from "./pages/RegisterForm/RegisterForm";
@@ -33,6 +35,8 @@ const ProtectedLayout = ({ children }) => {
         mappedRole = "translator";
       } else if (user.role === "Customer") {
         mappedRole = "client";
+      } else if (user.role === "Staff") {
+        mappedRole = "staff";
       } else if (user.role === "Admin") {
         mappedRole = "admin";
       } else {
@@ -85,6 +89,14 @@ function App() {
               <TranslatorLayout>
                 <TranslatorRoute />
               </TranslatorLayout>
+            }
+          />
+          <Route
+            path="/staff/*"
+            element={
+              <StaffLayout>
+                <StaffRoute />
+              </StaffLayout>
             }
           />
           <Route
