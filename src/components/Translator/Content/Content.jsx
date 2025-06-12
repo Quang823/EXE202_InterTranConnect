@@ -27,7 +27,7 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 
-import "./content.scss";
+import "./Content.scss";
 
 const Content = () => {
   useEffect(() => {
@@ -536,7 +536,10 @@ const Content = () => {
           </div>
         </div>
         <div className="cta-image">
-          <img src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp" alt="Translation career" />
+          <img
+            src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp"
+            alt="Translation career"
+          />
         </div>
       </section>
     </div>
