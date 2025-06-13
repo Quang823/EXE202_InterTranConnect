@@ -47,7 +47,7 @@ const processLoginResponse = (response, loginContext) => {
 
 // New helper function to process Google login response
 const processGoogleLoginResponse = (response, loginContext) => {
-  if (!response || !response.id || !response.accessToken) {
+  if (!response || !response.accessToken) {
     throw new Error("Invalid Google login response: Missing required fields");
   }
 
