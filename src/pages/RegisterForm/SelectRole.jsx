@@ -47,10 +47,7 @@ const SelectRole = () => {
       <div className="dark-mode-toggle" onClick={toggleDarkMode}>
         {darkMode ? <MdLightMode size={30} /> : <MdDarkMode size={30} />}
       </div>
-      <div
-        className="upwork-logo-wrapper"
-        onClick={() => navigate("/client/home")}
-      >
+      <div className="upwork-logo-wrapper" onClick={() => navigate("/client/")}>
         <div className="upwork-logo">
           <Image src="logo" alt="Inter-Trans Connect Logo" />
         </div>
