@@ -1,9 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import Staff from "../../pages/Staff/Staff";
+import StaffDashboards from "../../pages/Staff/StaffDashboards/StaffDashboards";
+
 const StaffRoute = () => {
   return (
     <Routes>
-      <Route path="/" element={<Staff />} />
+      <Route path="/" element={<StaffDashboards />} />
     </Routes>
   );
 };

@@ -27,7 +27,7 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 
-import "./Content.scss";
+import "./content.scss";
 
 const Content = () => {
   useEffect(() => {
@@ -215,7 +215,7 @@ const Content = () => {
                 <span>Translation Services</span>
               </div>
               <h1
-                className="hero-title"
+                className="hero-title1"
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
@@ -240,15 +240,10 @@ const Content = () => {
                 data-aos="fade-up"
                 data-aos-delay="400"
               >
-                <div className="search-input-wrapper">
-                  <input
-                    type="text"
-                    placeholder="Search for translation jobs..."
-                    className="search-input"
-                  />
-                  <button className="search-button">Search</button>
-                </div>
               </div>
+            </div>
+            <div className="hero-image" data-aos="fade-left" data-aos-delay="500">
+              <img src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp" alt="Translation Services" />
             </div>
           </div>
         </Parallax>
@@ -536,10 +531,7 @@ const Content = () => {
           </div>
         </div>
         <div className="cta-image">
-          <img
-            src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp"
-            alt="Translation career"
-          />
+          <img src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp" alt="Translation career" />
         </div>
       </section>
     </div>
