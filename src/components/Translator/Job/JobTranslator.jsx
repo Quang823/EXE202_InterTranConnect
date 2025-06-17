@@ -14,13 +14,22 @@ import {
 const API_URL = import.meta.env.VITE_API_URL;
 
 const JobTranslator = () => {
-  const [selectedCategory, setSelectedCategory] = useState(["Interpretation"]);
-  const [selectedExpertise, setSelectedExpertise] = useState(["Media & Broadcast"]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedExpertise, setSelectedExpertise] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [salaryRange, setSalaryRange] = useState([0, 9999]);
   const [jobListings, setJobListings] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchParams, setSearchParams] = useState({
+    jobTitle: "",
+    location: "",
+    categories: [],
+    sourceLanguages: [],
+    targetLanguages: [],
+    minSalary: 0,
+    maxSalary: 9999
+  });
   const navigate = useNavigate();
 
   // Add scroll to top when page changes
@@ -50,7 +59,19 @@ const JobTranslator = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/job?page=${currentPage}&pageSize=${itemsPerPage}`);
+        const queryParams = new URLSearchParams({
+          page: currentPage,
+          pageSize: itemsPerPage,
+          ...(searchParams.jobTitle && { jobTitle: searchParams.jobTitle }),
+          ...(searchParams.location && { location: searchParams.location }),
+          ...(searchParams.categories.length > 0 && { categories: searchParams.categories.join(',') }),
+          ...(searchParams.sourceLanguages.length > 0 && { sourceLanguages: searchParams.sourceLanguages.join(',') }),
+          ...(searchParams.targetLanguages.length > 0 && { targetLanguages: searchParams.targetLanguages.join(',') }),
+          ...(searchParams.minSalary > 0 && { minSalary: searchParams.minSalary }),
+          ...(searchParams.maxSalary < 9999 && { maxSalary: searchParams.maxSalary })
+        });
+
+        const response = await axios.get(`${API_URL}/api/job?${queryParams.toString()}`);
         const { items, totalItems, totalPages } = response.data;
 
         // Map API data to the component's expected structure
@@ -60,7 +81,7 @@ const JobTranslator = () => {
           customer: job.companyName,
           category: job.translationType,
           languagePair: `${job.sourceLanguage} - ${job.targetLanguage}`,
-          hours: new Date(job.createdAt).toLocaleString(), // Format createdAt as needed
+          hours: new Date(job.createdAt).toLocaleString(),
           salary: `$${job.totalFee}`,
         }));
 
@@ -73,7 +94,7 @@ const JobTranslator = () => {
     };
 
     fetchJobs();
-  }, [currentPage]);
+  }, [currentPage, searchParams]);
 
   // Calculate pagination details
   const startIndex = (currentPage - 1) * itemsPerPage + 1;
@@ -96,11 +117,24 @@ const JobTranslator = () => {
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory(toggleSelection(selectedCategory, category));
+    const newCategories = toggleSelection(selectedCategory, category);
+    setSelectedCategory(newCategories);
+    setSearchParams(prev => ({
+      ...prev,
+      categories: newCategories
+    }));
   };
 
   const handleExpertiseChange = (expertise) => {
     setSelectedExpertise(toggleSelection(selectedExpertise, expertise));
+  };
+
+  const handleSearchChange = (field, value) => {
+    setSearchParams(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    setCurrentPage(1); // Reset to first page when search changes
   };
 
   return (
@@ -116,6 +150,8 @@ const JobTranslator = () => {
           setSalaryRange={setSalaryRange}
           handleCategoryChange={handleCategoryChange}
           handleExpertiseChange={handleExpertiseChange}
+          searchParams={searchParams}
+          handleSearchChange={handleSearchChange}
         />
       }
       showHeader={false}

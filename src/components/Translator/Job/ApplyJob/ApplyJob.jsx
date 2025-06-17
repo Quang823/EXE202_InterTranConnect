@@ -146,77 +146,84 @@ const ApplyJob = () => {
       </div>
 
       <div className="job-cards-container">
-        {currentJobs.map((job, index) => {
-          const gradient = getRandomGradient();
-          return (
-            <div
-              key={index}
-              className={`job-card ${job.highlighted ? "highlighted" : ""}`}
-            >
-              <div className="card-header">
-                <div className="company-info">
-                  <div
-                    className="company-logo"
-                    style={{ background: gradient }}
-                  >
-                    <span>ITC</span>
+        {currentJobs.length === 0 ? (
+          <div className="no-data-message">
+            <h2>No Job Applications Found</h2>
+            <p>You haven't applied for any jobs yet.</p>
+          </div>
+        ) : (
+          currentJobs.map((job, index) => {
+            const gradient = getRandomGradient();
+            return (
+              <div
+                key={index}
+                className={`job-card ${job.highlighted ? "highlighted" : ""}`}
+              >
+                <div className="card-header">
+                  <div className="company-info">
+                    <div
+                      className="company-logo"
+                      style={{ background: gradient }}
+                    >
+                      <span>ITC</span>
+                    </div>
+                    <div className="company-details">
+                      <h3 className="job-title">{job.jobTitle}</h3>
+                      <span className="salary">{job.price}</span>
+                    </div>
                   </div>
-                  <div className="company-details">
-                    <h3 className="job-title">{job.jobTitle}</h3>
-                    <span className="salary">{job.price}</span>
+                  <div className="card-actions">
+                    <button className="action-icon-button">
+                      <MoreHorizontal size={18} />
+                    </button>
                   </div>
                 </div>
-                <div className="card-actions">
-                  <button className="action-icon-button">
-                    <MoreHorizontal size={18} />
+
+                <div className="card-content">
+                  <div className="date-info">
+                    <div className="date-item">
+                      <Calendar size={14} />
+                      <span>{formatDate(job.createdDate)}</span>
+                    </div>
+                    <div className="date-item">
+                      <Clock size={14} />
+                      <span>{extractTime(job.createdDate)}</span>
+                    </div>
+                  </div>
+
+                  <div className="status-section">
+                    <div
+                      className={`status-indicator ${job.status.toLowerCase()}`}
+                    >
+                      <CheckCircle size={14} />
+                      <span>{job.status}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-footer">
+                  <button className="action-button view">
+                    <Eye size={16} />
+                    <span>View</span>
                   </button>
+                  <button className="action-button link">
+                    <ExternalLink size={16} />
+                    <span>Open</span>
+                  </button>
+                  <label className="action-button upload">
+                    <FileUp size={16} />
+                    <span>Upload</span>
+                    <input
+                      type="file"
+                      className="file-input"
+                      onChange={handleFileUpload}
+                    />
+                  </label>
                 </div>
               </div>
-
-              <div className="card-content">
-                <div className="date-info">
-                  <div className="date-item">
-                    <Calendar size={14} />
-                    <span>{formatDate(job.createdDate)}</span>
-                  </div>
-                  <div className="date-item">
-                    <Clock size={14} />
-                    <span>{extractTime(job.createdDate)}</span>
-                  </div>
-                </div>
-
-                <div className="status-section">
-                  <div
-                    className={`status-indicator ${job.status.toLowerCase()}`}
-                  >
-                    <CheckCircle size={14} />
-                    <span>{job.status}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="card-footer">
-                <button className="action-button view">
-                  <Eye size={16} />
-                  <span>View</span>
-                </button>
-                <button className="action-button link">
-                  <ExternalLink size={16} />
-                  <span>Open</span>
-                </button>
-                <label className="action-button upload">
-                  <FileUp size={16} />
-                  <span>Upload</span>
-                  <input
-                    type="file"
-                    className="file-input"
-                    onChange={handleFileUpload}
-                  />
-                </label>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
       {jobApplications.length > jobsPerPage && (
