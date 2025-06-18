@@ -1,6 +1,6 @@
 const StaffLayout = ({ children }) => {
   return (
-    <div className="client-layout">
+    <div className="staff-layout">
       <main>{children}</main>
     </div>
   );
