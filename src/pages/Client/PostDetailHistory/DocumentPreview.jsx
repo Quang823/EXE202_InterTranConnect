@@ -8,22 +8,37 @@ import { FileText } from "lucide-react";
 const DocumentPreview = ({ job }) => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-  return (
-    job.uploadFileUrl && (
+  if (!job.uploadFileUrl && job.translationType === "Oral") {
+    return (
       <div className="post-history-detail-document">
         <h2 className="post-history-detail-section-title">
           <FileText size={20} /> Document Preview
         </h2>
-        <div className="post-history-detail-pdf-viewer">
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-            <Viewer
-              fileUrl={job.uploadFileUrl}
-              plugins={[defaultLayoutPluginInstance]}
-            />
-          </Worker>
+        <div className="post-history-detail-no-document">
+          <p>No document for oral job</p>
         </div>
       </div>
-    )
+    );
+  }
+
+  if (!job.uploadFileUrl) {
+    return null;
+  }
+
+  return (
+    <div className="post-history-detail-document">
+      <h2 className="post-history-detail-section-title">
+        <FileText size={20} /> Document Preview
+      </h2>
+      <div className="post-history-detail-pdf-viewer">
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+          <Viewer
+            fileUrl={job.uploadFileUrl}
+            plugins={[defaultLayoutPluginInstance]}
+          />
+        </Worker>
+      </div>
+    </div>
   );
 };
 

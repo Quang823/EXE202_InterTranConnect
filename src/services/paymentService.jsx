@@ -69,14 +69,20 @@ export const getPaymentInfobyOrderCode = async (orderCode) => {
 
 export const payInterpreterDetail = async (paymentData) => {
   try {
-    if (!paymentData.jobId || !paymentData.customerId || !paymentData.amount) {
-      throw new Error("Thiếu jobId, customerId hoặc số tiền!");
+    if (
+      !paymentData.jobId ||
+      !paymentData.customerId ||
+      !paymentData.amount ||
+      !paymentData.interpreterId
+    ) {
+      throw new Error("Miss jobId, customerId, interpreterId or amout!");
     }
 
     const formattedPaymentData = {
       jobId: String(paymentData.jobId),
       customerId: String(paymentData.customerId),
       amount: Number(paymentData.amount),
+      interpreterId: String(paymentData.interpreterId),
     };
 
     const paymentResult = await payInterpreter(formattedPaymentData);
@@ -90,6 +96,6 @@ export const payInterpreterDetail = async (paymentData) => {
       },
     };
   } catch (error) {
-    return handleError(error, "Lỗi khi thanh toán cho phiên dịch viên");
+    return handleError(error, "Error in payment");
   }
 };

@@ -12,6 +12,8 @@ import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 import AdminDashboards from "../../pages/Translator/AdminDashboards/AdminDashboards";
 import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
+import AddCertificatePage from "../../pages/Translator/TranslatorCertificate/AddCertificatePage";
+import CertificateDetailsPage from "../../pages/Translator/TranslatorCertificate/CertificateDetailsPage";
 const TranslatorRoute = () => {
   return (
     <Routes>
@@ -28,6 +30,8 @@ const TranslatorRoute = () => {
       <Route path="/aboutUs" element={<InterTransConnects />} />
       <Route path="/dashboard" element={<AdminDashboards />} />
       <Route path="/news_blog" element={<NewsBlog />} />
+      <Route path="/add_certificate" element={<AddCertificatePage />} />
+      <Route path="/certificate_details" element={<CertificateDetailsPage />} />
     </Routes>
   );
 };

@@ -1,0 +1,475 @@
+.cert-add-page {
+  min-height: 100vh;
+  position: relative;
+  background: linear-gradient(45deg, #3052c1, #3b82f6);
+  overflow-x: hidden;
+  margin-top: 60px;
+
+  &__background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &__gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    );
+    backdrop-filter: blur(20px);
+    animation: certFloatAnimation 10s ease-in-out infinite;
+
+    &--1 {
+      width: 280px;
+      height: 280px;
+      top: 12%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    &--2 {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      right: 20%;
+      animation-delay: -7s;
+    }
+
+    &--3 {
+      width: 150px;
+      height: 150px;
+      bottom: 20%;
+      left: 30%;
+      animation-delay: -14s;
+    }
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  &__header {
+    margin-bottom: 3rem;
+  }
+}
+
+@keyframes certFloatAnimation {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-3deg);
+  }
+}
+
+// Back Button
+.button-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.cert-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  &__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover &__icon {
+    transform: translateX(-3px); // Hiệu ứng cho biểu tượng Back
+  }
+
+  &__icon--view {
+    margin-left: 0.5rem; // Khoảng cách giữa text và icon View
+    transform: translateX(0);
+
+    .cert-back-button:hover & {
+      transform: translateX(3px); // Hiệu ứng di chuyển sang phải khi hover
+    }
+  }
+}
+
+// Page Title
+.cert-page-title {
+  text-align: center;
+  color: white;
+
+  &__main {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &__subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-weight: 300;
+  }
+}
+
+// Form Container
+.cert-form-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.cert-form {
+  padding: 3rem;
+
+  &__section {
+    margin-bottom: 3rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  &__actions {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Section Title
+.cert-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+  }
+}
+
+// Input Groups
+.cert-input-group {
+  position: relative;
+}
+
+.cert-input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cert-input__icon {
+  position: absolute;
+  left: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+.cert-input__field {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #fff;
+  transition: all 0.3s ease;
+  outline: none;
+
+  &:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  &:focus + .cert-input__label,
+  &:not(:placeholder-shown) + .cert-input__label {
+    transform: translateY(-2.5rem) scale(0.85);
+    color: #667eea;
+    font-weight: 500;
+  }
+
+  &:focus ~ .cert-input__icon {
+    color: #667eea;
+  }
+}
+
+.cert-input__label {
+  position: absolute;
+  left: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  padding: 0 0.5rem;
+  color: #6b7280;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// File Upload Styles
+.cert-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.cert-file-upload {
+  position: relative;
+
+  &--full-width {
+    grid-column: 1 / -1;
+  }
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  &__label {
+    display: block;
+    padding: 2rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+
+    &:hover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.05);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__icon {
+    width: 3rem;
+    height: 3rem;
+    color: #6b7280;
+    transition: color 0.3s ease;
+  }
+
+  &__text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  &__subtext {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  &__spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: certSpinAnimation 1s linear infinite;
+  }
+}
+
+@keyframes certSpinAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Submit Button
+.cert-submit-button {
+  position: relative;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  min-width: 200px;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+  }
+
+  &__text {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #3052c1, #3b82f6);
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  &:not(:disabled):hover &__bg {
+    background: linear-gradient(45deg, #26419c, #2468d6);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .cert-add-page {
+    &__container {
+      padding: 1rem;
+    }
+  }
+
+  .cert-page-title {
+    &__main {
+      font-size: 2rem;
+    }
+
+    &__subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  .cert-form {
+    padding: 2rem 1.5rem;
+
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .cert-upload-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cert-file-upload {
+    &--full-width {
+      grid-column: 1;
+    }
+
+    &__label {
+      padding: 1.5rem;
+    }
+  }
+
+  .cert-input__field {
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+  }
+
+  .cert-input__icon {
+    left: 0.875rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .cert-input__label {
+    left: 2.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-form {
+    padding: 1.5rem 1rem;
+  }
+
+  .cert-submit-button {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    min-width: 180px;
+  }
+
+  .cert-back-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}

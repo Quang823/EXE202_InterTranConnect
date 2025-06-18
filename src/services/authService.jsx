@@ -110,7 +110,7 @@ export const login = async (email, password, loginContext) => {
 export const googleLogin = async (credential, loginContext) => {
   try {
     const response = await googleLoginAPI(credential);
-    return processGoogleLoginResponse(response, loginContext); // Use the new function
+    return processGoogleLoginResponse(response, loginContext);
   } catch (error) {
     return handleAuthError(error, "Google login failed");
   }
@@ -119,7 +119,7 @@ export const googleLogin = async (credential, loginContext) => {
 export const assignRole = async (email, role, loginContext) => {
   try {
     const response = await assignRoleAPI(email, role);
-    return processLoginResponse(response, loginContext); // Reuse for role assignment
+    return processLoginResponse(response, loginContext);
   } catch (error) {
     throw new Error(error.message || "Failed to assign role");
   }
@@ -188,5 +188,40 @@ export const updateUserProfileService = async (profileData) => {
     return response;
   } catch (error) {
     throw handleAuthError(error, "Failed to update profile");
+  }
+};
+
+export const updateBankAccountService = async (bankAccountData) => {
+  const requiredFields = [
+    "bankAccountNumber",
+    "bankName",
+    "bankAccountHolderName",
+  ];
+  const missingFields = requiredFields.filter(
+    (field) => !bankAccountData[field]
+  );
+
+  if (missingFields.length > 0) {
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+  }
+
+  try {
+    const response = await updateBankAccount(bankAccountData);
+    return {
+      success: true,
+      message: response.message || "Bank account updated successfully",
+      data: response.data,
+    };
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      if (status === 400) {
+        throw new Error(data.message || "Invalid bank account data");
+      } else if (status === 401) {
+        throw new Error("Unauthorized: Invalid credentials");
+      }
+      throw new Error(data.message || "Failed to update bank account");
+    }
+    throw new Error(error.message || "Network error");
   }
 };

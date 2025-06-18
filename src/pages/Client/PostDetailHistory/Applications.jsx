@@ -5,6 +5,7 @@ import {
   fetchJobApplications,
   selectTranslator,
 } from "../../../services/jobApplicationService";
+import { getJobDetailByJobIdService } from "../../../services/jobService";
 import { payInterpreterDetail } from "../../../services/paymentService";
 import { Modal } from "react-bootstrap";
 import ToastManager from "../../../components/common/Toast/ToastManager";
@@ -23,13 +24,53 @@ const Applications = ({ job }) => {
     platformServiceFee: "",
     totalFee: "",
   });
-  const [insufficientFundsMessage, setInsufficientFundsMessage] =
-    useState(null);
+  const [jobDetails, setJobDetails] = useState({
+    id: null,
+    customerId: null,
+    jobTitle: "",
+    translationType: "",
+    sourceLanguage: "",
+    targetLanguage: "",
+    description: "",
+    uploadFileUrl: "",
+    workingTime: null,
+    workAddressLine: "",
+    workCity: "",
+    workPostalCode: "",
+    workCountry: "",
+    deadline: null,
+    resultFileUrl: null,
+    completedAt: null,
+    completionOffsetMinutes: null,
+    hourlyRate: 0,
+    platformServiceFee: 0,
+    totalFee: 0,
+    companyName: "",
+    companyDescription: "",
+    companyLogoUrl: "",
+    contactEmail: "",
+    contactPhone: "",
+    contactAddress: "",
+    status: null,
+    requiredHires: 0,
+    currentHires: 0,
+    createdAt: null,
+    customerName: "",
+    customerEmail: "",
+    totalHiredInterpreters: 0,
+    totalInProgressInterpreters: 0,
+    totalCompletedInterpreters: 0,
+    isFullyRecruited: false,
+    hasAnyInProgress: false,
+    isAllCompleted: false,
+  });
+  const [selectedInterpreterId, setSelectedInterpreterId] = useState(null); // Lưu interpreterId được chọn
 
   const jobId = job?.id;
 
+  // Load danh sách ứng viên và chi tiết job khi jobId thay đổi
   useEffect(() => {
-    const loadApplications = async () => {
+    const loadData = async () => {
       if (!jobId) {
         setError("Job ID is missing.");
         return;
@@ -39,109 +80,298 @@ const Applications = ({ job }) => {
       setError(null);
 
       try {
-        const applications = await fetchJobApplications(jobId);
-        const mappedTranslators = applications.map((app) => ({
-          interpreterId: app.interpreter?.id,
-          name: app.interpreter?.fullName || "Unknown Translator",
+        // Lấy chi tiết job
+        const jobData = await getJobDetailByJobIdService(jobId);
+        console.log(jobData);
+        setJobDetails({
+          id: jobData.id,
+          customerId: jobData.customerId,
+          jobTitle: jobData.jobTitle,
+          translationType: jobData.translationType,
+          sourceLanguage: jobData.sourceLanguage,
+          targetLanguage: jobData.targetLanguage,
+          description: jobData.description,
+          uploadFileUrl: jobData.uploadFileUrl,
+          workingTime: jobData.workingTime,
+          workAddressLine: jobData.workAddressLine,
+          workCity: jobData.workCity,
+          workPostalCode: jobData.workPostalCode,
+          workCountry: jobData.workCountry,
+          deadline: jobData.deadline,
+          resultFileUrl: jobData.resultFileUrl,
+          completedAt: jobData.completedAt,
+          completionOffsetMinutes: jobData.completionOffsetMinutes,
+          hourlyRate: jobData.hourlyRate,
+          platformServiceFee: jobData.platformServiceFee,
+          totalFee: jobData.totalFee,
+          companyName: jobData.companyName,
+          companyDescription: jobData.companyDescription,
+          companyLogoUrl: jobData.companyLogoUrl,
+          contactEmail: jobData.contactEmail,
+          contactPhone: jobData.contactPhone,
+          contactAddress: jobData.contactAddress,
+          status: jobData.status,
+          requiredHires: jobData.requiredHires || 0,
+          currentHires: jobData.currentHires || 0,
+          createdAt: jobData.createdAt,
+          customerName: jobData.customerName,
+          customerEmail: jobData.customerEmail,
+          totalHiredInterpreters: jobData.totalHiredInterpreters,
+          totalInProgressInterpreters: jobData.totalInProgressInterpreters,
+          totalCompletedInterpreters: jobData.totalCompletedInterpreters,
+          isFullyRecruited: jobData.isFullyRecruited,
+          hasAnyInProgress: jobData.hasAnyInProgress,
+          isAllCompleted: jobData.isAllCompleted,
+        });
+
+        // Map translators từ jobData.applications thay vì fetchJobApplications
+        const mappedTranslators = jobData.applications.map((app) => ({
+          interpreterId: app.interpreterId,
+          name: app.interpreterName || "Unknown Translator",
           avatar:
             app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
-          email: app.interpreter?.email,
+          email: app.interpreterEmail,
           status:
-            app.status === "0"
+            app.workStatus === 0
+              ? "Waiting to choose"
+              : app.workStatus === 1
               ? "Pending"
-              : app.status === "2"
+              : app.workStatus === 2
               ? "Accepted"
               : "Unknown Status",
           online: false,
+          workStatus: app.workStatus,
+          isPaid: app.isPaid,
         }));
-
         setTranslators(mappedTranslators);
       } catch (err) {
-        setError(err.message || "Failed to load applications.");
+        setError(err.message || "Failed to load data.");
       } finally {
         setLoading(false);
       }
     };
 
-    loadApplications();
+    loadData();
   }, [jobId]);
 
+  // Chuyển đến trang profile của translator
   const handleViewProfile = (interpreterId) => {
     navigate(`/client/translator_profile/${interpreterId}`);
   };
 
+  // Xử lý chọn translator
   const handleSelectTranslator = async (interpreterId) => {
+    if (!jobId || !interpreterId) {
+      setSelectError("Missing job ID or interpreter ID.");
+      return;
+    }
+
     setSelectingId(interpreterId);
     setSelectError(null);
-    setInsufficientFundsMessage(null);
 
     try {
-      await selectTranslator(jobId, interpreterId);
-      const applications = await fetchJobApplications(jobId);
+      const result = await selectTranslator(jobId, interpreterId);
 
-      const mappedTranslators = applications.map((app) => ({
-        interpreterId: app.interpreter?.id,
-        name: app.interpreter?.fullName || "Unknown Translator",
+      // Cập nhật dữ liệu sau khi chọn
+      const jobData = await getJobDetailByJobIdService(jobId);
+      setJobDetails({
+        id: jobData.id,
+        customerId: jobData.customerId,
+        jobTitle: jobData.jobTitle,
+        translationType: jobData.translationType,
+        sourceLanguage: jobData.sourceLanguage,
+        targetLanguage: jobData.targetLanguage,
+        description: jobData.description,
+        uploadFileUrl: jobData.uploadFileUrl,
+        workingTime: jobData.workingTime,
+        workAddressLine: jobData.workAddressLine,
+        workCity: jobData.workCity,
+        workPostalCode: jobData.workPostalCode,
+        workCountry: jobData.workCountry,
+        deadline: jobData.deadline,
+        resultFileUrl: jobData.resultFileUrl,
+        completedAt: jobData.completedAt,
+        completionOffsetMinutes: jobData.completionOffsetMinutes,
+        hourlyRate: jobData.hourlyRate,
+        platformServiceFee: jobData.platformServiceFee,
+        totalFee: jobData.totalFee,
+        companyName: jobData.companyName,
+        companyDescription: jobData.companyDescription,
+        companyLogoUrl: jobData.companyLogoUrl,
+        contactEmail: jobData.contactEmail,
+        contactPhone: jobData.contactPhone,
+        contactAddress: jobData.contactAddress,
+        status: jobData.status,
+        requiredHires: jobData.requiredHires || 0,
+        currentHires: jobData.currentHires || 0,
+        createdAt: jobData.createdAt,
+        customerName: jobData.customerName,
+        customerEmail: jobData.customerEmail,
+        totalHiredInterpreters: jobData.totalHiredInterpreters,
+        totalInProgressInterpreters: jobData.totalInProgressInterpreters,
+        totalCompletedInterpreters: jobData.totalCompletedInterpreters,
+        isFullyRecruited: jobData.isFullyRecruited,
+        hasAnyInProgress: jobData.hasAnyInProgress,
+        isAllCompleted: jobData.isAllCompleted,
+      });
+
+      const mappedTranslators = jobData.applications.map((app) => ({
+        interpreterId: app.interpreterId,
+        name: app.interpreterName || "Unknown Translator",
         avatar:
           app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
-        email: app.interpreter?.email,
+        email: app.interpreterEmail,
         status:
-          app.status === "0"
+          app.workStatus === 0
+            ? "Waiting to choose"
+            : app.workStatus === 1
             ? "Pending"
-            : app.status === "2"
+            : app.workStatus === 2
             ? "Accepted"
             : "Unknown Status",
         online: false,
+        workStatus: app.workStatus,
+        isPaid: app.isPaid,
       }));
       setTranslators(mappedTranslators);
-      ToastManager.showSuccess("Translator selected successfully!");
 
-      setPaymentDetails({
-        hourlyRate: job.hourlyRate || "0",
-        platformServiceFee: job.platformServiceFee || "0",
-        totalFee: job.totalFee || "0",
-      });
-      setShowPaymentModal(true);
-    } catch (err) {
-      setSelectError(
-        err.response?.status === 404
-          ? "Translator selection endpoint not found. Please contact support."
-          : err.message || "Failed to select translator."
+      // Nếu status là "Pending" sau khi chọn, cập nhật để hiển thị nút Payment
+      const selectedTranslator = mappedTranslators.find(
+        (t) => t.interpreterId === interpreterId
       );
-      ToastManager.showError("Failed to select translator. Please try again.");
+      if (selectedTranslator && selectedTranslator.status === "Pending") {
+        setSelectedInterpreterId(interpreterId);
+      }
+
+      if (jobData.currentHires >= jobData.requiredHires) {
+        ToastManager.showInfo("There are enough people for this job!");
+      }
+    } catch (err) {
+      setSelectError(err.message || "Failed to select translator. Try again.");
+      console.error("Select error:", err);
     } finally {
       setSelectingId(null);
     }
   };
 
+  // Xử lý xác nhận thanh toán cho interpreter cụ thể
   const handlePaymentConfirm = async () => {
+    if (!selectedInterpreterId) {
+      ToastManager.showError("No interpreter selected for payment.");
+      return;
+    }
+
     const user = JSON.parse(sessionStorage.getItem("user") || "{}");
     const customerId = user.id;
     const paymentData = {
       jobId,
       customerId,
       amount: Number(paymentDetails.totalFee),
+      interpreterId: selectedInterpreterId,
     };
-    const result = await payInterpreterDetail(paymentData);
-    if (result.success) {
-      ToastManager.showSuccess(
-        `Payment successful! Transaction date: ${result.data.createdDateFormatted}`
-      );
-      setShowPaymentModal(false);
-      setInsufficientFundsMessage(null);
-    } else {
-      ToastManager.showInfo("Your wallet does not have enough funds.");
+    try {
+      const result = await payInterpreterDetail(paymentData);
+      if (result.success) {
+        const currentDate = new Date().toLocaleString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+        ToastManager.showSuccess(
+          `Payment successful! Transaction completed on ${currentDate}. Thank you!`
+        );
+        setShowPaymentModal(false);
+        const jobData = await getJobDetailByJobIdService(jobId);
+
+        setJobDetails({
+          id: jobData.id,
+          customerId: jobData.customerId,
+          jobTitle: jobData.jobTitle,
+          translationType: jobData.translationType,
+          sourceLanguage: jobData.sourceLanguage,
+          targetLanguage: jobData.targetLanguage,
+          description: jobData.description,
+          uploadFileUrl: jobData.uploadFileUrl,
+          workingTime: jobData.workingTime,
+          workAddressLine: jobData.workAddressLine,
+          workCity: jobData.workCity,
+          workPostalCode: jobData.workPostalCode,
+          workCountry: jobData.workCountry,
+          deadline: jobData.deadline,
+          resultFileUrl: jobData.resultFileUrl,
+          completedAt: jobData.completedAt,
+          completionOffsetMinutes: jobData.completionOffsetMinutes,
+          hourlyRate: jobData.hourlyRate,
+          platformServiceFee: jobData.platformServiceFee,
+          totalFee: jobData.totalFee,
+          companyName: jobData.companyName,
+          companyDescription: jobData.companyDescription,
+          companyLogoUrl: jobData.companyLogoUrl,
+          contactEmail: jobData.contactEmail,
+          contactPhone: jobData.contactPhone,
+          contactAddress: jobData.contactAddress,
+          status: jobData.status,
+          requiredHires: jobData.requiredHires || 0,
+          currentHires: jobData.currentHires || 0,
+          createdAt: jobData.createdAt,
+          customerName: jobData.customerName,
+          customerEmail: jobData.customerEmail,
+          totalHiredInterpreters: jobData.totalHiredInterpreters,
+          totalInProgressInterpreters: jobData.totalInProgressInterpreters,
+          totalCompletedInterpreters: jobData.totalCompletedInterpreters,
+          isFullyRecruited: jobData.isFullyRecruited,
+          hasAnyInProgress: jobData.hasAnyInProgress,
+          isAllCompleted: jobData.isAllCompleted,
+        });
+
+        const mappedTranslators = jobData.applications.map((app) => ({
+          interpreterId: app.interpreterId,
+          name: app.interpreterName || "Unknown Translator",
+          avatar:
+            app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+          email: app.interpreterEmail,
+          status:
+            app.workStatus === 0
+              ? "Waiting to choose"
+              : app.workStatus === 1
+              ? "Pending"
+              : app.workStatus === 2
+              ? "Accepted"
+              : "Unknown Status",
+          online: false,
+          workStatus: app.workStatus,
+          isPaid: app.isPaid,
+        }));
+        setTranslators(mappedTranslators);
+      } else {
+        ToastManager.showInfo("Insufficient wallet funds.");
+        navigate("/client/wallet");
+        setShowPaymentModal(false);
+      }
+    } catch (err) {
+      ToastManager.showError("Payment failed. Try again.");
       navigate("/client/wallet");
       setShowPaymentModal(false);
     }
   };
 
-  const handlePaymentCancel = () => {
+  const handlePaymentCancel = () => setShowPaymentModal(false);
+  const handleDepositRedirect = () => {
+    navigate("/client/wallet");
     setShowPaymentModal(false);
   };
 
-  const handleDepositRedirect = () => {
-    navigate("/client/wallet");
+  const handleShowPaymentModal = (interpreterId) => {
+    setSelectedInterpreterId(interpreterId);
+    setPaymentDetails({
+      hourlyRate: job.hourlyRate || "0",
+      platformServiceFee: job.platformServiceFee || "0",
+      totalFee: job.totalFee || "0",
+    });
+    setShowPaymentModal(true);
   };
 
   return (
@@ -150,15 +380,24 @@ const Applications = ({ job }) => {
         <Users size={20} /> Applications
       </h2>
       {loading ? (
-        <p className="post-history-detail-no-data">Loading applications...</p>
+        <p>Loading applications...</p>
       ) : error ? (
-        <p className="post-history-detail-no-data">Error: {error}</p>
+        <p>Error: {error}</p>
       ) : translators.length === 0 ? (
-        <p className="post-history-detail-no-data">
-          No translators have applied yet. Be the first!
-        </p>
+        <p>No translators applied yet. Be the first!</p>
       ) : (
         <div className="post-history-detail-translators">
+          <div className="post-history-detail-hires">
+            <span className="post-history-detail-hire-item">
+              Required Hires: <strong>{jobDetails.requiredHires || 0}</strong>
+            </span>
+            <span className="post-history-detail-hire-item">
+              Current Hires: <strong>{jobDetails.currentHires || 0}</strong>
+            </span>
+            <span className="post-history-detail-hire-item">
+              Status: <strong>{jobDetails.status || 0}</strong>
+            </span>
+          </div>
           {translators.map((translator, index) => (
             <div key={index} className="post-history-detail-translator-card">
               <img
@@ -187,18 +426,33 @@ const Applications = ({ job }) => {
                 >
                   View Profile
                 </button>
-                {translator.status !== "Accepted" && (
-                  <button
-                    className="post-history-detail-view-profile-btn"
-                    onClick={() =>
-                      handleSelectTranslator(translator.interpreterId)
-                    }
-                    disabled={selectingId === translator.interpreterId}
-                  >
-                    {selectingId === translator.interpreterId
-                      ? "Selecting..."
-                      : "Select"}
-                  </button>
+                {translator.status === "Waiting to choose" &&
+                  jobDetails.currentHires < jobDetails.requiredHires && (
+                    <button
+                      className="post-history-detail-view-profile-btn"
+                      onClick={() =>
+                        handleSelectTranslator(translator.interpreterId)
+                      }
+                      disabled={selectingId === translator.interpreterId}
+                    >
+                      {selectingId === translator.interpreterId
+                        ? "Selecting..."
+                        : "Select"}
+                    </button>
+                  )}
+                {translator.status === "Pending" &&
+                  !(translator.workStatus === 2 && translator.isPaid) && (
+                    <button
+                      className="post-history-detail-view-profile-btn"
+                      onClick={() =>
+                        handleShowPaymentModal(translator.interpreterId)
+                      }
+                    >
+                      Payment
+                    </button>
+                  )}
+                {translator.status === "Accepted" && (
+                  <span className="post-history-detail-selected">Selected</span>
                 )}
               </div>
             </div>
@@ -207,17 +461,6 @@ const Applications = ({ job }) => {
             <p className="post-history-detail-error text-danger">
               {selectError}
             </p>
-          )}
-          {insufficientFundsMessage && (
-            <div className="post-history-detail-error text-danger mt-3">
-              <p>{insufficientFundsMessage}</p>
-              <button
-                className="btn btn-primary"
-                onClick={handleDepositRedirect}
-              >
-                Go to Wallet to Deposit
-              </button>
-            </div>
           )}
         </div>
       )}
@@ -230,25 +473,22 @@ const Applications = ({ job }) => {
           <Modal.Title>Payment Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p style={{ marginBottom: "15px" }}>
-            You have selected an interpreter. Please confirm the payment details
-            below:
-          </p>
+          <p style={{ marginBottom: "15px" }}>Confirm payment details below:</p>
           <ul>
             <li>
               <strong>Hourly Rate:</strong>{" "}
               {paymentDetails.hourlyRate.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              })}
+              })}{" "}
               VND
             </li>
             <li>
-              <strong>Platform Service Fee:</strong>
+              <strong>Platform Service Fee:</strong>{" "}
               {paymentDetails.platformServiceFee.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              })}
+              })}{" "}
               VND
             </li>
             <li>
@@ -256,7 +496,7 @@ const Applications = ({ job }) => {
               {paymentDetails.totalFee.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              })}
+              })}{" "}
               VND
             </li>
           </ul>
@@ -264,31 +504,18 @@ const Applications = ({ job }) => {
             <h5>Notes:</h5>
             <ul>
               <li>
-                The <strong>Hourly Rate</strong> is the base cost for the
-                interpreter's services.
+                The <strong>Hourly Rate</strong> is the base cost.
               </li>
               <li>
-                The <strong>Platform Service Fee</strong> covers operational
-                costs and support.
+                The <strong>Platform Service Fee</strong> covers support costs.
               </li>
               <li>
-                <strong>Total Amount</strong> is the final amount to be paid,
-                including all fees.
+                <strong>Total Amount</strong> is the final payment.
               </li>
             </ul>
             <p>
-              Payment will be deducted from your wallet. If your balance is
-              insufficient, please{" "}
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleDepositRedirect();
-                }}
-              >
-                deposit funds here
-              </a>{" "}
-              and retry the payment.
+              Payment deducts from your wallet. Insufficient funds redirect to
+              deposit.
             </p>
           </div>
         </Modal.Body>

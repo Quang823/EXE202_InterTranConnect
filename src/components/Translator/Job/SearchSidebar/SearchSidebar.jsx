@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  SearchIcon,
-  MapPinIcon,
-  ChevronDownIcon,
-} from "lucide-react";
+import { SearchIcon, MapPinIcon, ChevronDownIcon } from "lucide-react";
 
 const SearchSidebar = ({
   selectedCategory,

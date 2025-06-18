@@ -352,31 +352,6 @@
   flex-direction: column;
   gap: 1.5rem;
 }
-.wallet-update-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-
-  &:disabled {
-    background-color: #9ca3af;
-    cursor: not-allowed;
-  }
-}
-.wallet-modal__error {
-  color: #dc3545;
-  margin-bottom: 10px;
-}
-
-.wallet-update-error {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 5px;
-}
 
 .wallet-stat {
   display: flex;

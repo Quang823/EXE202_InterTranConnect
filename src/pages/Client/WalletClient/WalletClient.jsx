@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
-import { ArrowDown, ArrowUp, Plus, FileText } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Plus,
+  FileText,
+  CreditCard,
+  Wallet,
+  TrendingUp,
+} from "lucide-react";
 import {
   fetchUserWallet,
   fetchWalletTransactions,
 } from "../../../services/walletService";
 import { createDepositDetail } from "../../../services/paymentService";
-import { Modal, Button, Form } from "react-bootstrap";
+import {
+  getUserInfoByUserIdService,
+  updateBankAccountService,
+} from "../../../services/authService";
 import "./WalletClient.scss";
 import Loading from "../../../components/common/Loading/Loading";
 
@@ -16,7 +27,15 @@ const WalletClient = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [depositError, setDepositError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [bankInfo, setBankInfo] = useState({
+    bankAccountNumber: "",
+    bankName: "",
+    bankAccountHolderName: "",
+  });
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
+  const [isBankUpdateModalOpen, setIsBankUpdateModalOpen] = useState(false); // Thêm state cho modal cập nhật ngân hàng
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const accountId = user?.id;
@@ -38,8 +57,16 @@ const WalletClient = () => {
           1,
           10
         );
-        console.log(transactionData);
         setTransactions(transactionData.items || []);
+
+        // Lấy thông tin ngân hàng từ getUserInfoByUserIdService
+        const userInfo = await getUserInfoByUserIdService(accountId);
+        setBankInfo({
+          bankAccountNumber: userInfo.bankAccountNumber || "",
+          bankName: userInfo.bankName || "",
+          bankAccountHolderName: userInfo.bankAccountHolderName || "",
+        });
+
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -80,11 +107,43 @@ const WalletClient = () => {
     }
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleUpdateBankAccount = async () => {
+    setUpdateLoading(true);
+    setUpdateError(null);
+
+    try {
+      const bankAccountData = {
+        bankAccountNumber: bankInfo.bankAccountNumber,
+        bankName: bankInfo.bankName,
+        bankAccountHolderName: bankInfo.bankAccountHolderName,
+      };
+      const response = await updateBankAccountService(bankAccountData);
+      setUpdateError(null); // Xóa lỗi nếu thành công
+      alert(response.message || "Bank account updated successfully!"); // Thông báo thành công
+      setIsBankUpdateModalOpen(false); // Đóng modal sau khi cập nhật thành công
+    } catch (err) {
+      setUpdateError(err.message || "Failed to update bank account");
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
+  const openDepositModal = () => setIsDepositModalOpen(true);
+  const closeDepositModal = () => {
+    setIsDepositModalOpen(false);
     setDepositAmount("");
     setDepositError(null);
+  };
+
+  const openBankUpdateModal = () => setIsBankUpdateModalOpen(true);
+  const closeBankUpdateModal = () => {
+    setIsBankUpdateModalOpen(false);
+    setUpdateError(null);
+  };
+
+  const handleBankInfoChange = (e) => {
+    const { name, value } = e.target;
+    setBankInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   const toTitleCase = (str) => {
@@ -99,7 +158,7 @@ const WalletClient = () => {
   if (loading) {
     return (
       <div className="wc-app">
-        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />{" "}
+        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />
       </div>
     );
   }
@@ -109,120 +168,311 @@ const WalletClient = () => {
   }
 
   return (
-    <div className="wc-app">
-      <div className="wc-main">
-        <main className="wc-content">
-          <div className="wc-card-section">
-            <div className="wc-card-header">
-              <h2 className="wc-card-title">
-                My <span className="wc-highlight">Card</span>
-              </h2>
+    <div className="wallet-app">
+      <div className="wallet-background">
+        <div className="wallet-background__orb wallet-background__orb--1"></div>
+        <div className="wallet-background__orb wallet-background__orb--2"></div>
+        <div className="wallet-background__orb wallet-background__orb--3"></div>
+      </div>
+
+      <div className="wallet-container">
+        <header className="wallet-header">
+          <div className="wallet-header__content">
+            <div className="wallet-header__icon">
+              <Wallet className="w-8 h-8" />
             </div>
-            <div className="wc-card-container">
-              <div className="wc-card">
-                <div className="wc-card-balance">
-                  <span className="wc-card-label">Current Balance : </span>
-                  <span className="wc-card-amount">
+            <div>
+              <h1 className="wallet-header__title">My Wallet</h1>
+              <p className="wallet-header__subtitle">
+                Manage your finances with ease
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <div className="wallet-cards">
+          <div className="wallet-card">
+            <div className="wallet-card__header">
+              <h3 className="wallet-card__title">
+                <CreditCard className="w-6 h-6" />
+                Digital Wallet Card
+              </h3>
+            </div>
+            <div className="wallet-card__content">
+              <div className="wallet-card__main">
+                <div className="wallet-card__balance">
+                  <span className="wallet-card__balance-label">
+                    Current Balance
+                  </span>
+                  <span className="wallet-card__balance-amount">
                     {wallet?.balance?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                   </span>
                 </div>
-                <div className="wc-card-actions">
-                  <button
-                    className="wc-card-button wc-card-button--deposit"
-                    onClick={openModal}
-                  >
-                    <ArrowDown size={16} /> Deposit
-                  </button>
-                  <button className="wc-card-button wc-card-button--withdraw">
-                    <ArrowUp size={16} /> Withdraw
-                  </button>
-                  <div className="wc-partner-logo"></div>
-                </div>
-                <div className="wc-card-details">
-                  <span className="wc-card-issuer">
-                    {wallet?.issuer || "MB Bank"}
-                  </span>
-                  <span className="wc-card-number">
-                    {wallet?.cardNumber?.slice(0, 4) || "4787"}{" "}
-                    <span className="wc-hidden-digits">•••• ••••</span>{" "}
-                    {wallet?.cardNumber?.slice(-4) || "4787"}
-                  </span>
-                  <div className="wc-card-network"></div>
+
+                <div className="wallet-card__visual">
+                  <div className="wallet-card__chip"></div>
+                  <div className="wallet-card__number">
+                    <span>{wallet?.cardNumber?.slice(0, 4) || "4787"}</span>
+                    <span className="wallet-card__dots">•••• ••••</span>
+                    <span>{wallet?.cardNumber?.slice(-4) || "4787"}</span>
+                  </div>
+                  <div className="wallet-card__details">
+                    <div className="wallet-card__holder">
+                      <span className="wallet-card__label">Card Holder</span>
+                      <span className="wallet-card__value">
+                        {user?.fullName || "Nam"}
+                      </span>
+                    </div>
+                    <div className="wallet-card__issuer">
+                      <span className="wallet-card__label">Bank</span>
+                      <span className="wallet-card__value">
+                        {wallet?.issuer || "MB Bank"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="wc-card-meta">
-                <div className="wc-meta-item">
-                  <span className="wc-meta-label">Card Holder : </span>
-                  <span className="wc-meta-value wc-highlight">
-                    {user?.fullName || "Nam"}
-                  </span>
-                </div>
-                <div className="wc-meta-item">
-                  <span className="wc-meta-label">Card Number : </span>
-                  <span className="wc-meta-value wc-highlight">
-                    {wallet?.cardNumber || "4787 8749 8403 4787"}
-                  </span>
-                </div>
+
+              <div className="wallet-card__actions">
+                <button
+                  className="wallet-action-btn wallet-action-btn--deposit"
+                  onClick={openDepositModal}
+                >
+                  <ArrowDown className="w-4 h-4" />
+                  Deposit
+                </button>
+
+                <button className="wallet-action-btn wallet-action-btn--withdraw">
+                  <ArrowUp className="w-4 h-4" />
+                  Withdraw
+                </button>
               </div>
             </div>
           </div>
 
-          <Modal
-            show={isModalOpen}
-            onHide={closeModal}
-            centered
-            animation={true}
-            backdrop="static"
-            keyboard={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Deposit Money</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {depositError && (
-                <div className="text-danger mb-3">{depositError}</div>
-              )}
-              <Form onSubmit={handleDeposit}>
-                <Form.Group className="mb-3" controlId="deposit-amount">
-                  <Form.Label>Amount (VND)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={depositAmount}
-                    onChange={(e) => setDepositAmount(e.target.value)}
-                    placeholder="Enter amount"
-                    required
-                    autoFocus
-                    min="1"
-                    step="1"
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={closeModal}>
-                Cancel
-              </Button>
-              <Button variant="primary" onClick={handleDeposit}>
-                Submit Deposit
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          <div className="wc-transaction-section">
-            <div className="wc-transaction-header">
-              <h3 className="wc-transaction-title">Transaction History</h3>
-              <button className="wc-view-report">
-                <FileText size={16} /> View Report
-              </button>
+          <div className="wallet-stats">
+            <div className="wallet-stats__header">
+              <h3 className="wallet-stats__title">
+                <TrendingUp className="w-5 h-5" />
+                Quick Stats
+              </h3>
             </div>
-            <div className="wc-transaction-table">
-              <table>
+            <div className="wallet-stats__content">
+              <div className="wallet-stat">
+                <span className="wallet-stat__label">Total Transactions</span>
+                <span className="wallet-stat__value">
+                  {transactions.length}
+                </span>
+              </div>
+              <div className="wallet-stat">
+                <span className="wallet-stat__label">Card Number</span>
+                <span className="wallet-stat__value">
+                  {wallet?.cardNumber || "4787 8749 8403 4787"}
+                </span>
+              </div>
+              <div className="wallet-stat">
+                <span className="wallet-stat__label">Bank Name</span>
+                <span className="wallet-stat__value">{bankInfo.bankName}</span>
+              </div>
+              <div className="wallet-stat">
+                <span className="wallet-stat__label">Account Holder</span>
+                <span className="wallet-stat__value">
+                  {bankInfo.bankAccountHolderName}
+                </span>
+              </div>
+              <div className="wallet-stat">
+                <span className="wallet-stat__label">Account Number</span>
+                <span className="wallet-stat__value">
+                  {bankInfo.bankAccountNumber}
+                </span>
+              </div>
+              <button
+                className="wallet-update-btn"
+                onClick={openBankUpdateModal}
+                disabled={updateLoading}
+              >
+                {updateLoading ? "Updating..." : "Update"}
+              </button>
+              {updateError && (
+                <div className="wallet-update-error">{updateError}</div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Modal Deposit */}
+        {isDepositModalOpen && (
+          <div className="wallet-modal-overlay" onClick={closeDepositModal}>
+            <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="wallet-modal__header">
+                <h3 className="wallet-modal__title">
+                  <Plus className="w-5 h-5" />
+                  Deposit Money
+                </h3>
+                <button
+                  className="wallet-modal__close"
+                  onClick={closeDepositModal}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="wallet-modal__content">
+                {depositError && (
+                  <div className="wallet-modal__error">{depositError}</div>
+                )}
+                <form onSubmit={handleDeposit} className="wallet-form">
+                  <div className="wallet-form__group">
+                    <label
+                      htmlFor="deposit-amount"
+                      className="wallet-form__label"
+                    >
+                      Amount (VND)
+                    </label>
+                    <input
+                      type="number"
+                      id="deposit-amount"
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      placeholder="Enter amount"
+                      className="wallet-form__input"
+                      required
+                      autoFocus
+                      min="1"
+                      step="1"
+                    />
+                  </div>
+                  <div className="wallet-form__actions">
+                    <button
+                      type="button"
+                      className="wallet-btn wallet-btn--secondary"
+                      onClick={closeDepositModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="wallet-btn wallet-btn--primary"
+                    >
+                      Submit Deposit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal Update Bank Account */}
+        {isBankUpdateModalOpen && (
+          <div className="wallet-modal-overlay" onClick={closeBankUpdateModal}>
+            <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="wallet-modal__header">
+                <h3 className="wallet-modal__title">
+                  <Plus className="w-5 h-5" />
+                  Update Bank Account
+                </h3>
+                <button
+                  className="wallet-modal__close"
+                  onClick={closeBankUpdateModal}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="wallet-modal__content">
+                {updateError && (
+                  <div className="wallet-modal__error">{updateError}</div>
+                )}
+                <form className="wallet-form">
+                  <div className="wallet-form__group">
+                    <label
+                      htmlFor="bank-account-number"
+                      className="wallet-form__label"
+                    >
+                      Account Number
+                    </label>
+                    <input
+                      type="text"
+                      id="bank-account-number"
+                      name="bankAccountNumber"
+                      value={bankInfo.bankAccountNumber}
+                      onChange={handleBankInfoChange}
+                      placeholder="Enter account number"
+                      className="wallet-form__input"
+                      required
+                    />
+                  </div>
+                  <div className="wallet-form__group">
+                    <label htmlFor="bank-name" className="wallet-form__label">
+                      Bank Name
+                    </label>
+                    <input
+                      type="text"
+                      id="bank-name"
+                      name="bankName"
+                      value={bankInfo.bankName}
+                      onChange={handleBankInfoChange}
+                      placeholder="Enter bank name"
+                      className="wallet-form__input"
+                      required
+                    />
+                  </div>
+                  <div className="wallet-form__group">
+                    <label
+                      htmlFor="bank-account-holder-name"
+                      className="wallet-form__label"
+                    >
+                      Account Holder Name
+                    </label>
+                    <input
+                      type="text"
+                      id="bank-account-holder-name"
+                      name="bankAccountHolderName"
+                      value={bankInfo.bankAccountHolderName}
+                      onChange={handleBankInfoChange}
+                      placeholder="Enter account holder name"
+                      className="wallet-form__input"
+                      required
+                    />
+                  </div>
+                  <div className="wallet-form__actions">
+                    <button
+                      type="button"
+                      className="wallet-btn wallet-btn--secondary"
+                      onClick={closeBankUpdateModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button" // Thay đổi từ type="submit" thành type="button"
+                      className="wallet-btn wallet-btn--primary"
+                      onClick={handleUpdateBankAccount} // Gắn sự kiện vào nút
+                      disabled={updateLoading}
+                    >
+                      {updateLoading ? "Updating..." : "Submit Update"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="wallet-transactions">
+          <div className="wallet-transactions__header">
+            <h3 className="wallet-transactions__title">Transaction History</h3>
+            <button className="wallet-report-btn">
+              <FileText className="w-4 h-4" />
+              View Report
+            </button>
+          </div>
+          <div className="wallet-transactions__content">
+            <div className="wallet-table-container">
+              <table className="wallet-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Type</th>
                     <th>Amount</th>
                     <th>Balance</th>
@@ -234,20 +484,20 @@ const WalletClient = () => {
                   {transactions.map((transaction, index) => (
                     <tr
                       key={index}
-                      className={`status-${transaction.transactionStatus?.toLowerCase()}`}
+                      className={`wallet-transaction-row wallet-transaction-row--${transaction.transactionStatus?.toLowerCase()}`}
                     >
                       <td
-                        className={`wc-type type-${transaction.transactionType?.toLowerCase()}`}
+                        className={`wallet-transaction__type wallet-transaction__type--${transaction.transactionType?.toLowerCase()}`}
                       >
                         {toTitleCase(transaction.transactionType)}
                       </td>
-                      <td className="wc-amount">
+                      <td className="wallet-transaction__amount">
                         {transaction.amount?.toLocaleString("vi-VN", {
                           style: "currency",
                           currency: "VND",
                         })}
                       </td>
-                      <td className="wc-balance">
+                      <td className="wallet-transaction__balance">
                         {transaction.transactionBalance?.toLocaleString(
                           "vi-VN",
                           {
@@ -256,16 +506,20 @@ const WalletClient = () => {
                           }
                         )}
                       </td>
-                      <td>
+                      <td className="wallet-transaction__date">
                         {
                           new Date(transaction.transactionDate)
                             .toISOString()
                             .split("T")[0]
                         }
                       </td>
-                      <td className="wc-status">
-                        <span className="wc-status-indicator"></span>
-                        {toTitleCase(transaction.transactionStatus)}
+                      <td className="wallet-transaction__status">
+                        <span
+                          className={`wallet-status-badge wallet-status-badge--${transaction.transactionStatus?.toLowerCase()}`}
+                        >
+                          <span className="wallet-status-indicator"></span>
+                          {toTitleCase(transaction.transactionStatus)}
+                        </span>
                       </td>
                     </tr>
                   ))}
@@ -273,7 +527,7 @@ const WalletClient = () => {
               </table>
             </div>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ export const createJob = async (jobData) => {
     let companyLogoUrl = jobData.companyLogoUrl;
     if (jobData.companyLogoUrl && typeof jobData.companyLogoUrl !== "string") {
       companyLogoUrl = await uploadToCloudinaryService(jobData.companyLogoUrl);
-      console.log("Uploaded company logo URL:", companyLogoUrl);
       if (!companyLogoUrl) {
         throw new Error(
           "Failed to upload company logo to Cloudinary. Please try again."
@@ -61,12 +60,11 @@ export const createJob = async (jobData) => {
       ...(jobData.translationType === "Oral" && {
         workingTime: jobData.workingTime,
       }),
+      requiredHires: parseInt(jobData.requiredHires) || 1,
       customerId: customerId,
     };
 
-    console.log("Formatted job data sent to API:", formattedJobData);
     const response = await postJob(formattedJobData);
-    console.log("API response from postJob:", response);
     return response;
   } catch (error) {
     console.error("Error in createJob:", error.response?.data || error);
@@ -75,6 +73,7 @@ export const createJob = async (jobData) => {
     );
   }
 };
+
 export const getJobsByCustomerService = async (customerId) => {
   try {
     if (!customerId) {
