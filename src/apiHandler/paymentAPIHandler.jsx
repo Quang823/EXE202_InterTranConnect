@@ -42,7 +42,12 @@ export const getPaymentInfobyOrdercode = async (orderCode) => {
   return response.data;
 };
 
-export const payInterpreter = async ({ jobId, customerId, amount }) => {
+export const payInterpreter = async ({
+  jobId,
+  customerId,
+  amount,
+  interpreterId,
+}) => {
   try {
     const response = await axios.post(
       `${rootPayment}/pay-interpreter`,
@@ -50,6 +55,7 @@ export const payInterpreter = async ({ jobId, customerId, amount }) => {
         jobId,
         customerId,
         amount,
+        interpreterId,
       },
       { headers: getAuthHeaders() }
     );

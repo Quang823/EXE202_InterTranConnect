@@ -2,9 +2,9 @@
   --post-history-detail-primary: #1d4ed8;
   --post-history-detail-primary-dark: #1e40af;
   --post-history-detail-primary-gradient: linear-gradient(
-    135deg,
-    #1d4ed8 0%,
-    #7e22ce 100%
+    to right,
+    #3b82f6,
+    #8b5cf6
   );
   --post-history-detail-secondary: #e11d48;
   --post-history-detail-secondary-gradient: linear-gradient(
@@ -142,6 +142,49 @@
   font-weight: 500;
 }
 
+.post-history-detail-hires {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.post-history-detail-hire-item {
+  font-size: 0.95rem;
+  color: #444;
+  background-color: #e9ecef;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.post-history-detail-hire-item strong {
+  margin-left: 0.25rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .post-history-detail-header {
+    padding: 1rem;
+  }
+
+  .post-history-detail-title {
+    font-size: 1.5rem;
+  }
+
+  .post-history-detail-company {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .post-history-detail-hires {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
 .post-history-detail-description {
   font-size: 15px;
   color: var(--post-history-detail-text-tertiary);
@@ -166,6 +209,12 @@
   font-weight: 600;
   color: var(--post-history-detail-primary);
   margin-bottom: 16px;
+}
+
+.post-history-detail-no-document {
+  padding: 1rem;
+  color: #6c757d;
+  font-style: italic;
 }
 
 .post-history-detail-details-table {
@@ -395,6 +444,42 @@
     transform: translateY(-2px);
     box-shadow: var(--post-history-detail-shadow-sm);
   }
+}
+.post-history-detail-selected {
+  background-color: #d1fae5;
+  color: #065f46;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+.post-history-detail-pay-btn {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(0);
+  width: 50%;
+  margin-left: 25%;
+}
+
+.post-history-detail-pay-btn:hover {
+  background: linear-gradient(to right, #2563eb, #7c3aed);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.post-history-detail-full-message {
+  color: #10b981;
+  font-weight: 500;
+  font-size: 1.125rem;
+  font-style: italic;
+  text-align: center;
 }
 
 .post-history-detail-actions {

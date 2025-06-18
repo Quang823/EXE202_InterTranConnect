@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  SearchIcon,
-  MapPinIcon,
-  ChevronDownIcon,
-} from "lucide-react";
+import { SearchIcon, MapPinIcon, ChevronDownIcon } from "lucide-react";
 import axios from "axios";
 
 const SearchSidebar = ({
@@ -25,7 +21,9 @@ const SearchSidebar = ({
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get("https://restcountries.com/v3.1/all?fields=name");
+        const response = await axios.get(
+          "https://restcountries.com/v3.1/all?fields=name"
+        );
         const countryList = response.data
           .map((country) => country.name.common)
           .sort(); // Sắp xếp theo thứ tự bảng chữ cái
@@ -45,7 +43,7 @@ const SearchSidebar = ({
   const handleLanguageChange = (language, type) => {
     const currentLanguages = searchParams[type];
     const newLanguages = currentLanguages.includes(language)
-      ? currentLanguages.filter(lang => lang !== language)
+      ? currentLanguages.filter((lang) => lang !== language)
       : [...currentLanguages, language];
     handleSearchChange(type, newLanguages);
   };
@@ -53,19 +51,19 @@ const SearchSidebar = ({
   const handleSalaryChange = (value) => {
     const newRange = [salaryRange[0], parseInt(value)];
     setSalaryRange(newRange);
-    handleSearchChange('minSalary', newRange[0]);
-    handleSearchChange('maxSalary', newRange[1]);
+    handleSearchChange("minSalary", newRange[0]);
+    handleSearchChange("maxSalary", newRange[1]);
   };
 
   return (
     <div className="search-sidebar">
       <h2>Search by Job Title</h2>
       <div className="search-input">
-        <input 
-          type="text" 
-          placeholder="Job title" 
+        <input
+          type="text"
+          placeholder="Job title"
           value={searchParams.jobTitle}
-          onChange={(e) => handleInputChange(e, 'jobTitle')}
+          onChange={(e) => handleInputChange(e, "jobTitle")}
         />
         <SearchIcon className="search-icon" size={20} />
       </div>
@@ -75,7 +73,7 @@ const SearchSidebar = ({
         <div className="search-input1">
           <select
             value={searchParams.location}
-            onChange={(e) => handleInputChange(e, 'location')}
+            onChange={(e) => handleInputChange(e, "location")}
             className="location-select"
           >
             <option value="">All Countries</option>
@@ -115,12 +113,20 @@ const SearchSidebar = ({
       <div className="filter-section">
         <h3>Source Language</h3>
         <div className="checkbox-group">
-          {["English", "Japanese", "Chinese", "Korean", "French", "German", "Spanish"].map((lang) => (
+          {[
+            "English",
+            "Japanese",
+            "Chinese",
+            "Korean",
+            "French",
+            "German",
+            "Spanish",
+          ].map((lang) => (
             <label key={`source-${lang}`}>
               <input
                 type="checkbox"
                 checked={searchParams.sourceLanguages.includes(lang)}
-                onChange={() => handleLanguageChange(lang, 'sourceLanguages')}
+                onChange={() => handleLanguageChange(lang, "sourceLanguages")}
               />
               {lang}
             </label>
@@ -132,12 +138,20 @@ const SearchSidebar = ({
       <div className="filter-section">
         <h3>Target Language</h3>
         <div className="checkbox-group">
-          {["English", "Japanese", "Chinese", "Korean", "French", "German", "Spanish"].map((lang) => (
+          {[
+            "English",
+            "Japanese",
+            "Chinese",
+            "Korean",
+            "French",
+            "German",
+            "Spanish",
+          ].map((lang) => (
             <label key={`target-${lang}`}>
               <input
                 type="checkbox"
                 checked={searchParams.targetLanguages.includes(lang)}
-                onChange={() => handleLanguageChange(lang, 'targetLanguages')}
+                onChange={() => handleLanguageChange(lang, "targetLanguages")}
               />
               {lang}
             </label>

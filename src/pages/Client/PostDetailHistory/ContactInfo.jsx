@@ -61,7 +61,7 @@ const ContactInfo = ({ job }) => (
           <Users size={16} /> Customer:
         </span>
         <span className="post-history-detail-details-value">
-          {job.customer.fullName} ({job.customer.email})
+          {job.customerName} ({job.customerEmail})
         </span>
       </div>
     </div>

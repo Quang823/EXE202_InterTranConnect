@@ -35,15 +35,31 @@ export const selectTranslator = async (jobId, interpreterId) => {
     if (!interpreterId || typeof interpreterId !== "string") {
       throw new Error("Interpreter ID is required and must be a string!");
     }
+
+    console.log("Calling selectTranslatorForJob with:", {
+      jobId,
+      interpreterId,
+    });
     const response = await selectTranslatorForJob(jobId, interpreterId);
-    return response;
+    console.log("Response from selectTranslatorForJob:", response);
+
+    // Kiểm tra response là chuỗi thành công hoặc lỗi
+    if (typeof response === "string" && response.includes("successfully")) {
+      return { success: true, message: response }; // Chuyển đổi thành object
+    } else if (typeof response === "string" && response.includes("failed")) {
+      throw new Error(response || "Selection failed due to server response.");
+    } else {
+      throw new Error("Unexpected server response format.");
+    }
   } catch (error) {
     console.error(
       "Service error selecting translator:",
-      error.message || error
+      error.response?.data || error.message
     );
     throw new Error(
-      error.message || "Failed to select translator. Please try again later."
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to select translator. Please try again later."
     );
   }
 };

@@ -15,6 +15,7 @@ import WorkLocationModal from "./WorkLocationModal";
 const Post_Client = () => {
   const [formData, setFormData] = useState({
     jobTitle: "",
+    requiredHires: "",
     translationType: "",
     sourceLanguage: "",
     translationLanguage: "",
@@ -154,6 +155,7 @@ const Post_Client = () => {
       const customerId = user.id;
       const jobData = {
         jobTitle: formData.jobTitle,
+        requiredHires: parseInt(formData.requiredHires) || 1,
         translationType: formData.translationType,
         sourceLanguage: formData.sourceLanguage,
         targetLanguage: formData.translationLanguage,
@@ -181,18 +183,19 @@ const Post_Client = () => {
         }),
       };
 
-      if (
-        !jobData.jobTitle ||
-        !jobData.contactEmail ||
-        !jobData.uploadFileUrl
-      ) {
-        setMessage("Please fill in Title, ContactEmail, and upload a file.");
+      if (!jobData.jobTitle || !jobData.contactEmail) {
+        setMessage("Please fill in Title, ContactEmail");
         setIsSubmitting(false);
         return;
       }
 
       if (formData.translationType === "Oral" && !jobData.workingTime) {
         setMessage("Please specify the working time for Oral translation.");
+        setIsSubmitting(false);
+        return;
+      }
+      if (formData.translationType === "Written" && !jobData.uploadFileUrl) {
+        setMessage("Please submit a file for translator.");
         setIsSubmitting(false);
         return;
       }
@@ -215,6 +218,7 @@ const Post_Client = () => {
 
       setFormData({
         jobTitle: "",
+        requiredHires: "",
         translationType: "",
         sourceLanguage: "",
         translationLanguage: "",
@@ -317,6 +321,22 @@ const Post_Client = () => {
                 />
               </div>
               <div className="input-with-label">
+                <label htmlFor="requiredHires">Required Hires</label>
+                <input
+                  type="number"
+                  id="requiredHires"
+                  name="requiredHires"
+                  placeholder="e.g., 2"
+                  value={formData.requiredHires}
+                  onChange={handleInputChange}
+                  className="full-width-input"
+                  min="1"
+                />
+              </div>
+            </div>
+
+            <div className="post-job-field-row">
+              <div className="input-with-label">
                 <label htmlFor="translationType">Work Type</label>
                 <select
                   id="translationType"
@@ -330,10 +350,19 @@ const Post_Client = () => {
                   <option value="Oral">Oral - With Working Time</option>
                 </select>
               </div>
-            </div>
-
-            {formData.translationType === "Written" && (
-              <div className="post-job-field-row">
+              {formData.translationType === "" && (
+                <div className="input-with-label">
+                  <label>Time (Select Work Type)</label>
+                  <input
+                    type="text"
+                    value="Please select Work Type"
+                    disabled
+                    className="full-width-input"
+                    style={{ backgroundColor: "#f0f0f0", color: "#888" }}
+                  />
+                </div>
+              )}
+              {formData.translationType === "Written" && (
                 <div className="input-with-label">
                   <label htmlFor="deadline">Deadline</label>
                   <input
@@ -346,11 +375,8 @@ const Post_Client = () => {
                     placeholder="Select Deadline"
                   />
                 </div>
-              </div>
-            )}
-
-            {formData.translationType === "Oral" && (
-              <div className="post-job-field-row">
+              )}
+              {formData.translationType === "Oral" && (
                 <div className="input-with-label">
                   <label htmlFor="workingTime">Working Time</label>
                   <input
@@ -363,8 +389,8 @@ const Post_Client = () => {
                     placeholder="Select Working Time"
                   />
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             <div className="post-job-field-row">
               <div className="input-with-label">

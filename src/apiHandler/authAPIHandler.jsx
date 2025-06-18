@@ -74,3 +74,18 @@ export const updateUserProfile = async (profileData) => {
     throw error;
   }
 };
+
+export const updateBankAccount = async (bankAccountData) => {
+  try {
+    const response = await axios.put(
+      `${rootAuth}/bank-account`,
+      bankAccountData,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

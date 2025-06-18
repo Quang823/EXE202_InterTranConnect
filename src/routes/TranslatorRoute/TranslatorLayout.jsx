@@ -16,17 +16,6 @@ const TranslatorLayout = ({
         <main>{children}</main>
       </div>
       {showFooter && <Footer />}
-      <style jsx>{`
-        .translator-layout {
-          .content-wrapper {
-            display: flex;
-            flex: 1;
-            main {
-              flex: 3;
-            }
-          }
-        }
-      `}</style>
     </div>
   );
 };

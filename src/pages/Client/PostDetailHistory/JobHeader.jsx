@@ -13,9 +13,12 @@ const JobHeader = ({ job }) => (
             className="post-history-detail-company-logo"
           />
         )}
-        <span className="post-history-detail-requested-by">
-          Requested by: {job.companyName}, {job.customer.fullName}
-        </span>
+        <div className="post-history-detail-info">
+          <span className="post-history-detail-requested-by">
+            Requested by: {job.companyName},{" "}
+            {job.customer?.fullName || "Unknown"}
+          </span>
+        </div>
       </div>
     </div>
   </div>

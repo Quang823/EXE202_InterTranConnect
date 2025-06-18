@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   User,
-  History,
+  Award,
   Wallet,
   LogOut,
   ChevronDown,
@@ -39,9 +39,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             closeDropdown();
           }}
         >
-          <CheckSquare className="itc-user-dropdown__icon" />{" "}
-          {/* Thay bằng CheckSquare */}
-          Applied Job
+          <CheckSquare className="itc-user-dropdown__icon" /> Applied Job
         </div>
         <div
           className="itc-user-dropdown__mobile-item"
@@ -53,6 +51,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           <Heart className="itc-user-dropdown__icon" />
           Favorite Job
         </div>
+
         <div
           className="itc-user-dropdown__mobile-item"
           onClick={() => {
@@ -63,6 +62,18 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           <Wallet className="itc-user-dropdown__icon" />
           Wallet
         </div>
+
+        <div
+          className="itc-user-dropdown__mobile-item"
+          onClick={() => {
+            navigate("/translator/certificate-details");
+            closeDropdown();
+          }}
+        >
+          <Award className="itc-user-dropdown__icon" />
+          Certificate
+        </div>
+
         <div
           className="itc-user-dropdown__mobile-item itc-user-dropdown__mobile-item--logout"
           onClick={() => {
@@ -121,6 +132,16 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <Heart className="itc-user-dropdown__icon" /> Favorite Job
+          </div>
+          <div
+            className="itc-user-dropdown__mobile-item"
+            onClick={() => {
+              navigate("/translator/certificate_details");
+              closeDropdown();
+            }}
+          >
+            <Award className="itc-user-dropdown__icon" />
+            Certificate
           </div>
           <div
             className="itc-user-dropdown__item"

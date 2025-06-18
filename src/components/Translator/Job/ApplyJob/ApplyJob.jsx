@@ -17,6 +17,8 @@ import "./ApplyJob.scss";
 import axios from "axios";
 import useScrollToTop from "../../../../hooks/useScrollToTop.jsx";
 import Loading from "../../../common/Loading/Loading.jsx";
+import { processJobWorkWithFile } from "../../../../services/jobWorkService";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Function to generate random RGB gradient
@@ -63,6 +65,7 @@ const ApplyJob = () => {
         );
 
         setJobApplications(response.data);
+        console.log("res", response.data);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch job applications");
@@ -83,11 +86,30 @@ const ApplyJob = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event, jobId) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("File selected:", file.name);
-      // Add your file handling logic here
+      try {
+        setLoading(true); // Bật loading khi bắt đầu upload
+        const sessionData = JSON.parse(sessionStorage.getItem("user"));
+        const interpreterId = sessionData?.id;
+
+        if (!interpreterId) {
+          throw new Error("User not logged in");
+        }
+
+        // Gọi hàm processJobWorkWithFile từ service
+        await processJobWorkWithFile(jobId, interpreterId, file);
+        console.log("File uploaded and job submitted successfully");
+
+        // Làm mới danh sách công việc sau khi upload thành công
+        await fetchJobApplications();
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        setError("Failed to upload file for job " + jobId);
+      } finally {
+        setLoading(false); // Tắt loading khi hoàn tất
+      }
     }
   };
 

@@ -99,7 +99,7 @@ const JobDetails = () => {
         <div className="job-details2">
           <h1>{job.jobTitle}</h1>
           <div className="job-meta">
-            <span className="status">{job.customer.fullName}</span>
+            <span className="status">{job.customerName}</span>
             <span className="type">{job.translationType}</span>
             <span className="time">
               {new Date(job.createdAt).toLocaleString()}

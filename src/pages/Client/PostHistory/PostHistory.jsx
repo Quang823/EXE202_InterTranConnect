@@ -51,7 +51,7 @@ const PostHistory = () => {
           category: job.translationType || "Unknown",
           languagePair: `${job.sourceLanguage} - ${job.targetLanguage}`,
           pageCount: 50,
-          companyLogoUrl: job.companyLogoUrl,
+          companyLogoUrl: job.companyLogoUrl || null,
           hourlyRate: job.hourlyRate || 0,
           duration: "1 week",
         }));
@@ -133,6 +133,8 @@ const PostHistory = () => {
         return "Completed";
       case 5:
         return "Canceled";
+      case 6:
+        return "FullyRecruited";
       default:
         return "Unknown";
     }
