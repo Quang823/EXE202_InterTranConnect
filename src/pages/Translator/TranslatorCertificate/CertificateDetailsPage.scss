@@ -303,22 +303,26 @@
 
 .certificate-detail-error {
   color: #d32f2f;
-  background: #ffebee;
-  border-radius: 8px;
-  padding: 1rem 2rem;
-  margin: 2rem 0;
-  max-width: 320px;
+  background: transparent;
+  border-radius: 12px;
+  padding: 1.5rem 2.5rem;
+  margin: 2rem auto;
+  max-width: 340px;
   text-align: center;
-  font-weight: bold;
-  box-shadow: 0 2px 12px rgba(244, 67, 54, 0.2);
-  animation: pulseError 1.3s infinite alternate;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(50px);
+  background-color: #f0f0f0b9;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: pulseError 1.5s infinite alternate;
 }
+
 @keyframes pulseError {
   from {
-    filter: brightness(1);
+    transform: scale(1);
   }
   to {
-    filter: brightness(1.14);
+    transform: scale(1.05); /* Slight scale up for a gentle pulse */
   }
 }
 
