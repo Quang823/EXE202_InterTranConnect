@@ -5,11 +5,7 @@ import "./JobTranslator.scss";
 import TranslatorLayout from "../../../routes/TranslatorRoute/TranslatorLayout";
 import SearchSidebar from "./SearchSidebar/SearchSidebar";
 import useScrollToTop from "../../../hooks/useScrollToTop.jsx";
-import {
-  TagIcon,
-  LanguagesIcon,
-  ClockIcon,
-} from "lucide-react";
+import { TagIcon, LanguagesIcon, ClockIcon } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -28,7 +24,7 @@ const JobTranslator = () => {
     sourceLanguages: [],
     targetLanguages: [],
     minSalary: 0,
-    maxSalary: 9999
+    maxSalary: 9999,
   });
   const navigate = useNavigate();
 
@@ -64,14 +60,26 @@ const JobTranslator = () => {
           pageSize: itemsPerPage,
           ...(searchParams.jobTitle && { jobTitle: searchParams.jobTitle }),
           ...(searchParams.location && { location: searchParams.location }),
-          ...(searchParams.categories.length > 0 && { categories: searchParams.categories.join(',') }),
-          ...(searchParams.sourceLanguages.length > 0 && { sourceLanguages: searchParams.sourceLanguages.join(',') }),
-          ...(searchParams.targetLanguages.length > 0 && { targetLanguages: searchParams.targetLanguages.join(',') }),
-          ...(searchParams.minSalary > 0 && { minSalary: searchParams.minSalary }),
-          ...(searchParams.maxSalary < 9999 && { maxSalary: searchParams.maxSalary })
+          ...(searchParams.categories.length > 0 && {
+            categories: searchParams.categories.join(","),
+          }),
+          ...(searchParams.sourceLanguages.length > 0 && {
+            sourceLanguages: searchParams.sourceLanguages.join(","),
+          }),
+          ...(searchParams.targetLanguages.length > 0 && {
+            targetLanguages: searchParams.targetLanguages.join(","),
+          }),
+          ...(searchParams.minSalary > 0 && {
+            minSalary: searchParams.minSalary,
+          }),
+          ...(searchParams.maxSalary < 9999 && {
+            maxSalary: searchParams.maxSalary,
+          }),
         });
 
-        const response = await axios.get(`${API_URL}/api/job?${queryParams.toString()}`);
+        const response = await axios.get(
+          `${API_URL}/api/job?${queryParams.toString()}`
+        );
         const { items, totalItems, totalPages } = response.data;
 
         // Map API data to the component's expected structure
@@ -119,9 +127,9 @@ const JobTranslator = () => {
   const handleCategoryChange = (category) => {
     const newCategories = toggleSelection(selectedCategory, category);
     setSelectedCategory(newCategories);
-    setSearchParams(prev => ({
+    setSearchParams((prev) => ({
       ...prev,
-      categories: newCategories
+      categories: newCategories,
     }));
   };
 
@@ -130,9 +138,9 @@ const JobTranslator = () => {
   };
 
   const handleSearchChange = (field, value) => {
-    setSearchParams(prev => ({
+    setSearchParams((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
     setCurrentPage(1); // Reset to first page when search changes
   };
@@ -141,18 +149,20 @@ const JobTranslator = () => {
     <TranslatorLayout
       showSidebar={true}
       sidebarContent={
-        <SearchSidebar
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedExpertise={selectedExpertise}
-          setSelectedExpertise={setSelectedExpertise}
-          salaryRange={salaryRange}
-          setSalaryRange={setSalaryRange}
-          handleCategoryChange={handleCategoryChange}
-          handleExpertiseChange={handleExpertiseChange}
-          searchParams={searchParams}
-          handleSearchChange={handleSearchChange}
-        />
+        <div className="ss-wrapper">
+          <SearchSidebar
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            selectedExpertise={selectedExpertise}
+            setSelectedExpertise={setSelectedExpertise}
+            salaryRange={salaryRange}
+            setSalaryRange={setSalaryRange}
+            handleCategoryChange={handleCategoryChange}
+            handleExpertiseChange={handleExpertiseChange}
+            searchParams={searchParams}
+            handleSearchChange={handleSearchChange}
+          />
+        </div>
       }
       showHeader={false}
       showFooter={false}
@@ -160,8 +170,7 @@ const JobTranslator = () => {
       <div className="results-container">
         <div className="results-header">
           <p>
-            Showing {startIndex}-
-            {endIndex} of {totalItems} results
+            Showing {startIndex}-{endIndex} of {totalItems} results
           </p>
           <div className="sort-dropdown">
             <select>
@@ -177,11 +186,13 @@ const JobTranslator = () => {
             <div className="job-card" key={job.id}>
               <div className="job-header-trans">
                 <div className="job-logo">
-                  <div 
-                    className="logo-circle" 
+                  <div
+                    className="logo-circle"
                     style={{ background: getRandomGradient() }}
                   >
-                    <span style={{ color: '#fff', fontWeight: 'bold' }}>ITC</span>
+                    <span style={{ color: "#fff", fontWeight: "bold" }}>
+                      ITC
+                    </span>
                   </div>
                 </div>
                 <div className="job-title-info">
@@ -208,7 +219,10 @@ const JobTranslator = () => {
                 </div>
                 <div className="job-action-button">
                   <div className="job-action">
-                    <button className="details-btn" onClick={() => handleJobDetails(job.id)}>
+                    <button
+                      className="details-btn"
+                      onClick={() => handleJobDetails(job.id)}
+                    >
                       Job Details
                     </button>
                   </div>

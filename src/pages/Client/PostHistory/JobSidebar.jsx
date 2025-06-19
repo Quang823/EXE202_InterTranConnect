@@ -51,7 +51,7 @@ const JobSidebar = () => {
       <div className="jobSidebar-header">
         <button className="jobSidebar-back">Back</button>
         <button className="jobSidebar-create" onClick={handleCreatePost}>
-          Create New Post
+          Create New Job
         </button>
       </div>
       <div className="jobSidebar-content">

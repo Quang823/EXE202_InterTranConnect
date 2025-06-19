@@ -38,28 +38,46 @@ const PostHistory = () => {
         }
 
         const fetchedJobs = await getJobsByCustomerService(customerId);
-        const transformedPosts = fetchedJobs.map((job) => ({
-          jobId: job.id,
-          company: job.companyName.toLowerCase(),
-          title: job.jobTitle,
-          location: job.workCity || "Not specified",
-          date: job.createdAt,
-          status: getJobStatus(job.status),
-          highlighted: false,
-          rating: 4.5,
-          applicants: job.applications.length,
-          category: job.translationType || "Unknown",
-          languagePair: `${job.sourceLanguage} - ${job.targetLanguage}`,
-          pageCount: 50,
-          companyLogoUrl: job.companyLogoUrl || null,
-          hourlyRate: job.hourlyRate || 0,
-          duration: "1 week",
-        }));
+        console.log("Fetched Jobs (Full Response):", fetchedJobs); // Log the full response
 
-        setPosts(transformedPosts);
+        // Check if items is undefined or empty
+        if (!fetchedJobs.items || fetchedJobs.items.length === 0) {
+          setError("No jobs found for this customer.");
+        } else {
+          const transformedPosts = fetchedJobs.items.map((job) => ({
+            jobId: job.id,
+            company: job.companyName?.toLowerCase() || "Unknown",
+            title: job.jobTitle || "No title",
+            location: job.workCity || "Not specified",
+            date: job.createdAt || new Date().toISOString(),
+            status: getJobStatus(job.status),
+            highlighted: false,
+            rating: 4.5,
+            applicants: job.applications?.length || 0,
+            category: job.translationType || "Unknown",
+            languagePair: `${job.sourceLanguage || "Unknown"} - ${
+              job.targetLanguage || "Unknown"
+            }`,
+            pageCount: 50,
+            companyLogoUrl: job.companyLogoUrl || null,
+            hourlyRate: job.hourlyRate || 0,
+            duration: "1 week",
+          }));
+
+          setPosts(transformedPosts);
+        }
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        console.error("Error fetching jobs:", err);
+        if (
+          err.response &&
+          err.response.status === 404 &&
+          err.response.data === "No jobs found for this customer."
+        ) {
+          setError("No jobs found for this customer.");
+        } else {
+          setError(err.message || "An unexpected error occurred");
+        }
         setLoading(false);
       }
     };
@@ -171,7 +189,9 @@ const PostHistory = () => {
           </div>
           <div className="col-md-9">
             <div className="ph-post-history-container">
-              <p>Error: {error}</p>
+              <p className="certificate-detail-error">
+                Please create a new job!!
+              </p>
             </div>
           </div>
         </div>
