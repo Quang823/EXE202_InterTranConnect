@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SearchIcon, MapPinIcon, ChevronDownIcon } from "lucide-react";
 import axios from "axios";
-
+import "./SearchSidebar.scss";
 const SearchSidebar = ({
   selectedCategory,
   setSelectedCategory,
@@ -56,25 +56,25 @@ const SearchSidebar = ({
   };
 
   return (
-    <div className="search-sidebar">
-      <h2>Search by Job Title</h2>
-      <div className="search-input">
+    <div className="ss-search-sidebar">
+      <h2 className="ss-title">Search by Job Title</h2>
+      <div className="ss-search-input">
         <input
           type="text"
           placeholder="Job title"
           value={searchParams.jobTitle}
           onChange={(e) => handleInputChange(e, "jobTitle")}
         />
-        <SearchIcon className="search-icon" size={20} />
+        <SearchIcon className="ss-search-icon" size={20} />
       </div>
 
-      <div className="filter-section">
-        <h3>Location</h3>
-        <div className="search-input1">
+      <div className="ss-filter-section">
+        <h3 className="ss-subtitle">Location</h3>
+        <div className="ss-search-input1">
           <select
             value={searchParams.location}
             onChange={(e) => handleInputChange(e, "location")}
-            className="location-select"
+            className="ss-location-select"
           >
             <option value="">All Countries</option>
             {countries.map((country) => (
@@ -83,13 +83,13 @@ const SearchSidebar = ({
               </option>
             ))}
           </select>
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="ss-error-message">{error}</p>}
         </div>
       </div>
 
-      <div className="filter-section">
-        <h3>Category</h3>
-        <div className="checkbox-group">
+      <div className="ss-filter-section">
+        <h3 className="ss-subtitle">Category</h3>
+        <div className="ss-checkbox-group">
           <label>
             <input
               type="checkbox"
@@ -107,12 +107,12 @@ const SearchSidebar = ({
             Interpretation
           </label>
         </div>
-        <button className="show-more-btn">Show More</button>
+        <button className="ss-show-more-btn">Show More</button>
       </div>
 
-      <div className="filter-section">
-        <h3>Source Language</h3>
-        <div className="checkbox-group">
+      <div className="ss-filter-section">
+        <h3 className="ss-subtitle">Source Language</h3>
+        <div className="ss-checkbox-group">
           {[
             "English",
             "Japanese",
@@ -132,12 +132,12 @@ const SearchSidebar = ({
             </label>
           ))}
         </div>
-        <button className="show-more-btn">Show More</button>
+        <button className="ss-show-more-btn">Show More</button>
       </div>
 
-      <div className="filter-section">
-        <h3>Target Language</h3>
-        <div className="checkbox-group">
+      <div className="ss-filter-section">
+        <h3 className="ss-subtitle">Target Language</h3>
+        <div className="ss-checkbox-group">
           {[
             "English",
             "Japanese",
@@ -157,12 +157,12 @@ const SearchSidebar = ({
             </label>
           ))}
         </div>
-        <button className="show-more-btn">Show More</button>
+        <button className="ss-show-more-btn">Show More</button>
       </div>
 
-      <div className="filter-section">
-        <h3>Salary Range</h3>
-        <div className="salary-slider">
+      <div className="ss-filter-section">
+        <h3 className="ss-subtitle">Salary Range</h3>
+        <div className="ss-salary-slider">
           <input
             type="range"
             min="0"
@@ -171,7 +171,7 @@ const SearchSidebar = ({
             onChange={(e) => handleSalaryChange(e.target.value)}
           />
         </div>
-        <div className="salary-range">
+        <div className="ss-salary-range">
           <span>
             Salary: ${salaryRange[0]} - ${salaryRange[1]}
           </span>
