@@ -124,11 +124,11 @@ const PostHistory = () => {
       case 0:
         return "Open";
       case 1:
-        return "Awaiting Payment";
+        return "Recruiting";
       case 2:
-        return "Paid";
+        return "InProgress";
       case 3:
-        return "In Progress";
+        return "PartiallyCompleted";
       case 4:
         return "Completed";
       case 5:

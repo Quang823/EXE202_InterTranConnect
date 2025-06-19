@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "../../../common/Loading/Loading";
 import axios from "axios";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "./JobDetails.scss";
+import { startJobWork } from "../../../../apiHandler/jobWorkAPIHandler";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,12 +20,16 @@ const JobDetails = () => {
   const [applicationMessage, setApplicationMessage] = useState(""); // State for application message
   const [applyError, setApplyError] = useState(null); // State for application errors
   const [applySuccess, setApplySuccess] = useState(false); // State for application success
+  const [startSuccess, setStartSuccess] = useState(false); // State for start work success
+  const [startError, setStartError] = useState(null); // State for start work errors
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   // Fetch job details from API
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/job/${id}`);
+        console.log("res", response.data);
         setJob(response.data);
         setLoading(false);
       } catch (err) {
@@ -55,6 +64,9 @@ const JobDetails = () => {
       });
       setApplySuccess(true);
       setApplyError(null);
+      // Refresh job data after applying
+      const response = await axios.get(`${API_URL}/api/job/${id}`);
+      setJob(response.data);
     } catch (err) {
       setApplyError("Failed to submit application.");
       setApplySuccess(false);
@@ -62,16 +74,35 @@ const JobDetails = () => {
     }
   };
 
-  // Handle back button navigation
-  const handleBack = () => {
-    navigate("/translator");
+  const handleStartJobWork = async () => {
+    try {
+      const sessionData = JSON.parse(sessionStorage.getItem("user"));
+      const interpreterId = sessionData?.id;
+
+      if (!interpreterId) {
+        setStartError("User not logged in.");
+        return;
+      }
+
+      const result = await startJobWork(id, interpreterId);
+      setStartSuccess(true);
+      setStartError(null);
+      const response = await axios.get(`${API_URL}/api/job/${id}`);
+      setJob(response.data);
+    } catch (err) {
+      setStartError("Failed to start job work.");
+      setStartSuccess(false);
+      console.error("Start job error:", err);
+    }
   };
 
-  // Handle message form submission (optional, if you want to use the form for other purposes)
+  const handleBack = () => {
+    navigate("/translator/");
+  };
+
   const handleSendMessage = (e) => {
     e.preventDefault();
-    // Add logic for sending a general message if needed
-    alert("Message sent!"); // Placeholder
+    alert("Message sent!");
   };
 
   if (loading) {
@@ -85,6 +116,13 @@ const JobDetails = () => {
   if (error || !job) {
     return <div>{error || "Job not found."}</div>;
   }
+
+  // Kiểm tra điều kiện để hiển thị nút Start Work
+  const shouldShowStartButton = job.applications?.some(
+    (app) =>
+      app.interpreterId === JSON.parse(sessionStorage.getItem("user"))?.id &&
+      app.workStatus === 2
+  );
 
   return (
     <div className="job-listing-container">
@@ -107,106 +145,44 @@ const JobDetails = () => {
             <span className="salary">${job.totalFee}</span>
             <span className="location">{job.workCity}</span>
           </div>
-
-          <section className="section">
-            <h2>Job Description</h2>
-            <p>{job.description}</p>
-            <h3>Key Aspects of Marketing Translation:</h3>
-            <ul>
-              <li>
-                <span className="check">✓</span> Localization: Adapting tone,
-                style, and cultural references to match the target market.
-              </li>
-              <li>
-                <span className="check">✓</span> Brand Consistency: Ensuring the
-                message aligns with the company’s identity across languages.
-              </li>
-              <li>
-                <span className="check">✓</span> SEO Optimization: Translating
-                and adapting keywords for global search rankings.
-              </li>
-              <li>
-                <span className="check">✓</span> Creative Adaptation:
-                Maintaining emotional impact while adjusting phrasing for
-                different audiences.
-              </li>
-              <li>
-                <span className="check">✓</span> Cross-Channel Integration:
-                Applying translated content across websites, social media, and
-                advertising.
-              </li>
-              <li>
-                <span className="check">✓</span> Marketing translation helps
-                brands connect with international customers, increase
-                engagement, and build trust across diverse markets.
-              </li>
-            </ul>
-          </section>
-
-          <section className="section">
-            <h2>Key Responsibilities</h2>
-            <h3>Translate & Localize Content</h3>
-            <ul>
-              <li>
-                <span className="check">✓</span> Convert marketing materials
-                (ads, brochures, websites, social media posts, product
-                descriptions) while maintaining cultural and brand consistency.
-              </li>
-            </ul>
-            <h3>Ensure Brand Voice & Tone</h3>
-            <ul>
-              <li>
-                <span className="check">✓</span> Adapt messaging to fit the
-                target audience while preserving the brand’s unique voice and
-                style.
-              </li>
-            </ul>
-            <h3>SEO & Keyword Optimization</h3>
-            <ul>
-              <li>
-                <span className="check">✓</span> Translate and optimize keywords
-                for search engines to improve online visibility in different
-                languages.
-              </li>
-            </ul>
-            <h3>Transcreation & Copywriting</h3>
-            <ul>
-              <li>
-                <span className="check">✓</span> Rewrite slogans, taglines, and
-                promotional content to evoke the same emotions as the original.
-              </li>
-            </ul>
-          </section>
-
-          <section className="section">
-            <h2>Professional Skills</h2>
-            <ul>
-              <li>
-                <span className="check">✓</span> Language Proficiency: Fluent in
-                both the source and target languages, with strong grammar,
-                vocabulary, and writing skills.
-              </li>
-              <li>
-                <span className="check">✓</span> Marketing & Branding Knowledge:
-                Understanding of marketing strategies, consumer psychology, and
-                brand positioning across cultures.
-              </li>
-              <li>
-                <span className="check">✓</span> Transcreation & Copywriting:
-                Ability to create and adapt slogans, taglines, and marketing
-                messages while maintaining the original intent.
-              </li>
-            </ul>
-          </section>
+          {/* Display PDF if uploadFileUrl exists */}
+          {job.uploadFileUrl && (
+            <section className="section">
+              <h2>Job Document</h2>
+              <div className="jd-pdf-viewer-container">
+                <Worker
+                  workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+                >
+                  <Viewer
+                    fileUrl={job.uploadFileUrl}
+                    plugins={[defaultLayoutPluginInstance]}
+                  />
+                </Worker>
+              </div>
+            </section>
+          )}
         </div>
 
         <aside className="sidebar">
-          <button className="apply-btn" onClick={handleApplyJob}>
-            Apply Job
-          </button>
+          {/* Hide Apply Job button if status is not 0 */}
+          {job.status === 0 && (
+            <button className="apply-btn" onClick={handleApplyJob}>
+              Apply Job
+            </button>
+          )}
+          {/* Show Start Work button if condition is met */}
+          {shouldShowStartButton && (
+            <button className="apply-btn" onClick={handleStartJobWork}>
+              Start Work
+            </button>
+          )}
           {applyError && <p className="error">{applyError}</p>}
           {applySuccess && (
             <p className="success">Application submitted successfully!</p>
+          )}
+          {startError && <p className="error">{startError}</p>}
+          {startSuccess && (
+            <p className="success">Job work started successfully!</p>
           )}
           <div className="job-overview">
             <h2>Job Overview</h2>
@@ -221,6 +197,37 @@ const JobDetails = () => {
             </div>
             <div className="overview-item">
               <span className="icon">📍</span> Location: {job.workCity}
+            </div>
+            <div className="overview-item">
+              <span className="icon">⏰</span> Deadline:{" "}
+              {new Date(job.deadline).toLocaleString()}
+            </div>
+            <div className="overview-item">
+              <span className="icon">🌐</span> Source Language:{" "}
+              {job.sourceLanguage}
+            </div>
+            <div className="overview-item">
+              <span className="icon">🌐</span> Target Language:{" "}
+              {job.targetLanguage}
+            </div>
+            <div className="overview-item">
+              <span className="icon">👥</span> Required Hires:{" "}
+              {job.requiredHires}
+            </div>
+            <div className="overview-item">
+              <span className="icon">👥</span> Current Hires: {job.currentHires}
+            </div>
+            <div className="overview-item">
+              <span className="icon">📧</span> Contact Email: {job.contactEmail}
+            </div>
+            <div className="overview-item">
+              <span className="icon">📞</span> Contact Phone: {job.contactPhone}
+            </div>
+            <div className="overview-item">
+              <span className="icon">🏢</span> Company: {job.companyName}
+            </div>
+            <div className="overview-item">
+              <span className="icon">🏠</span> Address: {job.contactAddress}
             </div>
           </div>
           <div className="message-form">

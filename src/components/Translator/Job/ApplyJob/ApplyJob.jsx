@@ -36,6 +36,20 @@ const getRandomGradient = () => {
   return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
 };
 
+const fetchJobApplications = async (interpreterId, accessToken) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/api/JobApplication/interpreter/${interpreterId}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error("Failed to fetch job applications");
+  }
+};
+
 const ApplyJob = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobApplications, setJobApplications] = useState([]);
@@ -43,11 +57,10 @@ const ApplyJob = () => {
   const [error, setError] = useState(null);
   const jobsPerPage = 6;
 
-  // Add scroll to top when page changes
   useScrollToTop(currentPage);
 
   useEffect(() => {
-    const fetchJobApplications = async () => {
+    const initializeData = async () => {
       try {
         const sessionData = JSON.parse(sessionStorage.getItem("user"));
         const interpreterId = sessionData?.id;
@@ -57,26 +70,22 @@ const ApplyJob = () => {
           return;
         }
 
-        const response = await axios.get(
-          `${API_URL}/api/JobApplication/interpreter/${interpreterId}`,
-          {
-            headers: { Authorization: `Bearer ${sessionData.accessToken}` },
-          }
+        const data = await fetchJobApplications(
+          interpreterId,
+          sessionData.accessToken
         );
-
-        setJobApplications(response.data);
-        console.log("res", response.data);
+        setJobApplications(data);
+        console.log("res", data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch job applications");
+        setError(err.message);
         setLoading(false);
       }
     };
 
-    fetchJobApplications();
+    initializeData();
   }, []);
 
-  // Pagination logic
   const totalPages = Math.ceil(jobApplications.length / jobsPerPage);
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
@@ -90,7 +99,7 @@ const ApplyJob = () => {
     const file = event.target.files[0];
     if (file) {
       try {
-        setLoading(true); // Bật loading khi bắt đầu upload
+        setLoading(true);
         const sessionData = JSON.parse(sessionStorage.getItem("user"));
         const interpreterId = sessionData?.id;
 
@@ -98,17 +107,20 @@ const ApplyJob = () => {
           throw new Error("User not logged in");
         }
 
-        // Gọi hàm processJobWorkWithFile từ service
-        await processJobWorkWithFile(jobId, interpreterId, file);
-        console.log("File uploaded and job submitted successfully");
+        const result = await processJobWorkWithFile(jobId, interpreterId, file);
 
-        // Làm mới danh sách công việc sau khi upload thành công
-        await fetchJobApplications();
+        const updatedApplications = await fetchJobApplications(
+          interpreterId,
+          sessionData.accessToken
+        );
+        setJobApplications(updatedApplications);
       } catch (error) {
         console.error("Error uploading file:", error);
-        setError("Failed to upload file for job " + jobId);
+        setError(
+          "Failed to upload file for job " + jobId + ": " + error.message
+        );
       } finally {
-        setLoading(false); // Tắt loading khi hoàn tất
+        setLoading(false);
       }
     }
   };
@@ -238,7 +250,7 @@ const ApplyJob = () => {
                     <input
                       type="file"
                       className="file-input"
-                      onChange={handleFileUpload}
+                      onChange={(e) => handleFileUpload(e, job.jobId)} // Sử dụng job.jobId
                     />
                   </label>
                 </div>

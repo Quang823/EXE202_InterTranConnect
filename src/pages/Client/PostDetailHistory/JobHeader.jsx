@@ -15,8 +15,7 @@ const JobHeader = ({ job }) => (
         )}
         <div className="post-history-detail-info">
           <span className="post-history-detail-requested-by">
-            Requested by: {job.companyName},{" "}
-            {job.customer?.fullName || "Unknown"}
+            Requested by: {job.companyName}, {job?.customerName || "Unknown"}
           </span>
         </div>
       </div>

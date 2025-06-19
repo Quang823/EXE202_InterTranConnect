@@ -24,3 +24,31 @@ export const submitJobWork = async (jobId, interpreterId, resultFileUrl) => {
     throw error;
   }
 };
+
+export const startJobWork = async (jobId, interpreterId) => {
+  try {
+    const response = await axios.post(
+      `${rootJobWork}/${jobId}/start-work?interpreterId=${interpreterId}`,
+      {},
+      { headers: getAuthHeaders() }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi start job work:", error);
+    throw error;
+  }
+};
+
+export const confirmJobCompletion = async (jobId, customerId) => {
+  try {
+    const response = await axios.post(
+      `${rootJobWork}/${jobId}/confirm-completion?customerId=${customerId}`,
+      {},
+      { headers: getAuthHeaders() }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi xác nhận hoàn thành công việc:", error);
+    throw error;
+  }
+};

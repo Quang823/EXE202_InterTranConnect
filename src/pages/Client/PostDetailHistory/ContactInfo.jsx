@@ -52,8 +52,14 @@ const ContactInfo = ({ job }) => (
           <MapPin size={16} /> Work Address:
         </span>
         <span className="post-history-detail-details-value">
-          {job.workAddressLine}, {job.workCity}, {job.workPostalCode},{" "}
-          {job.workCountry}
+          {job.workAddressLine ||
+          job.workCity ||
+          job.workPostalCode ||
+          job.workCountry
+            ? `${job.workAddressLine || ""}, ${job.workCity || ""}, ${
+                job.workPostalCode || ""
+              }, ${job.workCountry || ""}`
+            : "No address"}
         </span>
       </div>
       <div className="post-history-detail-details-row">

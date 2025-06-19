@@ -17,6 +17,7 @@ import {
   getUserInfoByUserIdService,
   updateBankAccountService,
 } from "../../../services/authService";
+import ReactPaginate from "react-paginate";
 import "./WalletClient.scss";
 import Loading from "../../../components/common/Loading/Loading";
 
@@ -35,7 +36,10 @@ const WalletClient = () => {
   });
   const [updateLoading, setUpdateLoading] = useState(false);
   const [updateError, setUpdateError] = useState(null);
-  const [isBankUpdateModalOpen, setIsBankUpdateModalOpen] = useState(false); // Thêm state cho modal cập nhật ngân hàng
+  const [isBankUpdateModalOpen, setIsBankUpdateModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 5;
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const accountId = user?.id;
@@ -52,21 +56,7 @@ const WalletClient = () => {
         const walletData = await fetchUserWallet(accountId);
         setWallet(walletData);
 
-        const transactionData = await fetchWalletTransactions(
-          walletData.walletId,
-          1,
-          10
-        );
-        setTransactions(transactionData.items || []);
-
-        // Lấy thông tin ngân hàng từ getUserInfoByUserIdService
-        const userInfo = await getUserInfoByUserIdService(accountId);
-        setBankInfo({
-          bankAccountNumber: userInfo.bankAccountNumber || "",
-          bankName: userInfo.bankName || "",
-          bankAccountHolderName: userInfo.bankAccountHolderName || "",
-        });
-
+        await fetchTransactions(walletData.walletId, 1, pageSize);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -76,6 +66,28 @@ const WalletClient = () => {
 
     fetchData();
   }, [accountId]);
+
+  const fetchTransactions = async (walletId, pageNumber, pageSize) => {
+    try {
+      const response = await fetchWalletTransactions(
+        walletId,
+        pageNumber,
+        pageSize
+      );
+      setTransactions(response.items || []);
+      setTotalItems(response.totalCount || response.items.length || 0);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handlePageChange = (selectedPage) => {
+    const pageNumber = selectedPage.selected + 1;
+    setCurrentPage(pageNumber);
+    if (wallet?.walletId) {
+      fetchTransactions(wallet.walletId, pageNumber, pageSize);
+    }
+  };
 
   const handleDeposit = async (e) => {
     e.preventDefault();
@@ -118,9 +130,9 @@ const WalletClient = () => {
         bankAccountHolderName: bankInfo.bankAccountHolderName,
       };
       const response = await updateBankAccountService(bankAccountData);
-      setUpdateError(null); // Xóa lỗi nếu thành công
-      alert(response.message || "Bank account updated successfully!"); // Thông báo thành công
-      setIsBankUpdateModalOpen(false); // Đóng modal sau khi cập nhật thành công
+      setUpdateError(null);
+      alert(response.message || "Bank account updated successfully!");
+      setIsBankUpdateModalOpen(false);
     } catch (err) {
       setUpdateError(err.message || "Failed to update bank account");
     } finally {
@@ -166,6 +178,8 @@ const WalletClient = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const pageCount = Math.max(1, Math.ceil(totalItems / pageSize));
 
   return (
     <div className="wallet-app">
@@ -263,9 +277,7 @@ const WalletClient = () => {
             <div className="wallet-stats__content">
               <div className="wallet-stat">
                 <span className="wallet-stat__label">Total Transactions</span>
-                <span className="wallet-stat__value">
-                  {transactions.length}
-                </span>
+                <span className="wallet-stat__value">{totalItems}</span>
               </div>
               <div className="wallet-stat">
                 <span className="wallet-stat__label">Card Number</span>
@@ -446,9 +458,9 @@ const WalletClient = () => {
                       Cancel
                     </button>
                     <button
-                      type="button" // Thay đổi từ type="submit" thành type="button"
+                      type="button"
                       className="wallet-btn wallet-btn--primary"
-                      onClick={handleUpdateBankAccount} // Gắn sự kiện vào nút
+                      onClick={handleUpdateBankAccount}
                       disabled={updateLoading}
                     >
                       {updateLoading ? "Updating..." : "Submit Update"}
@@ -495,7 +507,7 @@ const WalletClient = () => {
                         {transaction.amount?.toLocaleString("vi-VN", {
                           style: "currency",
                           currency: "VND",
-                        })}
+                        }) || "0 VND"}
                       </td>
                       <td className="wallet-transaction__balance">
                         {transaction.transactionBalance?.toLocaleString(
@@ -504,27 +516,40 @@ const WalletClient = () => {
                             style: "currency",
                             currency: "VND",
                           }
-                        )}
+                        ) || "0 VND"}
                       </td>
                       <td className="wallet-transaction__date">
-                        {
-                          new Date(transaction.transactionDate)
-                            .toISOString()
-                            .split("T")[0]
-                        }
+                        {transaction.transactionDate || "N/A"}
                       </td>
                       <td className="wallet-transaction__status">
                         <span
                           className={`wallet-status-badge wallet-status-badge--${transaction.transactionStatus?.toLowerCase()}`}
                         >
                           <span className="wallet-status-indicator"></span>
-                          {toTitleCase(transaction.transactionStatus)}
+                          {toTitleCase(transaction.transactionStatus) || "N/A"}
                         </span>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={null}
+                pageCount={pageCount}
+                marginPagesDisplayed={0}
+                pageRangeDisplayed={0}
+                onPageChange={handlePageChange}
+                containerClassName={"pagination"}
+                activeClassName={"active"}
+                previousClassName={"page-item"}
+                previousLinkClassName={"page-link"}
+                nextClassName={"page-item"}
+                nextLinkClassName={"page-link"}
+                disabledClassName={"disabled"}
+                forcePage={currentPage > pageCount ? 0 : currentPage - 1}
+              />
             </div>
           </div>
         </div>
