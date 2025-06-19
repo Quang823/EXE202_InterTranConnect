@@ -330,11 +330,7 @@ const WalletTranslator = () => {
                         )}
                       </td>
                       <td className="wallet-transaction__date">
-                        {
-                          new Date(transaction.transactionDate)
-                            .toISOString()
-                            .split("T")[0]
-                        }
+                        {transaction.transactionDate}
                       </td>
                       <td className="wallet-transaction__status">
                         <span

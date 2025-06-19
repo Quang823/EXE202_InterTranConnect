@@ -122,26 +122,6 @@
   text-transform: uppercase;
 }
 
-.post-history-detail-company {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.post-history-detail-company-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--post-history-detail-radius-sm);
-  object-fit: cover;
-  border: 1px solid var(--post-history-detail-border-light);
-}
-
-.post-history-detail-requested-by {
-  font-size: 14px;
-  color: var(--post-history-detail-text-secondary);
-  font-weight: 500;
-}
-
 .post-history-detail-hires {
   display: flex;
   gap: 1.5rem;
@@ -183,6 +163,26 @@
     flex-direction: column;
     gap: 0.75rem;
   }
+}
+
+.post-history-detail-company {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-history-detail-company-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--post-history-detail-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--post-history-detail-border-light);
+}
+
+.post-history-detail-requested-by {
+  font-size: 14px;
+  color: var(--post-history-detail-text-secondary);
+  font-weight: 500;
 }
 
 .post-history-detail-description {
@@ -360,6 +360,8 @@
 
 .post-history-detail-translators {
   display: grid;
+  max-height: 30vh;
+  overflow-y: scroll;
   gap: 16px;
 }
 

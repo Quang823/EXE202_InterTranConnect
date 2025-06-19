@@ -443,13 +443,18 @@ body {
       color: #ffffff;
     }
 
-    &.in {
+    &.inprogress {
       background: #3b82f6;
       color: #ffffff;
     }
 
     &.completed {
-      background: #6b7280;
+      background: var(--ph-success-gradient);
+      color: #ffffff;
+    }
+
+    &.partiallycompleted {
+      background: #007f6c;
       color: #ffffff;
     }
 

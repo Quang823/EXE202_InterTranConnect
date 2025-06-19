@@ -9,6 +9,7 @@ import { getJobDetailByJobIdService } from "../../../services/jobService";
 import { payInterpreterDetail } from "../../../services/paymentService";
 import { Modal } from "react-bootstrap";
 import ToastManager from "../../../components/common/Toast/ToastManager";
+import { confirmJobCompletionService } from "../../../services/jobWorkService"; // Import hàm mới
 import "react-toastify/dist/ReactToastify.css";
 
 const Applications = ({ job }) => {
@@ -133,11 +134,17 @@ const Applications = ({ job }) => {
           email: app.interpreterEmail,
           status:
             app.workStatus === 0
-              ? "Waiting to choose"
+              ? "Not Started"
               : app.workStatus === 1
-              ? "Pending"
+              ? "Awaiting Payment"
               : app.workStatus === 2
-              ? "Accepted"
+              ? "Paid"
+              : app.workStatus === 3
+              ? "In Progress"
+              : app.workStatus === 4
+              ? "Submitted"
+              : app.workStatus === 5
+              ? "Completed"
               : "Unknown Status",
           online: false,
           workStatus: app.workStatus,
@@ -223,11 +230,17 @@ const Applications = ({ job }) => {
         email: app.interpreterEmail,
         status:
           app.workStatus === 0
-            ? "Waiting to choose"
+            ? "Not Started"
             : app.workStatus === 1
-            ? "Pending"
+            ? "Awaiting Payment"
             : app.workStatus === 2
-            ? "Accepted"
+            ? "Paid"
+            : app.workStatus === 3
+            ? "In Progress"
+            : app.workStatus === 4
+            ? "Submitted"
+            : app.workStatus === 5
+            ? "Completed"
             : "Unknown Status",
         online: false,
         workStatus: app.workStatus,
@@ -335,11 +348,17 @@ const Applications = ({ job }) => {
           email: app.interpreterEmail,
           status:
             app.workStatus === 0
-              ? "Waiting to choose"
+              ? "Not Started"
               : app.workStatus === 1
-              ? "Pending"
+              ? "Awaiting Payment"
               : app.workStatus === 2
-              ? "Accepted"
+              ? "Paid"
+              : app.workStatus === 3
+              ? "In Progress"
+              : app.workStatus === 4
+              ? "Submitted"
+              : app.workStatus === 5
+              ? "Completed"
               : "Unknown Status",
           online: false,
           workStatus: app.workStatus,
@@ -374,11 +393,110 @@ const Applications = ({ job }) => {
     setShowPaymentModal(true);
   };
 
+  // Xử lý xác nhận hoàn thành công việc
+  // Trong Applications.js, cập nhật handleConfirmCompletion
+  const handleConfirmCompletion = async (interpreterId) => {
+    if (!jobId) {
+      ToastManager.showError("Missing job ID.");
+      return;
+    }
+
+    const customerId = JSON.parse(sessionStorage.getItem("user") || "{}")?.id;
+    if (!customerId) {
+      ToastManager.showError("Customer ID not found in session.");
+      return;
+    }
+
+    try {
+      const result = await confirmJobCompletionService(jobId, customerId);
+      ToastManager.showSuccess("Job completion confirmed successfully!");
+      // Làm mới dữ liệu sau khi xác nhận
+      const jobData = await getJobDetailByJobIdService(jobId);
+      setJobDetails({
+        id: jobData.id,
+        customerId: jobData.customerId,
+        jobTitle: jobData.jobTitle,
+        translationType: jobData.translationType,
+        sourceLanguage: jobData.sourceLanguage,
+        targetLanguage: jobData.targetLanguage,
+        description: jobData.description,
+        uploadFileUrl: jobData.uploadFileUrl,
+        workingTime: jobData.workingTime,
+        workAddressLine: jobData.workAddressLine,
+        workCity: jobData.workCity,
+        workPostalCode: jobData.workPostalCode,
+        workCountry: jobData.workCountry,
+        deadline: jobData.deadline,
+        resultFileUrl: jobData.resultFileUrl,
+        completedAt: jobData.completedAt,
+        completionOffsetMinutes: jobData.completionOffsetMinutes,
+        hourlyRate: jobData.hourlyRate,
+        platformServiceFee: jobData.platformServiceFee,
+        totalFee: jobData.totalFee,
+        companyName: jobData.companyName,
+        companyDescription: jobData.companyDescription,
+        companyLogoUrl: jobData.companyLogoUrl,
+        contactEmail: jobData.contactEmail,
+        contactPhone: jobData.contactPhone,
+        contactAddress: jobData.contactAddress,
+        status: jobData.status,
+        requiredHires: jobData.requiredHires || 0,
+        currentHires: jobData.currentHires || 0,
+        createdAt: jobData.createdAt,
+        customerName: jobData.customerName,
+        customerEmail: jobData.customerEmail,
+        totalHiredInterpreters: jobData.totalHiredInterpreters,
+        totalInProgressInterpreters: jobData.totalInProgressInterpreters,
+        totalCompletedInterpreters: jobData.totalCompletedInterpreters,
+        isFullyRecruited: jobData.isFullyRecruited,
+        hasAnyInProgress: jobData.hasAnyInProgress,
+        isAllCompleted: jobData.isAllCompleted,
+      });
+
+      const mappedTranslators = jobData.applications.map((app) => ({
+        interpreterId: app.interpreterId,
+        name: app.interpreterName || "Unknown Translator",
+        avatar:
+          app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+        email: app.interpreterEmail,
+        status:
+          app.workStatus === 0
+            ? "Not Started"
+            : app.workStatus === 1
+            ? "Awaiting Payment"
+            : app.workStatus === 2
+            ? "Paid"
+            : app.workStatus === 3
+            ? "In Progress"
+            : app.workStatus === 4
+            ? "Submitted"
+            : app.workStatus === 5
+            ? "Completed"
+            : "Unknown Status",
+        online: false,
+        workStatus: app.workStatus,
+        isPaid: app.isPaid,
+      }));
+      setTranslators(mappedTranslators);
+    } catch (err) {
+      ToastManager.showError("Failed to confirm job completion.");
+      console.error("Confirm completion error:", err);
+    }
+  };
+
   return (
     <div className="post-history-detail-applications">
       <h2 className="post-history-detail-section-title">
         <Users size={20} /> Applications
       </h2>
+      <div className="post-history-detail-hires">
+        <span className="post-history-detail-hire-item">
+          Required Hires: <strong>{jobDetails.requiredHires || 0}</strong>
+        </span>
+        <span className="post-history-detail-hire-item">
+          Current Hires: <strong>{jobDetails.currentHires || 0}</strong>
+        </span>
+      </div>
       {loading ? (
         <p>Loading applications...</p>
       ) : error ? (
@@ -387,17 +505,6 @@ const Applications = ({ job }) => {
         <p>No translators applied yet. Be the first!</p>
       ) : (
         <div className="post-history-detail-translators">
-          <div className="post-history-detail-hires">
-            <span className="post-history-detail-hire-item">
-              Required Hires: <strong>{jobDetails.requiredHires || 0}</strong>
-            </span>
-            <span className="post-history-detail-hire-item">
-              Current Hires: <strong>{jobDetails.currentHires || 0}</strong>
-            </span>
-            <span className="post-history-detail-hire-item">
-              Status: <strong>{jobDetails.status || 0}</strong>
-            </span>
-          </div>
           {translators.map((translator, index) => (
             <div key={index} className="post-history-detail-translator-card">
               <img
@@ -426,7 +533,7 @@ const Applications = ({ job }) => {
                 >
                   View Profile
                 </button>
-                {translator.status === "Waiting to choose" &&
+                {translator.status === "Not Started" &&
                   jobDetails.currentHires < jobDetails.requiredHires && (
                     <button
                       className="post-history-detail-view-profile-btn"
@@ -440,7 +547,7 @@ const Applications = ({ job }) => {
                         : "Select"}
                     </button>
                   )}
-                {translator.status === "Pending" &&
+                {translator.status === "Awaiting Payment" &&
                   !(translator.workStatus === 2 && translator.isPaid) && (
                     <button
                       className="post-history-detail-view-profile-btn"
@@ -451,6 +558,16 @@ const Applications = ({ job }) => {
                       Payment
                     </button>
                   )}
+                {translator.status === "Submitted" && (
+                  <button
+                    className="post-history-detail-view-profile-btn"
+                    onClick={() =>
+                      handleConfirmCompletion(translator.interpreterId)
+                    }
+                  >
+                    Confirm
+                  </button>
+                )}
                 {translator.status === "Accepted" && (
                   <span className="post-history-detail-selected">Selected</span>
                 )}

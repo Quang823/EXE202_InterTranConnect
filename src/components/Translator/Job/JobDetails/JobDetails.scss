@@ -98,6 +98,29 @@
       }
     }
   }
+
+  .jd-pdf-viewer-container {
+    padding: 20px;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: #f9fafb;
+    border-radius: 0 0 16px 16px;
+
+    .rpv-core__viewer {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #pdf-preview-modal {
+      .pdf-viewer-container {
+        padding: 16px;
+        max-height: 60vh;
+      }
+    }
+  }
 }
 
 .sidebar {

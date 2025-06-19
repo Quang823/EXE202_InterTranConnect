@@ -1,4 +1,8 @@
-import { submitJobWork } from "../apiHandler/jobWorkAPIHandler";
+import {
+  submitJobWork,
+  startJobWork,
+  confirmJobCompletion,
+} from "../apiHandler/jobWorkAPIHandler";
 import { uploadToCloudinaryService } from "../services/uploadToCloudinaryService";
 
 export const processJobWorkWithFile = async (jobId, interpreterId, file) => {
@@ -12,6 +16,26 @@ export const processJobWorkWithFile = async (jobId, interpreterId, file) => {
     return result;
   } catch (error) {
     console.error("Error in processJobWorkWithFile:", error);
+    throw error;
+  }
+};
+
+export const startJobWorkService = async (jobId, interpreterId) => {
+  try {
+    const result = await startJobWork(jobId, interpreterId);
+    return result;
+  } catch (error) {
+    console.error("Error in startJobWorkService:", error);
+    throw error;
+  }
+};
+
+export const confirmJobCompletionService = async (jobId, customerId) => {
+  try {
+    const result = await confirmJobCompletion(jobId, customerId);
+    return result;
+  } catch (error) {
+    console.error("Error in confirmJobCompletionService:", error);
     throw error;
   }
 };
