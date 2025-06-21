@@ -8,6 +8,7 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "./JobDetails.scss";
 import { startJobWork } from "../../../../apiHandler/jobWorkAPIHandler";
+import Swal from "sweetalert2";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -49,6 +50,11 @@ const JobDetails = () => {
 
       if (!interpreterId) {
         setApplyError("User not logged in.");
+        Swal.fire({
+          icon: "error",
+          title: "Apply Failed",
+          text: "User not logged in."
+        });
         return;
       }
 
@@ -64,12 +70,22 @@ const JobDetails = () => {
       });
       setApplySuccess(true);
       setApplyError(null);
+      Swal.fire({
+        icon: "success",
+        title: "Apply Successfully",
+        text: "Your application has been submitted!"
+      });
       // Refresh job data after applying
       const response = await axios.get(`${API_URL}/api/job/${id}`);
       setJob(response.data);
     } catch (err) {
       setApplyError("Failed to submit application.");
       setApplySuccess(false);
+      Swal.fire({
+        icon: "error",
+        title: "Apply Failed",
+        text: "Failed to submit application."
+      });
       console.error("Application error:", err);
     }
   };
@@ -126,25 +142,15 @@ const JobDetails = () => {
 
   return (
     <div className="job-listing-container">
-      <header className="header">
+      {/* <header className="header">
         <button className="back-btn" onClick={handleBack}>
           BACK
         </button>
         <button className="next-btn">NEXT</button>
-      </header>
+      </header> */}
 
-      <main className="main-content">
+      <main className="main-content1">
         <div className="job-details2">
-          <h1>{job.jobTitle}</h1>
-          <div className="job-meta">
-            <span className="status">{job.customerName}</span>
-            <span className="type">{job.translationType}</span>
-            <span className="time">
-              {new Date(job.createdAt).toLocaleString()}
-            </span>
-            <span className="salary">${job.totalFee}</span>
-            <span className="location">{job.workCity}</span>
-          </div>
           {/* Display PDF if uploadFileUrl exists */}
           {job.uploadFileUrl && (
             <section className="section">
@@ -163,7 +169,7 @@ const JobDetails = () => {
           )}
         </div>
 
-        <aside className="sidebar">
+        <aside className="sidebarjob">
           {/* Hide Apply Job button if status is not 0 */}
           {job.status === 0 && (
             <button className="apply-btn" onClick={handleApplyJob}>

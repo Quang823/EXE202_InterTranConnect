@@ -1,7 +1,6 @@
 .cert-add-page {
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(45deg, #3052c1, #3b82f6);
   overflow-x: hidden;
   margin-top: 60px;
 
@@ -91,10 +90,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50px;
-  color: white;
   font-weight: 500;
   text-decoration: none;
   backdrop-filter: blur(10px);
@@ -472,4 +469,19 @@
     padding: 0.625rem 1.25rem;
     font-size: 0.9rem;
   }
+}
+.cert-page-title__main {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    -webkit-text-fill-color: #000000; 
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #000000; 
+}
+
+.cert-page-title__subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-weight: 300;
+    color: #000000;
 }
