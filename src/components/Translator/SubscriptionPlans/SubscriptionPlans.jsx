@@ -1,44 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
+import Swal from 'sweetalert2';
 import './SubscriptionPlans.scss';
+import { getSubPlans, subscribeToPlan } from '../../../services/subPlanService';
 
 const SubscriptionPlans = () => {
-  const plans = [
-    {
-      title: 'PartnerShip',
-      price: '99.000 VNĐ',
-      badgeClass: 'partnership-badge',
-      benefits: [
-        'Agpooer in the pfoththy liot',
-        'Inperooed vilibilithy in soorch resalts',
-        'Inperoooed vilibilithy'
-      ]
-    },
-    {
-      title: 'Premium',
-      price: '299.000 VNĐ',
-      badgeClass: 'premium-badge',
-      benefits: [
-        'Alt benofitly of the athvanoed Poctboge',
-        'Igpooer or the YOB of soomb resalts',
-        'Eoro o sooerial bedgp for inperooed twoththilooes'
-      ],
-      isElevated: true
-    },
-    {
-      title: 'Advance',
-      price: '199.000 VNĐ',
-      badgeClass: 'advance-badge',
-      benefits: [
-        'Alt benofitly of the Boosis ',
-        'Footbred in a otominent potion ',
-        'Sor the IRecommended Inesloncer'
-      ]
-    }
-  ];
+  const [plans, setPlans] = useState([]);
 
-  const handleSubscribe = (plan) => {
-    console.log(`Subscribed to ${plan.title} plan for ${plan.price}`);
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const data = await getSubPlans();
+        const desiredOrder = ["PartnerShip", "Premium", "Advance"];
+        const sortedData = [...data].sort((a, b) => {
+          const indexA = desiredOrder.indexOf(a.name);
+          const indexB = desiredOrder.indexOf(b.name);
+          if (indexA === -1) return 1;
+          if (indexB === -1) return -1;
+          return indexA - indexB;
+        });
+        const mappedPlans = sortedData.map(plan => ({
+          id: plan.id,
+          title: plan.name,
+          price: `${plan.price.toLocaleString('vi-VN')} VNĐ`,
+          badgeClass: `${plan.name.toLowerCase()}-badge`,
+          benefits: plan.description.split('. '),
+          isElevated: plan.name === 'Premium',
+        }));
+        setPlans(mappedPlans);
+      } catch (error) {
+        console.error("Failed to fetch subscription plans", error);
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  const handleSubscribe = async (plan) => {
+    try {
+      await subscribeToPlan(plan.id);
+      Swal.fire({
+        title: 'Success!',
+        text: `You have successfully subscribed to the ${plan.title} plan.`,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    } catch (error) {
+      console.error(`Failed to subscribe to ${plan.title} plan`, error);
+      Swal.fire({
+        title: 'Error!',
+        text: `Failed to subscribe to the ${plan.title} plan. Please try again.`,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
   };
 
   return (
@@ -61,7 +76,7 @@ const SubscriptionPlans = () => {
               ))}
             </ul>
             <button className="sub-plan-subscribe" onClick={() => handleSubscribe(plan)}>
-              Subcribe
+              Subscribe
             </button>
           </div>
         ))}

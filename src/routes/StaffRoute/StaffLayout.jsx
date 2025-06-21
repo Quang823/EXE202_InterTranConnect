@@ -1,9 +1,7 @@
+import SidebarComponent from "../../components/Staff/StaffSidebar/Sidebar";
+
 const StaffLayout = ({ children }) => {
-  return (
-    <div className="staff-layout">
-      <main>{children}</main>
-    </div>
-  );
+  return <SidebarComponent>{children}</SidebarComponent>;
 };
 
 export default StaffLayout;
