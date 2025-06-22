@@ -1,0 +1,1231 @@
+:root {
+  --primary-navy: #1e293b;
+  --surface-white: #ffffff;
+  --surface-gray: #f8fafc;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-600: #2563eb;
+  --blue-800: #1e40af;
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fef3c7;
+  --amber-800: #92400e;
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-200: #bbf7d0;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-600: #16a34a;
+}
+
+* {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wp-requests-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @media (min-width: 1024px) {
+    padding: 32px;
+  }
+}
+
+.wp-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.wp-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wp-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.wp-subtitle {
+  font-size: 16px;
+  color: var(--slate-600);
+}
+
+.wp-header-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.wp-refresh-button,
+.wp-export-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  background: var(--surface-white);
+  font-size: 14px;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--slate-50);
+  }
+}
+
+.wp-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.wp-filter-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--surface-white);
+}
+
+.wp-filter-header {
+  padding: 16px 24px 12px;
+}
+
+.wp-filter-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.wp-filter-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.wp-filter-content {
+  padding: 16px 24px;
+}
+
+.wp-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.wp-search-container {
+  position: relative;
+}
+
+.wp-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--slate-600);
+  width: 16px;
+  height: 16px;
+}
+
+.wp-search-input,
+.wp-filter-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--slate-700);
+  background: var(--surface-white);
+}
+
+.wp-search-input {
+  padding-left: 36px;
+}
+
+.wp-search-input:focus,
+.wp-filter-select:focus {
+  outline: none;
+  border-color: var(--slate-400);
+}
+
+.wp-results-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--surface-white);
+}
+
+.wp-results-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--slate-100);
+}
+
+.wp-results-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.wp-table-container {
+  overflow-x: auto;
+}
+
+.wp-requests-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wp-table-head {
+  background: var(--slate-50);
+}
+
+.wp-table-header {
+  text-align: left;
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate-700);
+}
+
+.wp-table-row {
+  border-bottom: 1px solid var(--slate-100);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--slate-50);
+  }
+}
+
+.wp-table-cell {
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--slate-600);
+}
+
+.wp-no-results {
+  padding: 48px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--slate-600);
+}
+
+.wp-customer-name {
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.wp-customer-email,
+.wp-customer-phone {
+  font-size: 12px;
+  color: var(--slate-600);
+}
+
+.wp-amount {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--slate-900);
+}
+
+.wp-bank-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wp-bank-name {
+  font-weight: 500;
+  color: var(--slate-800);
+}
+
+.wp-bank-account-name {
+  font-size: 12px;
+  color: var(--slate-600);
+}
+
+.wp-bank-account-number {
+  font-size: 12px;
+  font-family: monospace;
+  color: var(--slate-600);
+}
+
+.wp-status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.wp-status-blue {
+  background-color: var(--blue-100);
+  color: var(--blue-800, #1e40af);
+}
+
+.wp-status-purple {
+  background-color: #ede9fe;
+  color: #5b21b6;
+}
+
+.wp-status-red {
+  background-color: var(--red-100);
+  color: var(--red-800);
+}
+
+.wp-status-default {
+  background-color: var(--slate-100);
+  color: var(--slate-800);
+}
+
+.wp-status-pending {
+  background-color: var(--amber-100);
+  color: var(--amber-800);
+  border-color: var(--amber-200);
+}
+
+.wp-status-approved {
+  background: var(--emerald-100);
+  color: var(--emerald-800);
+  border-color: var(--emerald-200);
+}
+
+.wp-status-rejected {
+  background: var(--red-100);
+  color: var(--red-800);
+  border-color: var(--red-200);
+}
+
+.wp-status-processing {
+  background: var(--blue-100);
+  color: var(--blue-800);
+  border-color: var(--blue-200);
+}
+
+.wp-status-completed {
+  background: var(--green-100);
+  color: var(--green-800);
+  border-color: var(--green-200);
+}
+
+.wp-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.wp-action-button {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--surface-white);
+  border: 1px solid var(--slate-200);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.wp-view-button {
+  &:hover {
+    background: var(--slate-50);
+  }
+}
+
+.wp-approve-button {
+  color: #059669;
+  &:hover {
+    background-color: #ecfdf5;
+  }
+}
+
+.wp-reject-button {
+  background: var(--red-600);
+  border: none;
+  color: var(--surface-white);
+
+  &:hover {
+    background: var(--red-700);
+  }
+}
+
+.wp-details-modal,
+.wp-processing-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.wp-modal-header {
+  padding: 24px;
+}
+
+.wp-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.wp-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wp-info-section {
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.wp-customer-section {
+  background: var(--slate-50);
+}
+
+.wp-amount-section {
+  background: var(--blue-50);
+  text-align: center;
+}
+
+.wp-bank-section {
+  background: var(--green-50);
+}
+
+.wp-status-section {
+  background: var(--amber-50);
+}
+
+.wp-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--slate-900);
+  margin-bottom: 12px;
+}
+
+.wp-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  font-size: 14px;
+}
+
+.wp-info-label {
+  color: var(--slate-600);
+}
+
+.wp-info-value {
+  font-weight: 500;
+  color: var(--slate-900);
+}
+
+.wp-amount-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wp-amount-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--blue-900);
+}
+
+.wp-amount-date {
+  font-size: 14px;
+  color: var(--blue-600);
+}
+
+.wp-status-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wp-status-info {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wp-processing-note {
+  background: var(--surface-white);
+  padding: 8px;
+  border: 1px solid var(--slate-200);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--slate-900);
+}
+
+.wp-processing-prompt {
+  font-size: 16px;
+  color: var(--slate-600);
+}
+
+.wp-note-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wp-note-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate-700);
+}
+
+.wp-note-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--slate-700);
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: var(--slate-400);
+  }
+}
+
+.wp-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+}
+
+.wp-cancel-button {
+  padding: 8px 16px;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  background: var(--surface-white);
+  font-size: 14px;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--slate-50);
+  }
+}
+
+.wp-confirm-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--surface-white);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.wp-approve-confirm {
+  background: var(--emerald-600);
+
+  &:hover {
+    background: var(--emerald-700);
+  }
+}
+
+.wp-action-button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  .wp-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.wp-reject-action-button {
+  @extend .wp-action-button-base;
+  background-color: #fee2e2;
+  color: #b91c1c;
+
+  &:hover {
+    background-color: #fecaca;
+  }
+}
+
+// Modal styles
+.wp-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.wp-modal-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wp-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  .wp-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .wp-modal-close-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0.5rem;
+    border-radius: 9999px;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .wp-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+.wp-modal-body {
+  overflow-y: auto;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+}
+// Variables
+$primary-color: #007bff;
+$customer-bg: #f1f3f5; // Màu xám nhạt cho thông tin khách hàng
+$bank-bg: #e6f3e6; // Màu xanh nhạt cho thông tin ngân hàng
+$process-bg: #fff3cd; // Màu vàng nhạt cho thông tin xử lý
+$border-radius: 8px;
+$dark-gray: #6c757d;
+
+// Reset and global styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wp-details-view {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+}
+
+.wp-details-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.wp-details-card {
+  border: 1px solid #dee2e6;
+  border-radius: $border-radius;
+  overflow: hidden;
+}
+
+.wp-card-header {
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.wp-card-title {
+  margin: 0;
+}
+
+.wp-card-body {
+  padding: 15px;
+}
+
+.wp-info-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.wp-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+
+  .wp-info-label {
+    color: $dark-gray;
+    font-weight: 500;
+  }
+
+  .wp-info-value {
+    color: #000;
+    font-weight: 400;
+  }
+
+  .wp-info-amount {
+    font-size: 1.5em; // Tăng kích thước số tiền như trong ảnh
+    font-weight: bold;
+    color: #007bff;
+  }
+}
+
+// Specific styles based on the image
+.wp-details-card:nth-child(1) {
+  background: $customer-bg; // Màu xám nhạt
+}
+
+.wp-details-card:nth-child(2) {
+  background: $bank-bg; // Màu xanh nhạt
+  .wp-info-amount {
+    color: #28a745; // Màu xanh lá cho số tiền trong phần ngân hàng
+  }
+}
+
+.wp-details-card:nth-child(3) {
+  background: $process-bg; // Màu vàng nhạt
+  .wp-info-value {
+    color: #856404; // Màu tối hơn cho phần xử lý
+  }
+}
+
+.wp-note-item {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px dashed #dee2e6;
+
+  .wp-info-label {
+    margin-bottom: 5px;
+    color: $dark-gray;
+  }
+
+  .wp-info-value {
+    color: #856404;
+  }
+}
+
+.button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: $border-radius;
+  color: #fff;
+  background: $primary-color;
+  cursor: pointer;
+
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+}
+// WithdrawalRequest.scss
+.withdrawal-modal {
+  max-width: 100%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6b7280;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+
+      &:hover {
+        background: #e5e7eb;
+        color: #374151;
+      }
+    }
+  }
+
+  .modal-content {
+    padding: 24px;
+  }
+
+  .section {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h3 {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+    }
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr;
+    gap: 16px;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label {
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .value {
+      font-size: 14px;
+      color: #111827;
+      font-weight: 500;
+    }
+  }
+
+  .withdrawal-info {
+    .amount-container {
+      background: #f0f9ff;
+      border: 1px solid #e0e7ff;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+
+      .amount {
+        font-size: 32px;
+        font-weight: 700;
+        color: #1d4ed8;
+        margin-bottom: 8px;
+      }
+
+      .request-date {
+        font-size: 14px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .bank-info {
+    background: #f8fdf8;
+    border: 1px solid #d1fae5;
+    border-radius: 8px;
+    padding: 20px;
+
+    h3 {
+      color: #065f46;
+      margin-bottom: 16px;
+    }
+
+    .info-item {
+      .label {
+        color: #047857;
+      }
+
+      .value {
+        color: #065f46;
+      }
+    }
+  }
+
+  .status-section {
+    text-align: center;
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+
+      &.pending {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #f59e0b;
+      }
+
+      &.approved {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #16a34a;
+      }
+
+      &.rejected {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #dc2626;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .withdrawal-modal {
+    margin: 16px;
+    
+    .modal-header {
+      padding: 16px 20px;
+      
+      h2 {
+        font-size: 16px;
+      }
+    }
+
+    .modal-content {
+      padding: 20px;
+    }
+
+    .withdrawal-info {
+      .amount-container {
+        padding: 20px;
+        
+        .amount {
+          font-size: 28px;
+        }
+      }
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+  }
+}
+// ApprovalModal.scss
+.wp-action-card {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  position: relative;
+
+  .wp-card-header {
+    padding: 24px 24px 0 24px;
+    position: relative;
+
+    .wp-card-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2937;
+      text-align: left;
+    }
+
+    // Close button (if needed)
+    &::after {
+      content: '×';
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 28px;
+      color: #9ca3af;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f3f4f6;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .wp-card-body {
+    padding: 24px;
+  }
+
+  .wp-action-prompt {
+    margin: 0 0 20px 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4b5563;
+
+    strong {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+
+  .wp-note-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s ease;
+    background: #fafafa;
+    color: #374151;
+    margin-bottom: 24px;
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &:hover {
+      border-color: #9ca3af;
+      background: white;
+    }
+  }
+
+  .wp-action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+
+    @media (max-width: 480px) {
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
+  }
+
+  .wp-approve-action-button,
+  .wp-reject-action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
+
+    .wp-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 480px) {
+      width: 100%;
+      padding: 14px 24px;
+    }
+  }
+
+  .wp-approve-action-button {
+    background: #10b981;
+    color: white;
+
+    &:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+      background: #047857;
+    }
+
+    .wp-icon {
+      color: white;
+    }
+  }
+
+  .wp-reject-action-button {
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+
+    &:hover {
+      background: #e5e7eb;
+      color: #4b5563;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
+      background: #d1d5db;
+    }
+
+    .wp-icon {
+      color: #6b7280;
+    }
+  }
+}
+
+// Modal overlay (if using as modal)
+.wp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+  
+  .wp-action-card {
+    margin: 0;
+    width: 100%;
+    max-width: 500px;
+    animation: modalSlideIn 0.3s ease-out;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .wp-action-card {
+    margin: 16px;
+    border-radius: 8px;
+    
+    .wp-card-header {
+      padding: 20px 20px 0 20px;
+      
+      .wp-card-title {
+        font-size: 18px;
+      }
+
+      &::after {
+        top: 16px;
+        right: 20px;
+        font-size: 24px;
+      }
+    }
+
+    .wp-card-body {
+      padding: 20px;
+    }
+
+    .wp-note-textarea {
+      min-height: 80px;
+      margin-bottom: 20px;
+    }
+  }
+}

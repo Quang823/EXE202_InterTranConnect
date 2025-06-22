@@ -1,344 +1,267 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { DollarSign, Clock, CheckCircle, XCircle, Search, Filter, RefreshCw, FileSpreadsheet, Eye, Trash2, Check, MoreHorizontal, X } from 'lucide-react';
-import './StaffDashboard.scss';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import {
+  CreditCardIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ArrowTrendingUpIcon,
+  ArrowTopRightOnSquareIcon,
+} from "@heroicons/react/24/outline";
+import "./StaffDashboard.scss";
+import Loading from "../../common/Loading/Loading";
 
 const StaffDashboard = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All Status');
-  const [timeFilter, setTimeFilter] = useState('');
-  const [requestsData, setRequestsData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const fetchWithdrawalRequests = async () => {
-    try {
-      setLoading(true);
-      const accessToken = sessionStorage.getItem('accessToken');
-      
-      const response = await fetch(
-        `http://localhost:5000/api/withdrawal-requests?pageNumber=${currentPage}&pageSize=${pageSize}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'accept': '*/*'
-          }
-        }
-      );
-      
-      if (!response.ok) throw new Error('Failed to fetch data');
-      
-      const data = await response.json();
-      setRequestsData(data.items || []);
-    } catch (error) {
-      console.error('Error fetching withdrawal requests:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    totalAmount: 0,
+  });
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetchWithdrawalRequests();
-  }, [currentPage, pageSize]);
+    const sessionData = JSON.parse(sessionStorage.getItem("user"));
+    if (sessionData) {
+      setUser(sessionData);
+    }
 
-  // Filtered data based on search and filters
-  const filteredData = useMemo(() => {
-    return requestsData.filter(request => {
-      const matchesSearch = searchTerm === '' || 
-        request.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const fetchData = async () => {
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (!accessToken) {
+        setLoading(false);
+        return;
+      }
 
-      const matchesStatus = statusFilter === 'All Status' || 
-        request.status === statusFilter;
+      try {
+        setLoading(true);
+        // Fetch a large number of requests to perform client-side stats
+        const response = await axios.get(
+          "http://localhost:5000/api/withdrawal-requests?pageNumber=1&pageSize=999",
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
 
-      const matchesTime = timeFilter === '' || 
-        request.requestDate.startsWith(timeFilter);
+        if (response.data && Array.isArray(response.data.items)) {
+          const allRequests = response.data.items;
 
-      return matchesSearch && matchesStatus && matchesTime;
-    });
-  }, [requestsData, searchTerm, statusFilter, timeFilter]);
+          // Calculate stats
+          const total = allRequests.length;
+          const pending = allRequests.filter((req) => req.status === 0).length;
+          const approved = allRequests.filter(
+            (req) => req.status === 1
+          ).length;
+          const totalAmount = allRequests.reduce(
+            (sum, req) => sum + req.amount,
+            0
+          );
 
-  // Calculate statistics
-  const statistics = useMemo(() => {
-    const total = requestsData.length;
-    const pending = requestsData.filter(r => r.status === 'Pending').length;
-    const approved = requestsData.filter(r => r.status === 'Approved').length;
-    const rejected = requestsData.filter(r => r.status === 'Rejected').length;
+          setStats({ total, pending, approved, totalAmount });
 
-    // Calculate today's requests
-    const today = new Date().toISOString().split('T')[0];
-    const todayRequests = requestsData.filter(r => r.requestDate.startsWith(today)).length;
-
-    // Calculate approval rate
-    const approvalRate = total > 0 ? Math.round((approved / total) * 100) : 0;
-    const rejectionRate = total > 0 ? Math.round((rejected / total) * 100) : 0;
-
-    return {
-      total,
-      pending,
-      approved,
-      rejected,
-      todayRequests,
-      approvalRate,
-      rejectionRate
+          // Get the 5 most recent requests for display
+          const formattedRecentRequests = allRequests
+            .slice(0, 5)
+            .map((item) => ({
+              id: item.withdrawalRequestId,
+              customer_name: item.bankAccountHolderName,
+              customer_email: item.email,
+              amount: item.amount,
+              bank_name: item.bankName,
+              status: item.status,
+              created_date: item.requestDate,
+            }));
+          setRequests(formattedRecentRequests);
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-  }, [requestsData]);
 
-  const statsData = [
-    {
-      icon: <DollarSign size={24} color="#22c55e" />,
-      title: 'Total Requests',
-      value: statistics.total.toString(),
-      subtitle: `${statistics.todayRequests} requests today`,
-      change: '+12%',
-      changeType: 'positive'
-    },
-    {
-      icon: <Clock size={24} color="#f59e0b" />,
-      title: 'Pending',
-      value: statistics.pending.toString(),
-      subtitle: 'Awaiting approval',
-      change: '-5%',
-      changeType: 'negative'
-    },
-    {
-      icon: <CheckCircle size={24} color="#3b82f6" />,
-      title: 'Approved',
-      value: statistics.approved.toString(),
-      subtitle: `Approval rate: ${statistics.approvalRate}%`,
-      change: '+8%',
-      changeType: 'positive'
-    },
-    {
-      icon: <XCircle size={24} color="#ef4444" />,
-      title: 'Rejected',
-      value: statistics.rejected.toString(),
-      subtitle: `Rejection rate: ${statistics.rejectionRate}%`,
-      change: '+3%',
-      changeType: 'positive'
-    }
-  ];
+    fetchData();
+  }, []);
 
-  const handleClearFilters = () => {
-    setSearchTerm('');
-    setStatusFilter('All Status');
-    setTimeFilter('');
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
-  const handleRefresh = () => {
-    fetchWithdrawalRequests();
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
-  const handleViewDetails = (request) => {
-    setSelectedRequest(request);
-    setShowModal(true);
+  const getStatusColor = (status) => {
+    const colors = {
+      0: "wp-status-blue",
+      1: "wp-status-purple",
+      2: "wp-status-red",
+      3: "wp-status-gray",
+    };
+    return colors[status] || "wp-status-default";
   };
 
-  const handleCloseModal = (e) => {
-    if (e.target === e.currentTarget) {
-      setShowModal(false);
-    }
-  };
-
-  const formatDateTime = (dateTimeString) => {
-    const date = new Date(dateTimeString);
-    const formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-    const formattedTime = date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-    return { date: formattedDate, time: formattedTime };
-  };
-
-  const getStatusClass = (status) => {
-    switch (status) {
-      case 'Pending':
-        return 'status-pending';
-      case 'Approved':
-        return 'status-approved';
-      case 'Rejected':
-        return 'status-rejected';
-      default:
-        return '';
-    }
+  const getStatusText = (status) => {
+    const texts = {
+      0: "Pending",
+      1: "Waiting Confirm",
+      2: "Completed",
+      3: "Canceled",
+    };
+    return texts[status] || "Unknown";
   };
 
   return (
-    <div className="dashboard">
-      {/* Stats Cards */}
-      <div className="stats-grid1">
-        {statsData.map((stat, index) => (
-          <div key={index} className="stat-card">
-            <div className="stat-header">
-              <div className="stat-icon">{stat.icon}</div>
-              <div className={`stat-change ${stat.changeType}`}>
-                {stat.change}
+    <div className="wp-dashboard-container">
+      {loading ? (
+        <div className="wp-loading-container">
+          <Loading />
+        </div>
+      ) : (
+        <>
+          {/* Header */}
+          <div className="wp-header">
+            <div className="wp-header-text">
+              <h1 className="wp-title">Dashboard</h1>
+                <p className="wp-subtitle">
+                  Tổng quan yêu cầu rút tiền từ khách hàng
+                </p>
+            </div>
+            <Link to="/staff/withdrawal-requests" className="wp-view-all-button">
+              Xem tất cả yêu cầu
+              <ArrowTopRightOnSquareIcon className="wp-button-icon" />
+            </Link>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="wp-stats-grid">
+            <div className="wp-stat-card wp-stat-total">
+              <div className="wp-card-header">
+                <span className="wp-card-title">Tổng yêu cầu</span>
+                <CreditCardIcon className="wp-card-icon" />
+              </div>
+              <div className="wp-card-content">
+                <div className="wp-stat-value">{stats.total}</div>
+                <div className="wp-stat-trend">
+                  <ArrowTrendingUpIcon className="wp-trend-icon" />
+                  +12% từ tháng trước
+                </div>
               </div>
             </div>
-            <div className="stat-content">
-              <h3 className="stat-title">{stat.title}</h3>
-              <div className="stat-value">{stat.value}</div>
-              <div className="stat-subtitle">{stat.subtitle}</div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Filters and Search */}
-      <div className="dashboard-header">
-        <div className="header-left">
-          <h2 className="section-title">Filters</h2>
-        </div>
-        <div className="header-right">
-          <button className="btn-advanced">
-            <Filter size={20} color="#6b7280" /> Advanced
-          </button>
-        </div>
-      </div>
-
-      <div className="filters-section">
-        <div className="filter-group">
-          <label>Search</label>
-          <div className="search-input1">
-            <input
-              type="text"
-              placeholder="Name, email, request ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-        
-        <div className="filter-group">
-          <label>Status</label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option>All Status</option>
-            <option>Pending</option>
-            <option>Approved</option>
-            <option>Rejected</option>
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label>Time Range</label>
-          <input
-            type="date"
-            value={timeFilter}
-            onChange={(e) => setTimeFilter(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="table-actions">
-        <div className="actions-left">
-          <button className="btn-secondary" onClick={handleClearFilters}>
-            <XCircle size={20} color="#6b7280" /> Clear Filters
-          </button>
-          <button className="btn-secondary" onClick={handleRefresh}>
-            <RefreshCw size={20} color="#6b7280" /> Refresh
-          </button>
-        </div>
-        <div className="actions-right">
-          <button className="btn-secondary">
-            <FileSpreadsheet size={20} color="#6b7280" /> Export Excel
-          </button>
-          <button className="btn-primary">Apply Filters</button>
-        </div>
-      </div>
-
-      {/* Requests Table */}
-      <div className="table-section">
-        <div className="table-container">
-          <table className="requests-table">
-            <thead>
-              <tr>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((request, index) => (
-                <tr key={index}>
-                  <td>
-                    <div className="customer-info">
-                      <div className="customer-name">{request.userName}</div>
-                      <div className="customer-email">{request.email}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="amount-info">
-                      <div className="amount">{request.amount}</div>
-                      <div className="currency">{request.bankName}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="time-info">
-                      <div className="date">{formatDateTime(request.requestDate).date}</div>
-                      <div className="time">{formatDateTime(request.requestDate).time}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="status-column">
-                      <span className={`status-badge ${getStatusClass(request.status)}`}>
-                        {request.status}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="actions-column">
-                      <button 
-                        className="action-btn view"
-                        onClick={() => handleViewDetails(request)}
-                      >
-                        <Eye size={18} color="#3b82f6" />
-                      </button>
-                      <button className="action-btn delete"><Trash2 size={18} color="#ef4444" /></button>
-                      <button className="action-btn approve"><Check size={18} color="#22c55e" /></button>
-                      <button className="action-btn more"><MoreHorizontal size={18} color="#6b7280" /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Bank Details Modal */}
-      {showModal && selectedRequest && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h3>Bank Account Details</h3>
-              <button className="modal-close" onClick={() => setShowModal(false)}>
-                <X size={20} />
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="detail-row">
-                <span className="detail-label">Account Number:</span>
-                <span className="detail-value">{selectedRequest.bankAccountNumber}</span>
+            <div className="wp-stat-card wp-stat-pending">
+              <div className="wp-card-header">
+                <span className="wp-card-title">Chờ xử lý</span>
+                <ClockIcon className="wp-card-icon" />
               </div>
-              <div className="detail-row">
-                <span className="detail-label">Account Holder:</span>
-                <span className="detail-value">{selectedRequest.bankAccountHolderName}</span>
+              <div className="wp-card-content">
+                <div className="wp-stat-value">{stats.pending}</div>
+                <div className="wp-stat-text">Cần xử lý ngay</div>
+              </div>
+            </div>
+
+            <div className="wp-stat-card wp-stat-approved">
+              <div className="wp-card-header">
+                <span className="wp-card-title">Đã duyệt</span>
+                <CheckCircleIcon className="wp-card-icon" />
+              </div>
+              <div className="wp-card-content">
+                <div className="wp-stat-value">{stats.approved}</div>
+                <div className="wp-stat-text">Thành công</div>
+              </div>
+            </div>
+
+            <div className="wp-stat-card wp-stat-amount">
+              <div className="wp-card-header">
+                <span className="wp-card-title">Tổng tiền</span>
+                <ArrowTrendingUpIcon className="wp-card-icon" />
+              </div>
+              <div className="wp-card-content">
+                <div className="wp-stat-value">{formatCurrency(stats.totalAmount)}</div>
+                <div className="wp-stat-text">Tổng số tiền yêu cầu</div>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Recent Requests */}
+          <div className="wp-requests-card">
+            <div className="wp-requests-header">
+              <h2 className="wp-requests-title">Yêu cầu gần đây</h2>
+              <Link
+                to="/staff/withdrawal-requests"
+                className="wp-requests-view-all"
+              >
+                Xem tất cả
+              </Link>
+            </div>
+            <div className="wp-table-container">
+              <table className="wp-requests-table">
+                <thead className="wp-table-head">
+                  <tr>
+                    <th className="wp-table-header">Khách hàng</th>
+                    <th className="wp-table-header">Số tiền</th>
+                    <th className="wp-table-header">Ngân hàng</th>
+                    <th className="wp-table-header">Trạng thái</th>
+                    <th className="wp-table-header">Ngày tạo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {requests.length > 0 ? (
+                    requests.map((request) => (
+                      <tr key={request.id} className="wp-table-row">
+                        <td className="wp-table-cell">
+                          <div>
+                            <p className="wp-customer-name">
+                              {request.customer_name}
+                            </p>
+                            <p className="wp-customer-email">
+                              {request.customer_email}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="wp-table-cell">
+                          <span className="wp-amount">
+                            {formatCurrency(request.amount)}
+                          </span>
+                        </td>
+                        <td className="wp-table-cell">
+                          <span className="wp-bank">{request.bank_name}</span>
+                        </td>
+                        <td className="wp-table-cell">
+                          <span
+                            className={`wp-status-badge ${getStatusColor(
+                              request.status
+                            )}`}
+                          >
+                            {getStatusText(request.status)}
+                          </span>
+                        </td>
+                        <td className="wp-table-cell">
+                          {formatDate(request.created_date)}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="wp-no-requests">
+                        Không có yêu cầu nào.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

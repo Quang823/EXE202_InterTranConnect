@@ -18,6 +18,7 @@ import axios from "axios";
 import useScrollToTop from "../../../../hooks/useScrollToTop.jsx";
 import Loading from "../../../common/Loading/Loading.jsx";
 import { processJobWorkWithFile } from "../../../../services/jobWorkService";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -56,6 +57,7 @@ const ApplyJob = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const jobsPerPage = 6;
+  const navigate = useNavigate();
 
   useScrollToTop(currentPage);
 
@@ -85,6 +87,10 @@ const ApplyJob = () => {
 
     initializeData();
   }, []);
+
+  const handleViewDetails = (jobId) => {
+    navigate(`/translator/jobDetails/${jobId}`);
+  };
 
   const totalPages = Math.ceil(jobApplications.length / jobsPerPage);
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -183,7 +189,6 @@ const ApplyJob = () => {
         {currentJobs.length === 0 ? (
           <div className="no-data-message">
             <h2>No Job Applications Found</h2>
-            <p>You haven't applied for any jobs yet.</p>
           </div>
         ) : (
           currentJobs.map((job, index) => {
@@ -236,7 +241,10 @@ const ApplyJob = () => {
                 </div>
 
                 <div className="card-footer">
-                  <button className="action-button view">
+                  <button
+                    className="action-button view"
+                    onClick={() => handleViewDetails(job.jobId)}
+                  >
                     <Eye size={16} />
                     <span>View</span>
                   </button>

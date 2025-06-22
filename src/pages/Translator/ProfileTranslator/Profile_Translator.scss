@@ -6,7 +6,7 @@
     hsl(0 0% 100%) 25%,
     hsl(210 40% 98%) 100%
   );
-  margin-top: 60px;
+  margin-top: 15%;
 }
 
 .profile-translator .loading-container,
@@ -57,20 +57,20 @@
   position: relative;
 }
 
-.profile-translator .hero-background {
-  height: 10rem;
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 0.8) 0%,
-    rgba(59, 130, 246, 0.6) 50%,
-    rgba(16, 22, 185, 0.8) 100%
-  );
-  background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=400&fit=crop");
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  overflow: hidden;
-}
+// .profile-translator .hero-background {
+//   height: 10rem;
+//   background: linear-gradient(
+//     135deg,
+//     rgba(59, 130, 246, 0.8) 0%,
+//     rgba(59, 130, 246, 0.6) 50%,
+//     rgba(16, 22, 185, 0.8) 100%
+//   );
+//   background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=400&fit=crop");
+//   background-size: cover;
+//   background-position: center;
+//   position: relative;
+//   overflow: hidden;
+// }
 
 .profile-translator .hero-overlay {
   position: absolute;
@@ -83,16 +83,17 @@
   );
 }
 
-.profile-translator .hero-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
-  opacity: 0.2;
-}
+// .profile-translator .hero-pattern {
+//   position: absolute;
+//   inset: 0;
+//   background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+//   opacity: 0.2;
+// }
 
 .profile-translator .main-content {
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin-top: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0 1.2rem;
   margin-top: -8rem;
   position: relative;

@@ -210,12 +210,13 @@ body {
 
 // Card-based layout instead of table
 .job-cards-container {
-  display: grid;
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(340px)); 
   gap: 1.5rem;
   margin-bottom: 2rem;
 
   @media (max-width: 576px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; 
   }
 }
 
@@ -586,7 +587,11 @@ body {
 }
 
 // Add responsive adjustments
-
+@media (max-width: 992px) {
+  .job-cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px));
+  }
+}
 
 @media (max-width: 768px) {
   .dashboard-header {
@@ -612,27 +617,5 @@ body {
         align-self: flex-start;
       }
     }
-  }
-}
-
-.no-data-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  text-align: center;
-  padding: 2rem;
-  width: 100%;
-
-  h2 {
-    font-size: 1.5rem;
-    color: #374151;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: #6B7280;
-    font-size: 1rem;
   }
 }
