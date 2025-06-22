@@ -18,7 +18,7 @@ const HeroSection = ({ onHireTranslator, isLoading }) => {
           <h1 className="itc-hero__title">
             <span className="itc-hero__title-line">Smarts Connections</span>
             <span className="itc-hero__title-highlight">
-              Smooth Conversation!
+              Smooth Conversations!
               <div className="itc-hero__sparkle">
                 <Sparkles className="itc-hero__sparkle-icon" />
               </div>

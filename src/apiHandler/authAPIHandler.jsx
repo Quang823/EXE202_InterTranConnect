@@ -89,3 +89,14 @@ export const updateBankAccount = async (bankAccountData) => {
     throw error;
   }
 };
+
+export const refreshToken = async (refreshToken) => {
+  try {
+    const response = await axios.post(`${rootAuth}/refresh-token`, {
+      refreshToken,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
