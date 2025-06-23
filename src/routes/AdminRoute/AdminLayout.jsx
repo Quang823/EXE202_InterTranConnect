@@ -1,9 +1,7 @@
+import AdminSidebars from "../../components/Admin/AdminSidebar/AdminSidebars";
+
 const AdminLayout = ({ children }) => {
-  return (
-    <div className="admin-layout">
-      <main>{children}</main>
-    </div>
-  );
+  return <AdminSidebars>{children}</AdminSidebars>;
 };
 
 export default AdminLayout;

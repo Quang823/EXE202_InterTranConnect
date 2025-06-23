@@ -13,7 +13,7 @@ const RequestDetails = ({
 
   return (
     <div className="withdrawal-modal">
-      <div className="modal-content">
+      <div className="modal-content3">
         {/* Customer Info */}
         <div className="section customer-info">
           <h3>Thông tin khách hàng</h3>
