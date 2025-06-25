@@ -7,11 +7,12 @@ import PostDetailHistory from "../../pages/Client/PostDetailHistory/PostDetailHi
 import TranslatorProfile from "../../pages/Client/TranslatorProfile/TranslatorProfile";
 import CustomerProfile from "../../pages/Client/CustomerProfile/CustomerProfile";
 import WalletClient from "../../pages/Client/WalletClient/WalletClient";
-import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/SubscriptionPlan";
+import MembershipPlans from "../../pages/Client/MembershipPlans/MembershipPlans";
 import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
+import NotificationsPage from "../../components/layout/Header/Header_Client/NotificationsPage/NotificationsPage";
 
 const ClientRoute = () => {
   return (
@@ -27,11 +28,12 @@ const ClientRoute = () => {
       />
       <Route path="/customer_profile" element={<CustomerProfile />} />
       <Route path="/wallet" element={<WalletClient />} />
-      <Route path="/subscriptionPlan" element={<SubscriptionPlan />} />
+      <Route path="/subscriptionPlan" element={<MembershipPlans />} />
       <Route path="/contactPages" element={<ContactPages />} />
       <Route path="/forum" element={<Forums />} />
       <Route path="/aboutUs" element={<InterTransConnects />} />
       <Route path="/news_blog" element={<NewsBlog />} />
+      <Route path="/notifications" element={<NotificationsPage />} />
     </Routes>
   );
 };

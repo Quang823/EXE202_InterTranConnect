@@ -30,7 +30,6 @@ const JobDetails = () => {
     const fetchJobDetails = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/job/${id}`);
-        console.log("res", response.data);
         setJob(response.data);
         setLoading(false);
       } catch (err) {
@@ -47,13 +46,14 @@ const JobDetails = () => {
     try {
       const sessionData = JSON.parse(sessionStorage.getItem("user"));
       const interpreterId = sessionData?.id;
+      const accessToken = sessionStorage.getItem("accessToken");
 
-      if (!interpreterId) {
-        setApplyError("User not logged in.");
+      if (!interpreterId || !accessToken) {
+        setApplyError("User not logged in or missing token.");
         Swal.fire({
           icon: "error",
           title: "Apply Failed",
-          text: "User not logged in."
+          text: "User not logged in or missing token.",
         });
         return;
       }
@@ -64,27 +64,45 @@ const JobDetails = () => {
         message:
           applicationMessage || "I am interested in applying for this job.",
       };
+      console.log("payload", payload);
 
-      await axios.post(`${API_URL}/api/JobApplication`, payload, {
-        headers: { Authorization: `Bearer ${sessionData.accessToken}` },
-      });
-      setApplySuccess(true);
-      setApplyError(null);
-      Swal.fire({
-        icon: "success",
-        title: "Apply Successfully",
-        text: "Your application has been submitted!"
-      });
-      // Refresh job data after applying
-      const response = await axios.get(`${API_URL}/api/job/${id}`);
-      setJob(response.data);
+      const response = await axios.post(
+        `${API_URL}/api/JobApplication`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (response.data?.statusCode === 404) {
+        setApplyError(
+          response.data?.message || "Failed to submit application."
+        );
+        setApplySuccess(false);
+        Swal.fire({
+          icon: "error",
+          title: "Apply Failed",
+          text: response.data?.message || "Failed to submit application.",
+        });
+      } else {
+        setApplySuccess(true);
+        setApplyError(null);
+        Swal.fire({
+          icon: "success",
+          title: "Apply Successfully",
+          text: "Your application has been submitted!",
+        });
+        // Refresh job data after applying
+        const jobRes = await axios.get(`${API_URL}/api/job/${id}`);
+        setJob(jobRes.data);
+      }
     } catch (err) {
       setApplyError("Failed to submit application.");
       setApplySuccess(false);
       Swal.fire({
         icon: "error",
         title: "Apply Failed",
-        text: "Failed to submit application."
+        text: "Failed to submit application.",
       });
       console.error("Application error:", err);
     }

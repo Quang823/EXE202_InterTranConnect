@@ -12,6 +12,7 @@ import ToastManager from "../../../common/Toast/ToastManager";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../../../../hooks/useAuth";
+import NotificationBell from "./NotificationBell/NotificationBell";
 
 const Header_Client = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Header_Client = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      ToastManager.showSuccess("Translator hired successfully!");
+      ToastManager.showInfo("Please post a job to hire a translator!");
     }, 2000);
   };
 
@@ -95,6 +96,7 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
+                  <NotificationBell />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -140,6 +142,7 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
+                  <NotificationBell mobile />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (
@@ -211,6 +214,7 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
+                  <NotificationBell />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -256,6 +260,7 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
+                  <NotificationBell mobile />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (

@@ -11,6 +11,7 @@ import CompanyModal from "./CompanyModal";
 import ContactModal from "./ContactModal";
 import SalaryModal from "./SalaryModal";
 import WorkLocationModal from "./WorkLocationModal";
+import ToastManager from "../../../components/common/Toast/ToastManager";
 
 const Post_Client = () => {
   const [formData, setFormData] = useState({
@@ -247,11 +248,14 @@ const Post_Client = () => {
       setIsWorkLocationFilled(false);
     } catch (error) {
       console.error("Error posting job:", error);
-      setMessage(
-        `Failed to create job: ${
-          error.response?.data?.message || error.message
-        }`
-      );
+      const errorMsg = error.response?.data?.message || error.message;
+      setMessage(`Failed to create job: ${errorMsg}`);
+      if (
+        errorMsg?.toLowerCase().includes("not subscribed") ||
+        errorMsg?.toLowerCase().includes("posting limit")
+      ) {
+        ToastManager.showInfo(errorMsg);
+      }
     } finally {
       setIsSubmitting(false);
     }

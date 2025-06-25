@@ -12,6 +12,15 @@ export const fetchTranslatorCertificates = async (userId) => {
     const response = await getTranslatorCertificates(userId);
     return response;
   } catch (error) {
+    const msg = error.response?.data?.message?.toLowerCase() || "";
+    if (
+      error.response &&
+      error.response.status === 404 &&
+      (msg.includes("chưa có certificate") ||
+        (msg.includes("certificate") && msg.includes("not updated")))
+    ) {
+      return null;
+    }
     console.error(
       "Error in fetchTranslatorCertificates:",
       error.response?.data || error

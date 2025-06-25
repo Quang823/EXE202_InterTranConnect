@@ -7,6 +7,7 @@ import {
   assignRole as assignRoleAPI,
   updateUserProfile,
   refreshToken as refreshTokenAPI,
+  updateBankAccount,
 } from "../apiHandler/authAPIHandler";
 import { jwtDecode } from "jwt-decode";
 
@@ -20,7 +21,7 @@ const processLoginResponse = (response, loginContext) => {
 
   const accessToken = response.accessToken;
   const refreshToken = response.refreshToken;
-
+  const priority = response.priority;
   if (!user || !accessToken) {
     throw new Error("Invalid login response: Missing user or access token");
   }
@@ -32,7 +33,7 @@ const processLoginResponse = (response, loginContext) => {
 
   const userWithRole = { ...user, role };
 
-  loginContext(userWithRole, accessToken, refreshToken);
+  loginContext(userWithRole, accessToken, refreshToken, priority);
 
   return {
     user: {
@@ -43,6 +44,7 @@ const processLoginResponse = (response, loginContext) => {
     },
     token: accessToken,
     refreshToken,
+    priority: priority,
   };
 };
 
@@ -53,13 +55,14 @@ const processGoogleLoginResponse = (response, loginContext) => {
   }
 
   const user = {
-    id: response.id,
-    fullName: response.fullName,
-    email: response.email,
+    id: response.user.id,
+    fullName: response.user.fullName,
+    email: response.user.email,
   };
 
   const accessToken = response.accessToken;
   const refreshToken = response.refreshToken;
+  const priority = response.priority;
 
   const decodedToken = jwtDecode(accessToken);
   const roleClaim =
@@ -68,7 +71,7 @@ const processGoogleLoginResponse = (response, loginContext) => {
 
   const userWithRole = { ...user, role };
 
-  loginContext(userWithRole, accessToken, refreshToken);
+  loginContext(userWithRole, accessToken, refreshToken, priority);
 
   return {
     user: {
@@ -79,6 +82,7 @@ const processGoogleLoginResponse = (response, loginContext) => {
     },
     token: accessToken,
     refreshToken,
+    priority: priority,
   };
 };
 

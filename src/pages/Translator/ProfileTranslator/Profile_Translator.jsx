@@ -142,11 +142,6 @@ const Profile_Translator = () => {
       };
       const response = await updateUserProfileService(profileData);
       if (response) {
-        setUserData(editData);
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({ id: editData.id, ...response })
-        );
         ToastManager.showSuccess("Profile updated successfully!");
         setShowProfileModal(false);
       }

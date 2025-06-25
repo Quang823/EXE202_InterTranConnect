@@ -175,11 +175,6 @@ const CustomerProfile = () => {
       const response = await updateUserProfileService(profileData);
 
       if (response) {
-        setUserData(editData);
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({ id: editData.id, ...response })
-        );
         ToastManager.showSuccess("Profile updated successfully!");
         setShowModal(false);
       }
@@ -322,8 +317,11 @@ const CustomerProfile = () => {
                   </div>
                 </div>
 
-                <button className="hire-button" onClick={handleEditProfile}>
-                  <Edit className="w-4 h-4 mr-2" />
+                <button
+                  className="hire-button mt-4"
+                  onClick={handleEditProfile}
+                >
+                  <Edit className="hire-button__icon" />
                   Edit Profile
                 </button>
               </div>

@@ -25,11 +25,26 @@ export const getSubPlans = async () => {
 
 export const subscribeToPlan = async (subscriptionPlanId) => {
   try {
-    const response = await axios.post(`${rootSubscription}/subscribe`, { subscriptionPlanId }, {
+    const response = await axios.post(
+      `${rootSubscription}/subscribe`,
+      { subscriptionPlanId },
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCurrentSubPlans = async () => {
+  try {
+    const response = await axios.get(`${rootSubscription}/current`, {
       headers: getAuthHeaders(),
     });
     return response.data;
   } catch (error) {
     throw error;
   }
-}; 
+};
