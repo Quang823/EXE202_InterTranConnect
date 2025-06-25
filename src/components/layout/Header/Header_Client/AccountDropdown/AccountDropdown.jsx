@@ -2,14 +2,25 @@ import React, { useState } from "react";
 import { User, History, Wallet, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import BusinessPlusCard from "./BusinessPlusCards";
+import OnlineToggle from "./OnlineToggle";
 import "./AccountDropdown.scss";
 
 const AccountDropdown = ({ user, onLogout, mobile = false }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
+
+  const handleToggleOnline = () => {
+    setIsOnline(!isOnline);
+    // Add toggle logic here (e.g., API call to update status)
+  };
+
+  // Lấy priority từ sessionStorage
+  const priority = Number(sessionStorage.getItem("priority"));
 
   if (mobile) {
     return (
@@ -44,6 +55,8 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           <Wallet className="itc-user-dropdown__icon" />
           Wallet
         </div>
+        {priority === 0 && <BusinessPlusCard />}
+        <OnlineToggle isOnline={isOnline} onToggle={handleToggleOnline} />
         <div
           className="itc-user-dropdown__mobile-item itc-user-dropdown__mobile-item--logout"
           onClick={() => {
@@ -75,6 +88,12 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
       </Button>
       {isOpen && (
         <div className="itc-user-dropdown__content">
+          <OnlineToggle
+            isOnline={isOnline}
+            onToggle={handleToggleOnline}
+            className={isOnline ? "is-online" : ""}
+          />
+          {priority === 0 && <BusinessPlusCard />}
           <div
             className="itc-user-dropdown__item"
             onClick={() => {

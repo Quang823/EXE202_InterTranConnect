@@ -42,6 +42,12 @@
   .itc-user-dropdown__name {
     font-size: 1rem;
     font-weight: 500;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: bottom;
   }
 
   .itc-user-dropdown__chevron {
@@ -61,7 +67,8 @@
     position: absolute;
     top: 100%;
     right: 0;
-    min-width: 200px;
+    min-width: 250px;
+    min-height: 0;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(229, 231, 235, 0.2);

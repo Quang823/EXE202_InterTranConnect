@@ -18,6 +18,8 @@ import {
   GraduationCap,
 } from "lucide-react";
 import "./AddCertificatePage.scss";
+import useAuth from "../../../hooks/useAuth";
+import { getUserInfoByUserIdService } from "../../../services/authService";
 
 const AddCertificatePage = () => {
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ const AddCertificatePage = () => {
   });
   const [uploading, setUploading] = useState(false);
   const [uploadingField, setUploadingField] = useState(null);
+  const { user, login, token, refreshToken } = useAuth();
 
   useEffect(() => {
     const fetchUserId = () => {
@@ -88,7 +91,6 @@ const AddCertificatePage = () => {
       const finalCertificateData = { ...certificateData, userId };
       const response = await addTranslatorCertificate(finalCertificateData);
       if (response || response.message) {
-        ToastManager.showSuccess("Certificate added successfully!");
         setCertificateData({
           title: "",
           experience: "",
@@ -103,6 +105,25 @@ const AddCertificatePage = () => {
           certificateFileUrl: null,
           userId: userId || "",
         });
+        ToastManager.showSuccess("Certificate added successfully!");
+        if (user?.id) {
+          try {
+            const latestUser = await getUserInfoByUserIdService(user.id);
+            login(
+              {
+                fullName: latestUser.fullName,
+                id: latestUser.id,
+                role: latestUser.role || user.role,
+                approvalStatus: latestUser.approvalStatus,
+              },
+              token,
+              refreshToken,
+              latestUser.priority
+            );
+          } catch (e) {
+            // handle error nếu cần
+          }
+        }
       } else {
         ToastManager.showError(
           "Failed to add certificate: Unexpected response"
@@ -349,31 +370,22 @@ const AddCertificatePage = () => {
                     htmlFor="cvFileUrl"
                     className="cert-file-upload__label"
                   >
-                    <div className="cert-file-upload__content">
+                    <button
+                      type="button"
+                      className="cert-file-upload__button"
+                      disabled={uploadingField === "cvFileUrl"}
+                    >
                       {uploadingField === "cvFileUrl" ? (
                         <div className="cert-file-upload__spinner"></div>
+                      ) : certificateData.cvFileUrl ? (
+                        "CV Uploaded"
                       ) : (
-                        getFileIcon("cvFileUrl")
+                        <>
+                          <Upload className="cert-file-upload__icon" />
+                          Upload CV
+                        </>
                       )}
-                      <span className="cert-file-upload__text">
-                        {certificateData.cvFileUrl
-                          ? "CV Uploaded"
-                          : "Upload CV (PDF)"}
-                      </span>
-                      <span className="cert-file-upload__subtext">
-                        Click to browse or drag and drop
-                      </span>
-                      {certificateData.cvFileUrl && (
-                        <a
-                          href={certificateData.cvFileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cert-file-upload__link"
-                        >
-                          View CV
-                        </a>
-                      )}
-                    </div>
+                    </button>
                   </label>
                 </div>
 
@@ -386,28 +398,22 @@ const AddCertificatePage = () => {
                     onChange={(e) => handleCertificateFileChange(e, "photoUrl")}
                   />
                   <label htmlFor="photoUrl" className="cert-file-upload__label">
-                    <div className="cert-file-upload__content">
+                    <button
+                      type="button"
+                      className="cert-file-upload__button"
+                      disabled={uploadingField === "photoUrl"}
+                    >
                       {uploadingField === "photoUrl" ? (
                         <div className="cert-file-upload__spinner"></div>
+                      ) : certificateData.photoUrl ? (
+                        "Photo Uploaded"
                       ) : (
-                        getFileIcon("photoUrl")
+                        <>
+                          <Upload className="cert-file-upload__icon" />
+                          Upload Photo
+                        </>
                       )}
-                      <span className="cert-file-upload__text">
-                        {certificateData.photoUrl
-                          ? "Photo Uploaded"
-                          : "Upload Photo"}
-                      </span>
-                      <span className="cert-file-upload__subtext">
-                        JPG, PNG up to 5MB
-                      </span>
-                      {certificateData.photoUrl && (
-                        <img
-                          src={certificateData.photoUrl}
-                          alt="Uploaded Photo"
-                          className="cert-file-upload__preview"
-                        />
-                      )}
-                    </div>
+                    </button>
                   </label>
                 </div>
 
@@ -425,28 +431,22 @@ const AddCertificatePage = () => {
                     htmlFor="certificateFileUrl"
                     className="cert-file-upload__label"
                   >
-                    <div className="cert-file-upload__content">
+                    <button
+                      type="button"
+                      className="cert-file-upload__button"
+                      disabled={uploadingField === "certificateFileUrl"}
+                    >
                       {uploadingField === "certificateFileUrl" ? (
                         <div className="cert-file-upload__spinner"></div>
+                      ) : certificateData.certificateFileUrl ? (
+                        "Certificate Uploaded"
                       ) : (
-                        getFileIcon("certificateFileUrl")
+                        <>
+                          <Upload className="cert-file-upload__icon" />
+                          Upload Certificate
+                        </>
                       )}
-                      <span className="cert-file-upload__text">
-                        {certificateData.certificateFileUrl
-                          ? "Certificate Uploaded"
-                          : "Upload Certificate File"}
-                      </span>
-                      <span className="cert-file-upload__subtext">
-                        PDF or Image files accepted
-                      </span>
-                      {certificateData.certificateFileUrl && (
-                        <img
-                          src={certificateData.certificateFileUrl}
-                          alt="Uploaded Certificate"
-                          className="cert-file-upload__preview"
-                        />
-                      )}
-                    </div>
+                    </button>
                   </label>
                 </div>
               </div>

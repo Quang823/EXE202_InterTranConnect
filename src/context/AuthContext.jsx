@@ -13,7 +13,10 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(() => {
     return sessionStorage.getItem("refreshToken") || "";
   });
-
+  const [priority, setPriority] = useState(() => {
+    const stored = sessionStorage.getItem("priority");
+    return stored !== null ? Number(stored) : null;
+  });
   useEffect(() => {
     if (user) {
       sessionStorage.setItem("user", JSON.stringify(user));
@@ -38,10 +41,19 @@ export const AuthProvider = ({ children }) => {
     }
   }, [refreshToken]);
 
-  const login = (userData, authToken, refreshToken) => {
+  useEffect(() => {
+    if (priority !== null && priority !== undefined) {
+      sessionStorage.setItem("priority", priority);
+    } else {
+      sessionStorage.removeItem("priority");
+    }
+  }, [priority]);
+
+  const login = (userData, authToken, refreshToken, priority) => {
     setUser(userData);
     setToken(authToken);
     setRefreshToken(refreshToken);
+    setPriority(priority);
   };
 
   const logout = () => {
@@ -51,10 +63,13 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("priority");
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, refreshToken, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, refreshToken, priority, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

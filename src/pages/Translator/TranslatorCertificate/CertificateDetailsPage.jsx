@@ -5,6 +5,10 @@ import ToastManager from "../../../components/common/Toast/ToastManager";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./CertificateDetailsPage.scss";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import {
   Upload,
   ArrowLeft,
@@ -16,13 +20,20 @@ import {
   Languages,
   Briefcase,
   GraduationCap,
+  X,
 } from "lucide-react";
+
 const CertificateDetailsPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [selectedCv, setSelectedCv] = useState(null);
+  const [showCvModal, setShowCvModal] = useState(false);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -37,6 +48,7 @@ const CertificateDetailsPage = () => {
         }
         setUser(parsedUser);
         const response = await fetchTranslatorCertificates(parsedUser.id);
+        console.log("res", response);
         setCertificates(response);
         setLoading(false);
       } catch (error) {
@@ -46,6 +58,30 @@ const CertificateDetailsPage = () => {
     };
     fetchCertificates();
   }, [user?.id]);
+
+  const handleViewCertificate = (certificate) => {
+    setSelectedCertificate(certificate);
+    setShowPdfModal(true);
+  };
+
+  const closePdfModal = () => {
+    setShowPdfModal(false);
+    setSelectedCertificate(null);
+  };
+
+  const handleViewCv = (cvUrl) => {
+    setSelectedCv(cvUrl);
+    setShowCvModal(true);
+  };
+
+  const closeCvModal = () => {
+    setShowCvModal(false);
+    setSelectedCv(null);
+  };
+
+  const isPdfFile = (url) => {
+    return url && url.toLowerCase().endsWith(".pdf");
+  };
 
   if (loading) {
     return <div className="certificate-detail-page">Loading...</div>;
@@ -131,89 +167,172 @@ const CertificateDetailsPage = () => {
 
         <div className="certificate-detail-page-content">
           {certificates.map((cert, index) => (
-            <div key={index} className="certificate-detail-item">
-              <h2 className="certificate-detail-title">{cert.title}</h2>
-              <div className="certificate-detail-group">
-                <label>Experience (years):</label>
-                <span>{cert.experience}</span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Education:</label>
-                <span>{cert.education}</span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Website:</label>
-                <span>
-                  <a
-                    href={cert.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="certificate-detail-link"
-                  >
-                    {cert.website}
-                  </a>
-                </span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>CV:</label>
-                <span>
-                  <a
-                    href={cert.cvFileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="certificate-detail-link"
-                  >
-                    View CV
-                  </a>
-                </span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Work Type:</label>
-                <span>{cert.workType}</span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Translation Form:</label>
-                <span>{cert.translationForm}</span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Translation Language:</label>
-                <span>{cert.translationLanguage}</span>
-              </div>
-              <div className="certificate-detail-group">
-                <label>Certificate Names:</label>
-                <span>{cert.certificateNames}</span>
-              </div>
-              {cert.photoUrl && (
-                <div className="certificate-detail-group">
-                  <label>Photo:</label>
-                  <img
-                    src={cert.photoUrl}
-                    alt="Translator Photo"
-                    className="certificate-detail-image"
-                    onError={(e) => (e.target.src = "/fallback-image.jpg")}
-                  />
-                </div>
-              )}
-              {cert.certificateFileUrl && (
-                <div className="certificate-detail-group">
-                  <label>Certificate:</label>
-                  <img
-                    src={cert.certificateFileUrl}
-                    alt="Certificate"
-                    className="certificate-detail-certificate-image"
-                    onError={(e) =>
-                      (e.target.src = "/fallback-certificate.jpg")
-                    }
-                  />
-                </div>
-              )}
-              <hr className="certificate-detail-separator" />
-            </div>
+            <table key={cert.id || index} className="certificate-detail-table">
+              <thead>
+                <tr>
+                  <th colSpan="2" className="certificate-detail-title">
+                    {cert.title}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">
+                    Experience (years):
+                  </td>
+                  <td className="certificate-detail-cell value">
+                    {cert.experience}
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">Education:</td>
+                  <td className="certificate-detail-cell value">
+                    {cert.education}
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">Website:</td>
+                  <td className="certificate-detail-cell value">
+                    <a
+                      href={cert.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="certificate-detail-link"
+                    >
+                      {cert.website}
+                    </a>
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">CV:</td>
+                  <td className="certificate-detail-cell value">
+                    <button
+                      onClick={() => handleViewCv(cert.cvFileUrl)}
+                      className="certificate-detail-link"
+                    >
+                      View CV
+                    </button>
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">Work Type:</td>
+                  <td className="certificate-detail-cell value">
+                    {cert.workType}
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">
+                    Translation Form:
+                  </td>
+                  <td className="certificate-detail-cell value">
+                    {cert.translationForm}
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">
+                    Translation Language:
+                  </td>
+                  <td className="certificate-detail-cell value">
+                    {cert.translationLanguage}
+                  </td>
+                </tr>
+                <tr className="certificate-detail-row">
+                  <td className="certificate-detail-cell label">
+                    Certificate Names:
+                  </td>
+                  <td className="certificate-detail-cell value">
+                    {cert.certificateNames}
+                  </td>
+                </tr>
+                {cert.photoUrl && (
+                  <tr className="certificate-detail-row">
+                    <td className="certificate-detail-cell label">Photo:</td>
+                    <td className="certificate-detail-cell value">
+                      <img
+                        src={cert.photoUrl}
+                        alt={`Photo for ${cert.title}`}
+                        className="certificate-detail-image"
+                        onError={(e) => (e.target.src = "/fallback-image.jpg")}
+                      />
+                    </td>
+                  </tr>
+                )}
+                {cert.certificateFileUrl && (
+                  <tr className="certificate-detail-row">
+                    <td className="certificate-detail-cell label">
+                      Certificate:
+                    </td>
+                    <td className="certificate-detail-cell value">
+                      <button
+                        onClick={() => handleViewCertificate(cert)}
+                        className="certificate-detail-link"
+                      >
+                        View Certificate
+                      </button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           ))}
         </div>
 
         <ToastContainer />
       </div>
+
+      {showPdfModal && (
+        <div className="pdf-modal">
+          <div className="pdf-modal-content">
+            <span className="close-button" onClick={closePdfModal}>
+              &times;
+            </span>
+            {isPdfFile(selectedCertificate?.certificateFileUrl) ? (
+              <Worker
+                workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+              >
+                <Viewer
+                  fileUrl={selectedCertificate?.certificateFileUrl}
+                  plugins={[defaultLayoutPluginInstance]}
+                />
+              </Worker>
+            ) : (
+              <img
+                src={selectedCertificate?.certificateFileUrl}
+                alt={`Certificate for ${selectedCertificate?.title}`}
+                className="certificate-detail-certificate-image"
+                onError={(e) => (e.target.src = "/fallback-certificate.jpg")}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {showCvModal && (
+        <div className="cv-modal">
+          <div className="cv-modal-content">
+            <span className="close-button" onClick={closeCvModal}>
+              &times;
+            </span>
+            {isPdfFile(selectedCv) ? (
+              <Worker
+                workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+              >
+                <Viewer
+                  fileUrl={selectedCv}
+                  plugins={[defaultLayoutPluginInstance]}
+                />
+              </Worker>
+            ) : (
+              <img
+                src={selectedCv}
+                alt="Selected CV"
+                className="certificate-detail-cv-image"
+                onError={(e) => (e.target.src = "/fallback-cv.jpg")}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,6 +6,8 @@ import {
   getUserByUserId,
   assignRole as assignRoleAPI,
   updateUserProfile,
+  refreshToken as refreshTokenAPI,
+  updateBankAccount,
 } from "../apiHandler/authAPIHandler";
 import { jwtDecode } from "jwt-decode";
 
@@ -19,7 +21,7 @@ const processLoginResponse = (response, loginContext) => {
 
   const accessToken = response.accessToken;
   const refreshToken = response.refreshToken;
-
+  const priority = response.priority;
   if (!user || !accessToken) {
     throw new Error("Invalid login response: Missing user or access token");
   }
@@ -31,7 +33,7 @@ const processLoginResponse = (response, loginContext) => {
 
   const userWithRole = { ...user, role };
 
-  loginContext(userWithRole, accessToken, refreshToken);
+  loginContext(userWithRole, accessToken, refreshToken, priority);
 
   return {
     user: {
@@ -42,6 +44,7 @@ const processLoginResponse = (response, loginContext) => {
     },
     token: accessToken,
     refreshToken,
+    priority: priority,
   };
 };
 
@@ -52,13 +55,14 @@ const processGoogleLoginResponse = (response, loginContext) => {
   }
 
   const user = {
-    id: response.id,
-    fullName: response.fullName,
-    email: response.email,
+    id: response.user.id,
+    fullName: response.user.fullName,
+    email: response.user.email,
   };
 
   const accessToken = response.accessToken;
   const refreshToken = response.refreshToken;
+  const priority = response.priority;
 
   const decodedToken = jwtDecode(accessToken);
   const roleClaim =
@@ -67,7 +71,7 @@ const processGoogleLoginResponse = (response, loginContext) => {
 
   const userWithRole = { ...user, role };
 
-  loginContext(userWithRole, accessToken, refreshToken);
+  loginContext(userWithRole, accessToken, refreshToken, priority);
 
   return {
     user: {
@@ -78,6 +82,7 @@ const processGoogleLoginResponse = (response, loginContext) => {
     },
     token: accessToken,
     refreshToken,
+    priority: priority,
   };
 };
 
@@ -223,5 +228,51 @@ export const updateBankAccountService = async (bankAccountData) => {
       throw new Error(data.message || "Failed to update bank account");
     }
     throw new Error(error.message || "Network error");
+  }
+};
+
+// New function to refresh the access token
+export const refreshAccessToken = async (loginContext) => {
+  const refreshToken = sessionStorage.getItem("refreshToken");
+  if (!refreshToken) {
+    throw new Error("No refresh token available");
+  }
+
+  try {
+    const response = await refreshTokenAPI(refreshToken);
+    const { accessToken, refreshToken: newRefreshToken } = response;
+
+    if (!accessToken) {
+      throw new Error("Failed to refresh token: No access token returned");
+    }
+
+    // Update tokens in sessionStorage
+    sessionStorage.setItem("accessToken", accessToken);
+    if (newRefreshToken) {
+      sessionStorage.setItem("refreshToken", newRefreshToken);
+    }
+
+    // Decode the new access token to get user info and role
+    const decodedToken = jwtDecode(accessToken);
+    const roleClaim =
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+    const role = decodedToken[roleClaim] || "Unknown";
+    const user = {
+      id: decodedToken.sub || decodedToken.id, // Adjust based on your JWT payload
+      email: decodedToken.email,
+      fullName: decodedToken.fullName || decodedToken.name, // Adjust based on your JWT payload
+      role,
+    };
+
+    // Update the login context with the new user info and token
+    loginContext(user, accessToken, newRefreshToken || refreshToken);
+
+    return {
+      user,
+      token: accessToken,
+      refreshToken: newRefreshToken || refreshToken,
+    };
+  } catch (error) {
+    throw handleAuthError(error, "Token refresh failed");
   }
 };

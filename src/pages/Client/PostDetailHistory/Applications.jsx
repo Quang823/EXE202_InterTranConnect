@@ -83,7 +83,6 @@ const Applications = ({ job }) => {
       try {
         // Lấy chi tiết job
         const jobData = await getJobDetailByJobIdService(jobId);
-        console.log(jobData);
         setJobDetails({
           id: jobData.id,
           customerId: jobData.customerId,

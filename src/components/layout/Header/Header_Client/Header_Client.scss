@@ -4,6 +4,110 @@
   background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 50%, #dbeafe 100%);
   overflow: hidden;
 
+  @mixin button-hover {
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: rgba(rgb(0, 61, 130), 0.1);
+      color: rgb(0, 61, 130);
+    }
+  }
+
+  &__notification-btn {
+    padding: 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: gray;
+    position: relative;
+    @include button-hover;
+
+    svg {
+      transition: color 0.3s ease;
+    }
+
+    &:hover svg {
+      color: rgb(0, 61, 130);
+    }
+
+    @media (max-width: 768px) {
+      padding: 0.75rem;
+    }
+  }
+
+  &__notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: rgb(0, 61, 130);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  &__notification-panel {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #646464;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    min-width: 300px;
+    z-index: 1000;
+    margin-top: 0.5rem;
+
+    @media (max-width: 768px) {
+      right: 0;
+      left: 0;
+      margin: 0.5rem;
+    }
+  }
+
+  &__notification-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: gray;
+    margin-bottom: 1rem;
+  }
+
+  &__notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  &__notification-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #646464;
+    color: #646464;
+    font-size: 0.95rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__notification-empty {
+    color: #646464;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  &__notification-close {
+    width: 100%;
+    margin-top: 1rem;
+    @include button-hover;
+  }
+
   .itc-header__bg {
     position: absolute;
     inset: 0;
@@ -187,7 +291,7 @@
   .itc-header__user-section {
     display: none;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
     @media (min-width: 768px) {
       display: flex;

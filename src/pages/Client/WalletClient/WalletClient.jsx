@@ -19,7 +19,9 @@ import {
 } from "../../../services/authService";
 import ReactPaginate from "react-paginate";
 import "./WalletClient.scss";
-import Loading from "../../../components/common/Loading/Loading";
+import ToastManager from "../../../components/common/Toast/ToastManager";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const WalletClient = () => {
   const [wallet, setWallet] = useState(null);
@@ -65,6 +67,23 @@ const WalletClient = () => {
     };
 
     fetchData();
+  }, [accountId]);
+
+  // Fetch bank info from backend when accountId changes
+  useEffect(() => {
+    const fetchBankInfo = async () => {
+      try {
+        const userInfo = await getUserInfoByUserIdService(accountId);
+        setBankInfo({
+          bankAccountNumber: userInfo.bankAccountNumber || "",
+          bankName: userInfo.bankName || "",
+          bankAccountHolderName: userInfo.bankAccountHolderName || "",
+        });
+      } catch (err) {
+        // Có thể show lỗi nếu muốn
+      }
+    };
+    if (accountId) fetchBankInfo();
   }, [accountId]);
 
   const fetchTransactions = async (walletId, pageNumber, pageSize) => {
@@ -131,7 +150,9 @@ const WalletClient = () => {
       };
       const response = await updateBankAccountService(bankAccountData);
       setUpdateError(null);
-      alert(response.message || "Bank account updated successfully!");
+      ToastManager.showSuccess(
+        response.message || "Bank account updated successfully!"
+      );
       setIsBankUpdateModalOpen(false);
     } catch (err) {
       setUpdateError(err.message || "Failed to update bank account");
@@ -169,8 +190,19 @@ const WalletClient = () => {
 
   if (loading) {
     return (
-      <div className="wc-app">
-        <Loading isLoading={loading} fullScreen size="medium" color="#3b82f6" />
+      <div className="container-fluid">
+        <div className="row justify-content-center">
+          <div className="col-md-10">
+            <div className="post-history-detail-container">
+              <div className="post-history-detail-loading">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading job details...</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -229,21 +261,45 @@ const WalletClient = () => {
                 <div className="wallet-card__visual">
                   <div className="wallet-card__chip"></div>
                   <div className="wallet-card__number">
-                    <span>{wallet?.cardNumber?.slice(0, 4) || "4787"}</span>
-                    <span className="wallet-card__dots">•••• ••••</span>
-                    <span>{wallet?.cardNumber?.slice(-4) || "4787"}</span>
+                    {bankInfo?.bankAccountNumber ? (
+                      <>
+                        <span>{bankInfo.bankAccountNumber.slice(0, 4)}</span>
+                        <span className="wallet-card__dots">•••• ••••</span>
+                        <span>{bankInfo.bankAccountNumber.slice(-4)}</span>
+                      </>
+                    ) : (
+                      <span className="wallet-stat__value wallet-stat__value--empty">
+                        Not provided
+                      </span>
+                    )}
                   </div>
                   <div className="wallet-card__details">
                     <div className="wallet-card__holder">
                       <span className="wallet-card__label">Card Holder</span>
-                      <span className="wallet-card__value">
-                        {user?.fullName || "Nam"}
+                      <span
+                        className={`wallet-card__value${
+                          !bankInfo?.bankAccountHolderName
+                            ? " wallet-stat__value--empty"
+                            : ""
+                        }`}
+                      >
+                        {bankInfo?.bankAccountHolderName
+                          ? bankInfo.bankAccountHolderName
+                          : "Not provided"}
                       </span>
                     </div>
                     <div className="wallet-card__issuer">
                       <span className="wallet-card__label">Bank</span>
-                      <span className="wallet-card__value">
-                        {wallet?.issuer || "MB Bank"}
+                      <span
+                        className={`wallet-card__value${
+                          !bankInfo?.bankName
+                            ? " wallet-stat__value--empty"
+                            : ""
+                        }`}
+                      >
+                        {bankInfo?.bankName
+                          ? bankInfo.bankName
+                          : "Not provided"}
                       </span>
                     </div>
                   </div>
@@ -279,34 +335,51 @@ const WalletClient = () => {
                 <span className="wallet-stat__label">Total Transactions</span>
                 <span className="wallet-stat__value">{totalItems}</span>
               </div>
+
               <div className="wallet-stat">
-                <span className="wallet-stat__label">Card Number</span>
-                <span className="wallet-stat__value">
-                  {wallet?.cardNumber || "4787 8749 8403 4787"}
+                <span className="wallet-stat__label">Bank Name</span>
+                <span
+                  className={`wallet-stat__value${
+                    !bankInfo.bankName ? " wallet-stat__value--empty" : ""
+                  }`}
+                >
+                  {bankInfo.bankName ? bankInfo.bankName : "Not provided"}
                 </span>
               </div>
               <div className="wallet-stat">
-                <span className="wallet-stat__label">Bank Name</span>
-                <span className="wallet-stat__value">{bankInfo.bankName}</span>
-              </div>
-              <div className="wallet-stat">
                 <span className="wallet-stat__label">Account Holder</span>
-                <span className="wallet-stat__value">
-                  {bankInfo.bankAccountHolderName}
+                <span
+                  className={`wallet-stat__value${
+                    !bankInfo.bankAccountHolderName
+                      ? " wallet-stat__value--empty"
+                      : ""
+                  }`}
+                >
+                  {bankInfo.bankAccountHolderName
+                    ? bankInfo.bankAccountHolderName
+                    : "Not provided"}
                 </span>
               </div>
               <div className="wallet-stat">
                 <span className="wallet-stat__label">Account Number</span>
-                <span className="wallet-stat__value">
-                  {bankInfo.bankAccountNumber}
+                <span
+                  className={`wallet-stat__value${
+                    !bankInfo.bankAccountNumber
+                      ? " wallet-stat__value--empty"
+                      : ""
+                  }`}
+                >
+                  {bankInfo.bankAccountNumber
+                    ? bankInfo.bankAccountNumber
+                    : "Not provided"}
                 </span>
               </div>
               <button
-                className="wallet-update-btn"
+                className="wallet-action-btn wallet-action-btn--update"
                 onClick={openBankUpdateModal}
                 disabled={updateLoading}
               >
-                {updateLoading ? "Updating..." : "Update"}
+                {updateLoading ? "Updating..." : "Update Bank Account"}
               </button>
               {updateError && (
                 <div className="wallet-update-error">{updateError}</div>

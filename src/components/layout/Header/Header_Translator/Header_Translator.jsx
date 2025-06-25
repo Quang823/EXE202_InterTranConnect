@@ -12,6 +12,7 @@ import ToastManager from "../../../common/Toast/ToastManager";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../../../../hooks/useAuth";
+import NotificationBell from "../Header_Client/NotificationBell/NotificationBell";
 
 const Header_Translator = () => {
   const navigate = useNavigate();
@@ -35,14 +36,6 @@ const Header_Translator = () => {
       setIsLoading(false);
       ToastManager.showSuccess("Translator hired successfully!");
     }, 2000);
-  };
-
-  const handlePostClick = (e) => {
-    if (!user) {
-      e.preventDefault();
-      ToastManager.showError("Please log in to apply a job.");
-      setTimeout(() => navigate("/login"), 2000);
-    }
   };
 
   const handleLogout = () => {
@@ -86,7 +79,6 @@ const Header_Translator = () => {
             {/* Desktop Navigation */}
             <NavigationMenu
               user={user}
-              onPostClick={handlePostClick}
               className="itc-navigation-menu itc-navigation-menu--desktop"
             />
 
@@ -95,6 +87,7 @@ const Header_Translator = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
+                  <NotificationBell />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -132,7 +125,6 @@ const Header_Translator = () => {
             <div className="itc-header__mobile-menu">
               <NavigationMenu
                 user={user}
-                onPostClick={handlePostClick}
                 className="itc-navigation-menu itc-navigation-menu--mobile"
                 mobile={true}
                 onItemClick={() => setIsMobileMenuOpen(false)}
@@ -140,6 +132,7 @@ const Header_Translator = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
+                  <NotificationBell mobile />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (
@@ -202,7 +195,6 @@ const Header_Translator = () => {
             {/* Desktop Navigation */}
             <NavigationMenu
               user={user}
-              onPostClick={handlePostClick}
               className="itc-navigation-menu itc-navigation-menu--desktop"
             />
 
@@ -211,6 +203,7 @@ const Header_Translator = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
+                  <NotificationBell />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -248,7 +241,6 @@ const Header_Translator = () => {
             <div className="itc-header__mobile-menu">
               <NavigationMenu
                 user={user}
-                onPostClick={handlePostClick}
                 className="itc-navigation-menu itc-navigation-menu--mobile"
                 mobile={true}
                 onItemClick={() => setIsMobileMenuOpen(false)}
@@ -256,6 +248,7 @@ const Header_Translator = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
+                  <NotificationBell mobile />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (
@@ -279,10 +272,7 @@ const Header_Translator = () => {
           )}
         </div>
       </nav>
-      <HeroSection
-        onHireTranslator={handleHireTranslator}
-        isLoading={isLoading}
-      />
+      <HeroSection />
       <ToastContainer />
     </header>
   );

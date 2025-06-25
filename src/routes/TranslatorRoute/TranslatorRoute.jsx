@@ -6,7 +6,7 @@ import JobDetail from "../../pages/Translator/JobTranslator/JobDetail/Job_Detail
 import ApplyJobs from "../../pages/Translator/JobTranslator/ApplyJobs/Apply_Job";
 import FavoriteJob from "../../pages/Translator/JobTranslator/FavoriteJob/Favorite_Job";
 import WalletTrans from "../../pages/Translator/WalletTranslator/WalletTranslator";
-import SubscriptionPlan from "../../pages/Translator/SubscriptionPlan/SubscriptionPlan";
+import MembershipPlans from "../../pages/Translator/MembershipPlans/MembershipPlans";
 import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
@@ -24,7 +24,7 @@ const TranslatorRoute = () => {
       <Route path="/jobFavorite" element={<FavoriteJob />} />
       <Route path="/applyJob" element={<ApplyJobs />} />
       <Route path="/wallet" element={<WalletTrans />} />
-      <Route path="/subscriptionPlan" element={<SubscriptionPlan />} />
+      <Route path="/subscriptionPlans" element={<MembershipPlans />} />
       <Route path="/contactPages" element={<ContactPages />} />
       <Route path="/forum" element={<Forums />} />
       <Route path="/aboutUs" element={<InterTransConnects />} />

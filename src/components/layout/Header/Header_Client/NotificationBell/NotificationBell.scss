@@ -1,0 +1,133 @@
+.notification-bell {
+  position: relative;
+  display: inline-block;
+
+  &__icon-wrapper {
+    cursor: pointer;
+    position: relative;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+    color: #333;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #007bff;
+    }
+  }
+
+  &__dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in, fadeOut 0.3s ease-out 5s forwards;
+
+    &__item {
+      border-bottom: 1px solid #eee;
+      padding: 8px 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      p {
+        margin: 0 0 4px;
+        color: #666;
+      }
+
+      small {
+        color: #999;
+        font-size: 12px;
+      }
+    }
+  }
+
+  &__warning {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: #fff5f5; /* Light red background for warning */
+    border: 1px solid #ffcccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in; /* Only fadeIn, no fadeOut */
+
+    &__item {
+      border-bottom: none;
+      padding: 8px 0;
+
+      strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #d32f2f; /* Red color for emphasis */
+      }
+
+      p {
+        margin: 0 0 4px;
+        color: #666;
+      }
+    }
+  }
+
+  &__item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__close {
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #d32f2f; /* Red on hover to match warning theme */
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
