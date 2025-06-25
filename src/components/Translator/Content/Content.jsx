@@ -26,8 +26,20 @@ import {
   FaRegStar,
   FaChevronRight,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import "./content.scss";
+
+const formatDateTime = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+};
 
 const Content = () => {
   useEffect(() => {
@@ -39,87 +51,38 @@ const Content = () => {
   }, []);
 
   const [activeCategory, setActiveCategory] = useState("All");
+  const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate();
 
-  const jobs = [
-    {
-      time: "10 min ago",
-      title: "Marketing Translation",
-      customer: "Name Customer",
-      field: "Technology",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$4000-$4200",
-      saved: false,
-      featured: true,
-      rating: 4.9,
-      reviews: 124,
-    },
-    {
-      time: "12 min ago",
-      title: "Marketing Translation",
-      customer: "Name Customer",
-      field: "Media",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$2800-$3200",
-      saved: true,
-      featured: false,
-      rating: 4.7,
-      reviews: 89,
-    },
-    {
-      time: "15 min ago",
-      title: "Marketing Translation",
-      customer: "Name Customer",
-      field: "Game",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$4800-$5000",
-      saved: false,
-      featured: true,
-      rating: 4.8,
-      reviews: 156,
-    },
-    {
-      time: "24 min ago",
-      title: "Marketing Translation",
-      customer: "Name Customer",
-      field: "Commerce",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$4200-$4800",
-      saved: false,
-      featured: false,
-      rating: 4.5,
-      reviews: 67,
-    },
-    {
-      time: "26 min ago",
-      title: "Marketing Translation",
-      customer: "Name Customer",
-      field: "Commerce",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$3800-$4000",
-      saved: false,
-      featured: false,
-      rating: 4.6,
-      reviews: 92,
-    },
-    {
-      time: "26 min ago",
-      title: "Marketing",
-      customer: "Name Customer",
-      field: "Commerce",
-      language: "VIE - ENG",
-      duration: "1 Hours",
-      price: "$3800-$4000",
-      saved: false,
-      featured: false,
-      rating: 4.6,
-      reviews: 92,
-    },
-  ];
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/job");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        if (data && Array.isArray(data.items)) {
+          const formattedJobs = data.items.map((job) => ({
+            title: job.jobTitle,
+            customer: job.companyName,
+            language: `${job.sourceLanguage} - ${job.targetLanguage}`,
+            price: `$${job.totalFee}`,
+            field: job.translationType,
+            createdAt: job.createdAt,
+            id: job.id,
+          }));
+          setJobs(formattedJobs);
+        } else {
+          console.error("Fetched data is not in the expected format:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   const categories = [
     {
@@ -330,19 +293,14 @@ const Content = () => {
           {jobs.map((job, index) => (
             <div
               key={index}
-              className={`job-card ${job.featured ? "featured" : ""}`}
+              className={`job-card ${index % 3 === 0 ? "featured" : ""}`}
               data-aos="fade-up"
               data-aos-delay={index * 50}
             >
-              {job.featured && <div className="featured-badge">Featured</div>}
+              {index % 3 === 0 && <div className="featured-badge">Featured</div>}
               <div className="job-header">
-                <span className="job-time">{job.time}</span>
                 <div className="job-actions">
-                  {job.saved ? (
-                    <FaBookmark className="bookmark-icon active" />
-                  ) : (
-                    <FaRegBookmark className="bookmark-icon" />
-                  )}
+                  <FaRegBookmark className="bookmark-icon" />
                   <FaEllipsisH className="more-icon" />
                 </div>
               </div>
@@ -357,19 +315,13 @@ const Content = () => {
                       <p className="job-customer">{job.customer}</p>
                       <div className="job-rating">
                         <div className="stars">
-                          {[...Array(5)].map((_, i) =>
-                            i < Math.floor(job.rating) ? (
-                              <FaStar key={i} className="star filled" />
-                            ) : i < job.rating ? (
-                              <FaStar key={i} className="star half-filled" />
-                            ) : (
-                              <FaRegStar key={i} className="star" />
-                            )
-                          )}
+                          <FaStar className="star filled" />
+                          <FaStar className="star filled" />
+                          <FaStar className="star filled" />
+                          <FaStar className="star filled" />
+                          <FaRegStar className="star" />
                         </div>
-                        <span className="rating-text">
-                          {job.rating} ({job.reviews})
-                        </span>
+                        <span className="rating-text">4.5 (67)</span>
                       </div>
                     </div>
                   </div>
@@ -384,19 +336,17 @@ const Content = () => {
                     <span>{job.language}</span>
                   </div>
                   <div className="job-detail">
-                    <FaClock className="detail-icon" />
-                    <span>{job.duration}</span>
-                  </div>
-                  <div className="job-detail">
                     <FaDollarSign className="detail-icon" />
                     <span>{job.price}</span>
                   </div>
                   <div className="job-detail">
-                    <FaMapMarkerAlt className="detail-icon" />
-                    <span>Remote</span>
+                    <FaClock className="detail-icon" />
+                    <span>{formatDateTime(job.createdAt)}</span>
                   </div>
                 </div>
-                <button className="job-button">View Details</button>
+                <button className="job-button" onClick={() => navigate(`/translator/jobDetails/${job.id}`)}>
+                  View Details
+                </button>
               </div>
             </div>
           ))}

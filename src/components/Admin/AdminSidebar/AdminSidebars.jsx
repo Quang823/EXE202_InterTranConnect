@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
-  CreditCard,
+  Users, 
+  UserCheck, 
   Shield,
   LogOut,
   LogIn
@@ -10,22 +11,37 @@ import {
 import Sidebar from 'react-sidebar';
 import { Badge } from 'react-bootstrap';
 import { getUserByUserId } from '../../../apiHandler/authAPIHandler';
-import "./Sidebar.scss";
+import './AdminSidebars.scss';
 
 const navigationItems = [
   {
     title: "Dashboard",
-    url: "/staff/dashboard",
+    url: "/admin/dashboard",
     icon: LayoutDashboard,
   },
   {
-    title: "Yêu cầu rút tiền",
-    url: "/staff/withdrawal-requests",
-    icon: CreditCard,
+    title: "Quản lý Tài khoản",
+    url: "/admin/accountAdmin",
+    icon: Users,
+  },
+  {
+    title: "Phê duyệt",
+    url: "/admin/accountAccept",
+    icon: UserCheck,
+  },
+  {
+    title: "Quản trị doanh thu",
+    url: "/admin/revenue",
+    icon: UserCheck,
+  },
+  {
+    title: "Quản trị đăng ký",
+    url: "/admin/subscription",
+    icon: UserCheck,
   },
 ];
 
-export default function StaffSidebar({ children }) {
+export default function AdminSidebars({ children, currentPageName }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -55,15 +71,15 @@ export default function StaffSidebar({ children }) {
   const getAvatarText = () => {
     if (user && user.fullName) return user.fullName.charAt(0).toUpperCase();
     if (user && user.userName) return user.userName.charAt(0).toUpperCase();
-    return "ST";
+    return "AD";
   };
 
   const getRoleText = () => {
     if (user && user.role) {
-      if (user.role === 'staff') return 'Nhân viên hệ thống';
+      if (user.role === 'admin') return 'Quản trị viên hệ thống';
       return user.role;
     }
-    return 'Nhân viên hệ thống';
+    return 'Quản trị viên hệ thống';
   };
 
   const sidebarContent = (
@@ -74,7 +90,7 @@ export default function StaffSidebar({ children }) {
             <Shield className="ap-logo-icon" />
           </div>
           <div>
-            <h2 className="ap-title">StaffPanel</h2>
+            <h2 className="ap-title">AdminPanel</h2>
             <p className="ap-subtitle">Quản lý hệ thống</p>
           </div>
         </div>
@@ -91,9 +107,9 @@ export default function StaffSidebar({ children }) {
                 >
                   <item.icon className="ap-menu-icon" />
                   <span className="ap-menu-title">{item.title}</span>
-                  {item.title === "Yêu cầu rút tiền" && (
+                  {item.title === "Phê duyệt" && (
                     <Badge bg="warning" text="dark" className="ap-approval-badge">
-                      12
+                      5
                     </Badge>
                   )}
                 </Link>
@@ -103,13 +119,13 @@ export default function StaffSidebar({ children }) {
         </div>
       </div>
 
-      <div className="ap-sidebar-footer1">
+      <div className="ap-sidebar-footer">
         <div className="ap-footer-content">
           <div className="ap-avatar-container">
             <span className="ap-avatar-text">{getAvatarText()}</span>
           </div>
           <div className="ap-user-info">
-            <p className="ap-user-name">{user ? (user.fullName || user.userName || 'Staff User') : 'Staff User'}</p>
+            <p className="ap-user-name">{user ? (user.fullName || user.userName || 'Admin User') : 'Admin User'}</p>
             <p className="ap-user-role">{getRoleText()}</p>
           </div>
         </div>

@@ -169,21 +169,28 @@ const JobDetails = () => {
 
       <main className="main-content1">
         <div className="job-details2">
-          {/* Display PDF if uploadFileUrl exists */}
-          {job.uploadFileUrl && (
-            <section className="section">
-              <h2>Job Document</h2>
-              <div className="jd-pdf-viewer-container">
-                <Worker
-                  workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-                >
-                  <Viewer
-                    fileUrl={job.uploadFileUrl}
-                    plugins={[defaultLayoutPluginInstance]}
-                  />
-                </Worker>
-              </div>
-            </section>
+          {/* Show centered message if resultFileUrl is null */}
+          {job.uploadFileUrl === "" ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px', fontSize: '1.2rem', color: '#888', textAlign: 'center' }}>
+             There are no output files for this job.
+            </div>
+          ) : (
+            // Display PDF if uploadFileUrl exists
+            job.uploadFileUrl && (
+              <section className="section">
+                <h2>Job Document</h2>
+                <div className="jd-pdf-viewer-container">
+                  <Worker
+                    workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+                  >
+                    <Viewer
+                      fileUrl={job.uploadFileUrl}
+                      plugins={[defaultLayoutPluginInstance]}
+                    />
+                  </Worker>
+                </div>
+              </section>
+            )
           )}
         </div>
 
