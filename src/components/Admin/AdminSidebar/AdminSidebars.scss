@@ -207,7 +207,7 @@
 .ap-sidebar-footer {
   padding: 1rem 0;
   border-top: 1px solid #e5e7eb;
-  margin-top: 135%;
+  margin-top: 110%;
 }
 
 .ap-footer-content {
@@ -216,12 +216,13 @@
   gap: 0.75rem;
 }
 
-.ap-avatar-container {
+.ap-avatar-container1 {
   width: 2rem;
   height: 2rem;
   background: linear-gradient(135deg, #a855f7, #d946ef);
   border-radius: 50%;
   display: flex;
+  margin-top: 12%;
   align-items: center;
   justify-content: center;
 }

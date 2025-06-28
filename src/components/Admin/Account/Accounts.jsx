@@ -12,16 +12,7 @@ import {
 } from "lucide-react";
 import './Accounts.scss';
 import BulkActions from './BulkActions/BulkActions';
-
-// Mock data based on the provided UI
-const mockAccounts = [
-  { id: 1, full_name: "Nguyen Van An", email: "nguyenvan.an@techcorp.com", phone: "0901234567", company: "TechCorp Vietnam", department: "Phòng Phát triển", status: "pending", access_level: "Standard", created_date: "23/06/2025", position:"Chuyên viên" },
-  { id: 2, full_name: "Tran Thi Binh", email: "tran.thi.binh@startup.vn", phone: "0912345678", company: "StartupVN", department: "Phòng Marketing", status: "approved", access_level: "Premium", created_date: "23/06/2025", position:"Giám đốc" },
-  { id: 3, full_name: "Le Minh Cuong", email: "le.minh.cuong@bigdata.com", phone: "0923456789", company: "BigData Solutions", department: "Phòng Nghiên cứu", status: "approved", access_level: "Enterprise", created_date: "23/06/2025", position:"Giám đốc" },
-  { id: 4, full_name: "Pham Thu Dung", email: "pham.thu.dung@fintech.vn", phone: "0934567890", company: "Fintech Vietnam", department: "Phòng Sản phẩm", status: "approved", access_level: "Premium", created_date: "23/06/2025", position:"Giám đốc" },
-  { id: 5, full_name: "Hoang Van Em", email: "hoang.van.em@ecommerce.com", phone: "0945678901", company: "E-Commerce Plus", department: "Phòng Vận hành", status: "suspended", access_level: "Standard", created_date: "23/06/2025", position:"Giám đốc" },
-  { id: 6, full_name: "Vu Thi Giang", email: "vu.thi.giang@healthtech.vn", phone: "0956789012", company: "HealthTech Vietnam", department: "Phòng Thiết kế", status: "approved", access_level: "Standard", created_date: "23/06/2025", position:"Giám đốc" },
-];
+import { getPendingCertificates, getUserById } from '../../../apiHandler/adminAPIHandler';
 
 const statusConfig = {
   pending: { label: "Chờ duyệt", className: "ap-status-pending" },
@@ -30,24 +21,61 @@ const statusConfig = {
 };
 
 export default function Accounts() {
-  const [accounts, setAccounts] = useState(mockAccounts);
+  const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [selectedAccounts, setSelectedAccounts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [accessLevelFilter, setAccessLevelFilter] = useState("all");
+
+  const fetchAccounts = async () => {
+    setIsLoading(true);
+    try {
+      const certificates = await getPendingCertificates();
+      console.log("Fetched pending certificates:", certificates);
+
+      const accountsData = await Promise.all(
+        certificates.map(async (cert) => {
+          try {
+            const user = await getUserById(cert.applicationUserId);
+            console.log(`Fetched user for ${cert.applicationUserId}:`, user);
+            
+            const statusValue = cert.status === 0 ? "pending" : cert.status === 1 ? "approved" : "suspended";
+
+            return {
+              id: cert.id,
+              full_name: user.fullName,
+              email: user.email,
+              phone: user.phoneNumber,
+              company: "",
+              department: "",
+              status: statusValue,
+              access_level: "",
+              created_date: new Date().toLocaleDateString('vi-VN'),
+              position: ""
+            };
+          } catch (e) {
+            console.error(`Error fetching user details for cert ${cert.id}:`, e);
+            return null;
+          }
+        })
+      );
+      console.log("Processed accounts data:", accountsData);
+      setAccounts(accountsData.filter(Boolean));
+    } catch (error) {
+      console.error("Failed to fetch pending certificates:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      setAccounts(mockAccounts);
-      setIsLoading(false);
-    }, 1000);
+    fetchAccounts();
   }, []);
 
   useEffect(() => {
     filterAccounts();
-  }, [accounts, searchTerm, statusFilter, accessLevelFilter]);
+  }, [accounts, searchTerm, statusFilter]);
 
   const filterAccounts = () => {
     let filtered = [...accounts];
@@ -55,17 +83,12 @@ export default function Accounts() {
     if (searchTerm) {
       filtered = filtered.filter(account => 
         account.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        account.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        account.company?.toLowerCase().includes(searchTerm.toLowerCase())
+        account.email?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (statusFilter !== "all") {
       filtered = filtered.filter(account => account.status === statusFilter);
-    }
-
-    if (accessLevelFilter !== "all") {
-      filtered = filtered.filter(account => account.access_level === accessLevelFilter);
     }
 
     setFilteredAccounts(filtered);
@@ -106,12 +129,6 @@ export default function Accounts() {
             <option value="pending">Chờ duyệt</option>
             <option value="approved">Đã duyệt</option>
             <option value="suspended">Tạm khóa</option>
-          </select>
-          <select className="ap-filter-select" value={accessLevelFilter} onChange={(e) => setAccessLevelFilter(e.target.value)}>
-            <option value="all">Tất cả</option>
-            <option value="Standard">Standard</option>
-            <option value="Premium">Premium</option>
-            <option value="Enterprise">Enterprise</option>
           </select>
         </div>
         <div className="ap-action-buttons">
@@ -163,10 +180,7 @@ export default function Accounts() {
                 </th>
                 <th className="ap-table-header-cell">Tài khoản</th>
                 <th className="ap-table-header-cell">Liên hệ</th>
-                <th className="ap-table-header-cell">Công ty</th>
                 <th className="ap-table-header-cell">Trạng thái</th>
-                <th className="ap-table-header-cell">Cấp độ</th>
-                <th className="ap-table-header-cell">Ngày tạo</th>
                 <th className="ap-table-header-cell"></th>
               </tr>
             </thead>
@@ -220,24 +234,8 @@ export default function Accounts() {
                       </div>
                     </td>
                     <td className="ap-table-cell">
-                      <div>
-                        <p className="ap-company-name">{account.company}</p>
-                        <p className="ap-company-department">{account.department}</p>
-                      </div>
-                    </td>
-                    <td className="ap-table-cell">
                       <span className={statusConfig[account.status]?.className}>
                         {statusConfig[account.status]?.label}
-                      </span>
-                    </td>
-                    <td className="ap-table-cell">
-                      <span className="ap-access-level">
-                        {account.access_level}
-                      </span>
-                    </td>
-                    <td className="ap-table-cell">
-                      <span className="ap-created-date">
-                        {account.created_date}
                       </span>
                     </td>
                     <td className="ap-table-cell" onClick={(e) => e.stopPropagation()}>

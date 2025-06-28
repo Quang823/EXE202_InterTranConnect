@@ -25,8 +25,13 @@ import {
   FaStar,
   FaRegStar,
   FaChevronRight,
+  FaUsers,
+  FaGlobe,
+  FaCalendarAlt,
+  FaUser,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { getAllJobs } from "../../../apiHandler/jobAPIHandler";
 
 import "./content.scss";
 
@@ -57,11 +62,7 @@ const Content = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/job");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
+        const data = await getAllJobs();
         if (data && Array.isArray(data.items)) {
           const formattedJobs = data.items.map((job) => ({
             title: job.jobTitle,

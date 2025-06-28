@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -14,6 +13,7 @@ import {
 import "./WithdrawalRequests.scss";
 import RequestDetails from "./ModalPopup/RequestDetails";
 import ApprovalModal from "./ModalPopup/ApprovalModal";
+import { getWithdrawalRequests, updateWithdrawalRequestStatus } from "../../../apiHandler/adminAPIHandler";
 
 const getDateRange = (filter) => {
   const now = new Date();
@@ -81,22 +81,10 @@ const WithdrawalRequests = () => {
 
   useEffect(() => {
     const fetchWithdrawalRequests = async () => {
-      const accessToken = sessionStorage.getItem("accessToken");
-      if (!accessToken) {
-        setLoading(false);
-        return;
-      }
-
       try {
         setLoading(true);
-        const requestsResponse = await axios.get(
-          "http://localhost:5000/api/withdrawal-requests?pageNumber=1&pageSize=999",
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
+        const result = await getWithdrawalRequests(1, 999);
 
-        const result = requestsResponse.data;
         if (result && Array.isArray(result.items)) {
           const mappedData = result.items.map((req) => ({
             id: req.withdrawalRequestId,
@@ -194,20 +182,8 @@ const WithdrawalRequests = () => {
   const handleUpdateRequestStatus = async (status, note) => {
     if (!selectedRequest) return;
 
-    const accessToken = sessionStorage.getItem("accessToken");
-
-
     try {
-      await axios.put(
-        `http://localhost:5000/api/withdrawal-requests/${selectedRequest.id}/status`,
-        { status, note },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      await updateWithdrawalRequestStatus(selectedRequest.id, status, note);
 
       setWithdrawalRequests((prevRequests) =>
         prevRequests.map((req) =>
@@ -219,8 +195,6 @@ const WithdrawalRequests = () => {
     } catch (error) {
       console.error("Failed to update status", error);
       // Here you could show an error toast to the user
-    } finally {
-      // setLoading(false);
     }
   };
 

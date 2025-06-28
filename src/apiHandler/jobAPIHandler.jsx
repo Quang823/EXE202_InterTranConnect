@@ -1,11 +1,10 @@
-import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const rootJob = `${API_URL}/api/job`;
+const rootJob = '/job';
 
 export const postJob = async (jobData) => {
   try {
-    const response = await axios.post(`${rootJob}`, jobData);
+    const response = await apiClient.post(`${rootJob}`, jobData);
     return response.data;
   } catch (error) {
     throw error;
@@ -14,7 +13,7 @@ export const postJob = async (jobData) => {
 
 export const getJobsByCustomer = async (customerId) => {
   try {
-    const response = await axios.get(`${rootJob}/by-customer/${customerId}`);
+    const response = await apiClient.get(`${rootJob}/by-customer/${customerId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -23,7 +22,16 @@ export const getJobsByCustomer = async (customerId) => {
 
 export const getJobDetailByJobId = async (id) => {
   try {
-    const response = await axios.get(`${rootJob}/${id}`);
+    const response = await apiClient.get(`${rootJob}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllJobs = async () => {
+  try {
+    const response = await apiClient.get(`${rootJob}`);
     return response.data;
   } catch (error) {
     throw error;

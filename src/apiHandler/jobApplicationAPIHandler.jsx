@@ -1,32 +1,17 @@
-import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const rootJobApplication = `${API_URL}/api/JobApplication`;
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
-  };
-};
+const rootJobApplication = '/JobApplication';
+
 export const getJobApplication = async (jobId) => {
-  const response = await axios.get(
-    `${rootJobApplication}/${jobId}/applications`
-  );
+  const response = await apiClient.get(`${rootJobApplication}/${jobId}/applications`);
   return response.data;
 };
 
 export const selectTranslatorForJob = async (jobId, interpreterId) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/select`,
-      { jobId, interpreterId },
-      {
-        headers: getAuthHeaders(),
-        timeout: 10000,
-      }
-    );
+    const response = await apiClient.post('/select', { jobId, interpreterId }, {
+      timeout: 10000,
+    });
     return response.data;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);
