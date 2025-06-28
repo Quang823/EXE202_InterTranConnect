@@ -1,22 +1,14 @@
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
-const rootJobWork = `${API_URL}/api/JobWork`;
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    Accept: "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
-  };
-};
+import apiClient from '../services/axiosConfig';
+
+const rootJobWork = '/JobWork';
 
 export const submitJobWork = async (jobId, interpreterId, resultFileUrl) => {
   try {
-    const response = await axios.post(
+    const response = await apiClient.post(
       `${rootJobWork}/${jobId}/submit?interpreterId=${interpreterId}`,
       {
         resultFileUrl,
-      },
-      { headers: getAuthHeaders() }
+      }
     );
     return response.data;
   } catch (error) {
@@ -27,10 +19,9 @@ export const submitJobWork = async (jobId, interpreterId, resultFileUrl) => {
 
 export const startJobWork = async (jobId, interpreterId) => {
   try {
-    const response = await axios.post(
+    const response = await apiClient.post(
       `${rootJobWork}/${jobId}/start-work?interpreterId=${interpreterId}`,
-      {},
-      { headers: getAuthHeaders() }
+      {}
     );
     return response.data;
   } catch (error) {
@@ -41,10 +32,9 @@ export const startJobWork = async (jobId, interpreterId) => {
 
 export const confirmJobCompletion = async (jobId, customerId) => {
   try {
-    const response = await axios.post(
+    const response = await apiClient.post(
       `${rootJobWork}/${jobId}/confirm-completion?customerId=${customerId}`,
-      {},
-      { headers: getAuthHeaders() }
+      {}
     );
     return response.data;
   } catch (error) {

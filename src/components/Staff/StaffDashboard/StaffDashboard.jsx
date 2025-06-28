@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import {
   CreditCardIcon,
   ClockIcon,
@@ -10,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import "./StaffDashboard.scss";
 import Loading from "../../common/Loading/Loading";
+import { getWithdrawalRequests } from "../../../apiHandler/adminAPIHandler";
 
 const StaffDashboard = () => {
   const [stats, setStats] = useState({
@@ -38,15 +38,10 @@ const StaffDashboard = () => {
       try {
         setLoading(true);
         // Fetch a large number of requests to perform client-side stats
-        const response = await axios.get(
-          "http://localhost:5000/api/withdrawal-requests?pageNumber=1&pageSize=999",
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
+        const response = await getWithdrawalRequests(1, 999);
 
-        if (response.data && Array.isArray(response.data.items)) {
-          const allRequests = response.data.items;
+        if (response && Array.isArray(response.items)) {
+          const allRequests = response.items;
 
           // Calculate stats
           const total = allRequests.length;

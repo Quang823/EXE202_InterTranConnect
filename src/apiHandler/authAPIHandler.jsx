@@ -1,15 +1,8 @@
 import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const rootAuth = `${API_URL}/api/auth`;
-
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    Authorization: token ? `Bearer ${token}` : "",
-    Accept: "application/json",
-  };
-};
 
 export const loginUser = async (userName, password) => {
   try {
@@ -55,9 +48,7 @@ export const assignRole = async (email, role) => {
 
 export const getUserByUserId = async (id) => {
   try {
-    const response = await axios.get(`${rootAuth}/user/${id}`, {
-      headers: getAuthHeaders(),
-    });
+    const response = await apiClient.get(`/auth/user/${id}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -66,9 +57,7 @@ export const getUserByUserId = async (id) => {
 
 export const updateUserProfile = async (profileData) => {
   try {
-    const response = await axios.put(`${rootAuth}/user/update`, profileData, {
-      headers: getAuthHeaders(),
-    });
+    const response = await apiClient.put(`/auth/user/update`, profileData);
     return response.data;
   } catch (error) {
     throw error;
@@ -77,13 +66,7 @@ export const updateUserProfile = async (profileData) => {
 
 export const updateBankAccount = async (bankAccountData) => {
   try {
-    const response = await axios.put(
-      `${rootAuth}/bank-account`,
-      bankAccountData,
-      {
-        headers: getAuthHeaders(),
-      }
-    );
+    const response = await apiClient.put(`/auth/bank-account`, bankAccountData);
     return response.data;
   } catch (error) {
     throw error;
