@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0.7.0
+        uses: FirebaseExtended/action-hosting-deploy@v0.6.0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           channelId: live
