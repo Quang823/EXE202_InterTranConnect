@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const rootWallet = `${API_URL}/api/wallets`;
+const rootWithdrawal = `${API_URL}/api/withdrawal-requests`;
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem("accessToken");
   return {
@@ -48,6 +49,34 @@ export const getWalletTransactions = async (walletId, pageNumber, pageSize) => {
       pageNumber,
       pageSize,
     },
+    headers: getAuthHeaders(),
+  });
+  return response.data;
+};
+
+// Tạo yêu cầu rút tiền
+export const createWithdrawalRequest = async (data) => {
+  const response = await axios.post(`${rootWithdrawal}`, data, {
+    headers: getAuthHeaders(),
+  });
+  return response.data;
+};
+
+// Xác nhận đã nhận tiền rút
+export const confirmWithdrawalReceived = async (id) => {
+  const response = await axios.post(
+    `${rootWithdrawal}/${id}/confirm-received`,
+    null,
+    {
+      headers: getAuthHeaders(),
+    }
+  );
+  return response.data;
+};
+
+// Lấy các yêu cầu rút tiền của chính mình
+export const getMyWithdrawalRequests = async () => {
+  const response = await axios.get(`${rootWithdrawal}/my-requests`, {
     headers: getAuthHeaders(),
   });
   return response.data;

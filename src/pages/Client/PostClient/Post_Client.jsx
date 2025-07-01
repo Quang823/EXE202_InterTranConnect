@@ -12,7 +12,8 @@ import ContactModal from "./ContactModal";
 import SalaryModal from "./SalaryModal";
 import WorkLocationModal from "./WorkLocationModal";
 import ToastManager from "../../../components/common/Toast/ToastManager";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Post_Client = () => {
   const [formData, setFormData] = useState({
     jobTitle: "",
@@ -216,6 +217,7 @@ const Post_Client = () => {
 
       const response = await createJob(jobData);
       setMessage("Job posted successfully!");
+      ToastManager.showSuccess("Job posted successfully!");
 
       setFormData({
         jobTitle: "",
@@ -252,9 +254,12 @@ const Post_Client = () => {
       setMessage(`Failed to create job: ${errorMsg}`);
       if (
         errorMsg?.toLowerCase().includes("not subscribed") ||
-        errorMsg?.toLowerCase().includes("posting limit")
+        errorMsg?.toLowerCase().includes("posting limit") ||
+        errorMsg?.toLowerCase().includes("remaining posts")
       ) {
-        ToastManager.showInfo(errorMsg);
+        ToastManager.showInfo(
+          "You need to purchase a service package or have run out of posts for the period. Please top up your package to continue posting!"
+        );
       }
     } finally {
       setIsSubmitting(false);
@@ -562,31 +567,30 @@ const Post_Client = () => {
         >
           {isSubmitting ? "Processing..." : "POST JOB"}
         </button>
-        {message && (
-          <p className={`message ${message.includes("Failed") ? "error" : ""}`}>
-            {message}
-          </p>
-        )}
 
         {isPdfPreviewOpen && (
-          <div className="modal-overlay" onClick={handleOverlayClick}>
+          <div className="wallet-modal-overlay" onClick={handleOverlayClick}>
             <div
               id="pdf-preview-modal"
-              className="modal-content"
+              className="wallet-modal wallet-modal--wide"
+              style={{ maxWidth: "90vw", width: "1000px", minHeight: "80vh" }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-header">
-                <h4>
+              <div className="wallet-modal__header">
+                <h3 className="wallet-modal__title">
                   <span className="header-icon">📜</span> Document Preview
-                </h4>
+                </h3>
                 <button
-                  className="modal-close"
+                  className="wallet-modal__close"
                   onClick={() => setIsPdfPreviewOpen(false)}
                 >
                   ×
                 </button>
               </div>
-              <div className="pdf-viewer-container">
+              <div
+                className="wallet-modal__content"
+                style={{ height: "calc(80vh - 60px)", overflow: "auto" }}
+              >
                 {formData.uploadFileUrl &&
                   typeof formData.uploadFileUrl === "string" && (
                     <Worker
@@ -630,6 +634,7 @@ const Post_Client = () => {
           onChange={handleWorkLocationChange}
         />
       </div>
+      <ToastContainer />
     </div>
   );
 };

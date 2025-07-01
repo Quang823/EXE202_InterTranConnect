@@ -68,9 +68,7 @@ export const createJob = async (jobData) => {
     return response;
   } catch (error) {
     console.error("Error in createJob:", error.response?.data || error);
-    throw new Error(
-      `Failed to create job: ${error.response?.data?.message || error.message}`
-    );
+    throw error;
   }
 };
 

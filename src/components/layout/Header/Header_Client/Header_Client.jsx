@@ -96,7 +96,9 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
-                  <NotificationBell />
+                  <NotificationBell
+                    onClick={() => navigate("/client/notifications")}
+                  />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -142,7 +144,10 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
-                  <NotificationBell mobile />
+                  <NotificationBell
+                    mobile
+                    onClick={() => navigate("/client/notifications")}
+                  />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (
@@ -214,7 +219,9 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__user-section">
                   <LanguageDropdown />
-                  <NotificationBell />
+                  <NotificationBell
+                    onClick={() => navigate("/client/notifications")}
+                  />
                   <AccountDropdown user={user} onLogout={handleLogout} />
                 </div>
               ) : (
@@ -260,7 +267,10 @@ const Header_Client = () => {
               {user ? (
                 <div className="itc-header__mobile-user">
                   <LanguageDropdown mobile />
-                  <NotificationBell mobile />
+                  <NotificationBell
+                    mobile
+                    onClick={() => navigate("/client/notifications")}
+                  />
                   <AccountDropdown user={user} onLogout={handleLogout} mobile />
                 </div>
               ) : (

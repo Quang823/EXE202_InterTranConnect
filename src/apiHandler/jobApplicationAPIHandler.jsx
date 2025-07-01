@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const rootJobApplication = `${API_URL}/api/JobApplication`;
+const rootJobApplication = `${API_URL}/api/applications`;
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem("accessToken");
   return {
@@ -11,9 +11,7 @@ const getAuthHeaders = () => {
   };
 };
 export const getJobApplication = async (jobId) => {
-  const response = await axios.get(
-    `${rootJobApplication}/${jobId}/applications`
-  );
+  const response = await axios.get(`${rootJobApplication}/job/${jobId}`);
   return response.data;
 };
 

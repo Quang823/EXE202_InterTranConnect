@@ -5,7 +5,7 @@ import { getUserInfoByUserIdService } from "../../../../../services/authService"
 import { Bell, X } from "lucide-react";
 import "./NotificationBell.scss";
 
-const NotificationBell = () => {
+const NotificationBell = ({ onClick, mobile }) => {
   const { user, token, login, priority } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -80,7 +80,11 @@ const NotificationBell = () => {
 
   return (
     <div className="notification-bell">
-      <div className="notification-bell__icon-wrapper">
+      <div
+        className="notification-bell__icon-wrapper"
+        onClick={onClick}
+        style={{ cursor: "pointer" }}
+      >
         <Bell className="notification-bell__icon" />
         {(notifications.length > 0 ||
           showCertificateWarning ||

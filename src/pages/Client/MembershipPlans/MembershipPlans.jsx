@@ -27,45 +27,47 @@ const MembershipPlans = () => {
   const navigate = useNavigate();
   const { user, login, token, refreshToken } = useAuth();
 
+  // Function to fetch plans and current subscription
+  const fetchPlansAndCurrent = async () => {
+    try {
+      setLoading(true);
+      const [plansResponse, currentSub] = await Promise.all([
+        getSubPlans(),
+        getCurrentSubPlans(),
+      ]);
+      const mappedPlans = Array.isArray(plansResponse)
+        ? plansResponse.map((plan) => ({
+            id: plan.id || plan._id || `plan-${Math.random()}`,
+            name: plan.name || "Unnamed Plan",
+            subtitle: plan.subtitle || "No subtitle",
+            price: plan.price
+              ? `${plan.price.toLocaleString("vi-VN")} VNĐ`
+              : "Contact Sales",
+            priceSubtext: plan.priceSubtext || "Pricing details",
+            popular: plan.popular || false,
+            current: false, // sẽ set lại bên dưới
+            features: plan.description
+              ? plan.description.split(". ").filter(Boolean)
+              : ["No features available"],
+          }))
+        : [];
+      let currentName = null;
+      if (currentSub && currentSub.planName) {
+        currentName = currentSub.planName;
+      }
+      setCurrentPlanName(currentName);
+      setCurrentSub(currentSub);
+      setPlans(mappedPlans);
+    } catch (error) {
+      setError("Failed to load subscription plans. Please try again later.");
+      setPlans([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch plans from API when component mounts
   useEffect(() => {
-    const fetchPlansAndCurrent = async () => {
-      try {
-        setLoading(true);
-        const [plansResponse, currentSub] = await Promise.all([
-          getSubPlans(),
-          getCurrentSubPlans(),
-        ]);
-        const mappedPlans = Array.isArray(plansResponse)
-          ? plansResponse.map((plan) => ({
-              id: plan.id || plan._id || `plan-${Math.random()}`,
-              name: plan.name || "Unnamed Plan",
-              subtitle: plan.subtitle || "No subtitle",
-              price: plan.price
-                ? `${plan.price.toLocaleString("vi-VN")} VNĐ`
-                : "Contact Sales",
-              priceSubtext: plan.priceSubtext || "Pricing details",
-              popular: plan.popular || false,
-              current: false, // sẽ set lại bên dưới
-              features: plan.description
-                ? plan.description.split(". ").filter(Boolean)
-                : ["No features available"],
-            }))
-          : [];
-        let currentName = null;
-        if (currentSub && currentSub.planName) {
-          currentName = currentSub.planName;
-        }
-        setCurrentPlanName(currentName);
-        setCurrentSub(currentSub);
-        setPlans(mappedPlans);
-      } catch (error) {
-        setError("Failed to load subscription plans. Please try again later.");
-        setPlans([]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPlansAndCurrent();
   }, []);
 
@@ -107,7 +109,8 @@ const MembershipPlans = () => {
               refreshToken,
               latestUser.priority
             );
-            if (latestUser.planName) setCurrentPlanName(latestUser.planName);
+            // Reload the component to get updated subscription data
+            await fetchPlansAndCurrent();
           } catch (e) {
             // Có thể log hoặc toast lỗi nếu cần
           }

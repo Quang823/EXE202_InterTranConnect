@@ -21,6 +21,9 @@ import {
   Eye,
   EyeOff,
   Edit,
+  Crown,
+  Sparkles,
+  Gem,
 } from "lucide-react";
 import { FaCamera } from "react-icons/fa";
 import {
@@ -58,12 +61,61 @@ const CustomerProfile = () => {
     department: "",
     workLocation: "",
     certificates: [],
+    priority: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
   const [uploading, setUploading] = useState(false);
+
+  // Function to get membership info based on priority
+  const getMembershipInfo = (priority) => {
+    switch (priority) {
+      case 1:
+        return {
+          name: "Partnership",
+          icon: <Star className="membership-icon" />,
+          color: "#8B5CF6",
+          gradient: "linear-gradient(135deg, #8B5CF6, #A855F7)",
+          badgeClass: "membership-partnership",
+          avatarClass: "avatar-partnership",
+          description: "Partnership Member",
+        };
+      case 2:
+        return {
+          name: "Advanced",
+          icon: <Crown className="membership-icon" />,
+          color: "#06B6D4",
+          gradient: "linear-gradient(135deg, #06B6D4, #0891B2)",
+          badgeClass: "membership-advanced",
+          avatarClass: "avatar-advanced",
+          description: "Advanced Member",
+        };
+      case 3:
+        return {
+          name: "Premium",
+          icon: <Gem className="membership-icon" />,
+          color: "#EC4899",
+          gradient: "linear-gradient(135deg, #EC4899, #DB2777)",
+          badgeClass: "membership-premium",
+          avatarClass: "avatar-premium",
+          description: "Premium Member",
+        };
+      default:
+        return {
+          name: "Free",
+          icon: <CheckCircle className="membership-icon" />,
+          color: "#6B7280",
+          gradient: "linear-gradient(135deg, #6B7280, #9CA3AF)",
+          badgeClass: "membership-free",
+          avatarClass: "avatar-free",
+          description: "Free Member",
+        };
+    }
+  };
+
+  const membershipInfo = getMembershipInfo(userData.priority);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -110,6 +162,7 @@ const CustomerProfile = () => {
           department: response.department || "Add department",
           workLocation: response.workLocation || "Add work location",
           certificates: response.certificates || [],
+          priority: response.priority || 0,
         });
         setLoading(false);
       } catch (err) {
@@ -195,10 +248,16 @@ const CustomerProfile = () => {
 
   if (loading) {
     return (
-      <div className="customer-profile">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p className="loading-text">Loading profile...</p>
+      <div className="notifications-loading">
+        <div className="loading-content">
+          <div className="loading-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring spinner-ring-reverse"></div>
+          </div>
+          <div className="loading-text">
+            <h3>Loading profile...</h3>
+            <p>Please wait while we fetch your profile details</p>
+          </div>
         </div>
       </div>
     );
@@ -219,7 +278,7 @@ const CustomerProfile = () => {
   return (
     <div className="customer-profile">
       {/* Hero Section */}
-      <div className="hero-section">
+      <div className={`hero-section hero-priority-${userData.priority || 0}`}>
         <div className="hero-background">
           <div className="hero-overlay"></div>
           <div className="hero-pattern"></div>
@@ -231,10 +290,22 @@ const CustomerProfile = () => {
         <div className="content-grid">
           {/* Left Sidebar */}
           <div className="sidebar">
-            <div className="profile-card">
+            <div
+              className={`profile-card ${
+                userData.priority === 3
+                  ? "premium-member"
+                  : userData.priority === 2
+                  ? "advanced-member"
+                  : userData.priority === 1
+                  ? "partnership-member"
+                  : ""
+              }`}
+            >
               <div className="profile-content">
                 <div className="profile-header">
-                  <div className="profile-avatar">
+                  <div
+                    className={`profile-avatar ${membershipInfo.avatarClass}`}
+                  >
                     <img
                       src={userData.avatarUrl}
                       alt={`${userData.firstName} ${userData.lastName}`}
@@ -243,12 +314,48 @@ const CustomerProfile = () => {
                       {userData.firstName.charAt(0)}
                       {userData.lastName.charAt(0)}
                     </div>
+                    {/* Membership ring effect */}
+                    {userData.priority > 0 && (
+                      <>
+                        <div className="avatar-ring">
+                          <div className="ring-pulse"></div>
+                          <div className="ring-sparkle"></div>
+                        </div>
+                        <div
+                          className={`avatar-dots avatar-dots-priority-${userData.priority}`}
+                        >
+                          {[...Array(3)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={`avatar-dot avatar-dot-${i}`}
+                            ></span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <h1 className="profile-name">
                     {userData.firstName} {userData.lastName}
                   </h1>
                   <p className="profile-role">Customer</p>
+
+                  {/* Membership Badge */}
+                  <div
+                    className={`membership-badge ${membershipInfo.badgeClass}`}
+                  >
+                    <div className="membership-icon-wrapper">
+                      {membershipInfo.icon}
+                    </div>
+                    <span className="membership-text">
+                      {membershipInfo.name}
+                    </span>
+                    {userData.priority > 0 && (
+                      <div className="membership-sparkles">
+                        <Sparkles className="sparkle-icon" />
+                      </div>
+                    )}
+                  </div>
 
                   <div className="verified-badge">
                     <CheckCircle className="verified-icon" />
@@ -257,13 +364,33 @@ const CustomerProfile = () => {
 
                   {/* Stats */}
                   <div className="stats-grid">
-                    <div className="stat-item stat-projects">
+                    <div
+                      className={`stat-item stat-projects ${
+                        userData.priority === 3
+                          ? "premium-stat"
+                          : userData.priority === 2
+                          ? "advanced-stat"
+                          : userData.priority === 1
+                          ? "partnership-stat"
+                          : ""
+                      }`}
+                    >
                       <div className="stat-value">
                         {userData.certificates.length}
                       </div>
                       <div className="stat-label">Certificates</div>
                     </div>
-                    <div className="stat-item stat-experience">
+                    <div
+                      className={`stat-item stat-experience ${
+                        userData.priority === 3
+                          ? "premium-stat"
+                          : userData.priority === 2
+                          ? "advanced-stat"
+                          : userData.priority === 1
+                          ? "partnership-stat"
+                          : ""
+                      }`}
+                    >
                       <div className="stat-value">
                         {userData.company ? "Yes" : "No"}
                       </div>
@@ -318,7 +445,9 @@ const CustomerProfile = () => {
                 </div>
 
                 <button
-                  className="hire-button mt-4"
+                  className={`hire-button mt-4 btn-priority-${
+                    userData.priority || 0
+                  }`}
                   onClick={handleEditProfile}
                 >
                   <Edit className="hire-button__icon" />
@@ -331,7 +460,17 @@ const CustomerProfile = () => {
           {/* Right Content */}
           <div className="main-sections">
             {/* About Section */}
-            <div className="section-card">
+            <div
+              className={`section-card ${
+                userData.priority === 3
+                  ? "premium-section"
+                  : userData.priority === 2
+                  ? "advanced-section"
+                  : userData.priority === 1
+                  ? "partnership-section"
+                  : ""
+              }`}
+            >
               <div className="section-content">
                 <h2 className="section-title">
                   <div className="title-accent"></div>
@@ -344,7 +483,17 @@ const CustomerProfile = () => {
             </div>
 
             {/* Basic Information */}
-            <div className="section-card">
+            <div
+              className={`section-card ${
+                userData.priority === 3
+                  ? "premium-section"
+                  : userData.priority === 2
+                  ? "advanced-section"
+                  : userData.priority === 1
+                  ? "partnership-section"
+                  : ""
+              }`}
+            >
               <div className="section-content">
                 <h2 className="section-title">
                   <div className="title-accent"></div>
@@ -387,7 +536,17 @@ const CustomerProfile = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="section-card">
+            <div
+              className={`section-card ${
+                userData.priority === 3
+                  ? "premium-section"
+                  : userData.priority === 2
+                  ? "advanced-section"
+                  : userData.priority === 1
+                  ? "partnership-section"
+                  : ""
+              }`}
+            >
               <div className="section-content">
                 <h2 className="section-title">
                   <div className="title-accent"></div>
@@ -398,14 +557,14 @@ const CustomerProfile = () => {
                   <li className="list-item">
                     <div className="list-bullet"></div>
                     <span className="list-text">
-                      <strong>Mailing Address:</strong>{" "}
-                      {userData.mailingAddress}
+                      <strong>Phone Number:</strong> {userData.phoneNumber}
                     </span>
                   </li>
                   <li className="list-item">
                     <div className="list-bullet"></div>
                     <span className="list-text">
-                      <strong>Phone Number:</strong> {userData.phoneNumber}
+                      <strong>Mailing Address:</strong>{" "}
+                      {userData.mailingAddress}
                     </span>
                   </li>
                   <li className="list-item">
@@ -418,13 +577,23 @@ const CustomerProfile = () => {
               </div>
             </div>
 
-            {/* Job Information */}
-            <div className="section-card">
+            {/* Work Information */}
+            <div
+              className={`section-card ${
+                userData.priority === 3
+                  ? "premium-section"
+                  : userData.priority === 2
+                  ? "advanced-section"
+                  : userData.priority === 1
+                  ? "partnership-section"
+                  : ""
+              }`}
+            >
               <div className="section-content">
                 <h2 className="section-title">
                   <div className="title-accent"></div>
                   <Briefcase className="section-icon" />
-                  Job Information
+                  Work Information
                 </h2>
                 <ul className="list">
                   <li className="list-item">
@@ -455,287 +624,153 @@ const CustomerProfile = () => {
               </div>
             </div>
 
-            {/* Certificates */}
-            <div className="section-card">
-              <div className="section-content">
-                <h2 className="section-title">
-                  <div className="title-accent"></div>
-                  <Award className="section-icon" />
-                  Certificates
-                </h2>
-                {userData.certificates.length > 0 ? (
-                  <ul className="list">
+            {/* Certificates Section */}
+            {userData.certificates && userData.certificates.length > 0 && (
+              <div
+                className={`section-card ${
+                  userData.priority === 3
+                    ? "premium-section"
+                    : userData.priority === 2
+                    ? "advanced-section"
+                    : userData.priority === 1
+                    ? "partnership-section"
+                    : ""
+                }`}
+              >
+                <div className="section-content">
+                  <h2 className="section-title">
+                    <div className="title-accent"></div>
+                    <GraduationCap className="section-icon" />
+                    Certificates
+                  </h2>
+                  <div className="certificates-grid">
                     {userData.certificates.map((cert, index) => (
-                      <li key={index} className="list-item">
-                        <CheckCircle className="list-icon" />
-                        <span className="list-text">
-                          <strong>{cert.name}:</strong> {cert.description}
-                        </span>
-                      </li>
+                      <div key={index} className="certificate-item">
+                        <div className="certificate-icon">
+                          <BookOpen className="cert-icon" />
+                        </div>
+                        <div className="certificate-content">
+                          <h4 className="certificate-title">{cert.name}</h4>
+                          <p className="certificate-issuer">{cert.issuer}</p>
+                          <p className="certificate-date">{cert.date}</p>
+                        </div>
+                      </div>
                     ))}
-                  </ul>
-                ) : (
-                  <p className="section-text">No certificates added</p>
-                )}
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="section-card">
-              <div className="section-content">
-                <h2 className="section-title">
-                  <div className="title-accent"></div>
-                  <BookOpen className="section-icon" />
-                  Additional Information
-                </h2>
-                <ul className="list">
-                  <li className="list-item">
-                    <div className="list-bullet"></div>
-                    <span className="list-text">
-                      <strong>Other Name/Nickname:</strong> {userData.otherName}
-                    </span>
-                  </li>
-                  <li className="list-item">
-                    <div className="list-bullet"></div>
-                    <span className="list-text">
-                      <strong>Address:</strong> {userData.address}
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Modal for editing profile */}
+      {/* Edit Profile Modal */}
       {showModal && (
-        <div className="modal-backdrop" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Edit Profile</h3>
-              <button className="modal-close" onClick={handleCloseModal}>
+        <div className="wallet-modal-overlay" onClick={handleCloseModal}>
+          <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="wallet-modal__header">
+              <h3 className="wallet-modal__title">
+                <Edit style={{ marginRight: 8 }} /> Edit Profile
+              </h3>
+              <button
+                className="wallet-modal__close"
+                onClick={handleCloseModal}
+              >
                 ×
               </button>
             </div>
-            <div className="modal-body">
-              {editData && (
-                <div className="edit-form">
-                  <div className="avatar-section modal-avatar">
-                    <div className="avatar-wrapper">
-                      <img src={editData.avatarUrl} alt="Avatar" />
-                      <label htmlFor="avatarInput" className="avatar-overlay">
-                        <FaCamera className="camera-icon" />
-                        <span>
-                          {uploading ? "Uploading..." : "Update Photo"}
-                        </span>
-                      </label>
-                      <input
-                        type="file"
-                        id="avatarInput"
-                        accept="image/*"
-                        hidden
-                        onChange={handleImageChange}
-                        disabled={uploading}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="name-section">
-                    <div className="input-group">
-                      <label htmlFor="firstName">First Name</label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        value={editData.firstName}
-                        onChange={handleInputChange}
-                        placeholder="Your first name"
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label htmlFor="lastName">Last Name</label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        value={editData.lastName}
-                        onChange={handleInputChange}
-                        placeholder="Your last name"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="email">Email</label>
-                    <div className="input-with-icon">
-                      <input
-                        type="email"
-                        id="email"
-                        value={editData.email}
-                        onChange={handleInputChange}
-                        placeholder="email@example.com"
-                        disabled
-                      />
-                      <div className="icon-wrapper verified">
-                        <Check size={18} />
-                        <span>Verified</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="studentId">Student ID</label>
-                    <input
-                      type="text"
-                      id="studentId"
-                      value={editData.studentId}
-                      onChange={handleInputChange}
-                      placeholder="Enter student ID"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="password">Password</label>
-                    <div className="input-with-icon">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        value={editData.password}
-                        onChange={handleInputChange}
-                        placeholder="••••••••"
-                      />
-                      <div
-                        className="icon-wrapper clickable"
-                        onClick={togglePasswordVisibility}
-                      >
-                        {showPassword ? (
-                          <EyeOff size={18} />
-                        ) : (
-                          <Eye size={18} />
-                        )}
-                        <span>{showPassword ? "Hide" : "Show"}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="otherName">Other Name/Nickname</label>
-                    <input
-                      type="text"
-                      id="otherName"
-                      value={editData.otherName}
-                      onChange={handleInputChange}
-                      placeholder="Enter other name/nickname"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="company">Company</label>
-                    <input
-                      type="text"
-                      id="company"
-                      value={editData.company}
-                      onChange={handleInputChange}
-                      placeholder="Enter company"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="workLocation">Work Location</label>
-                    <input
-                      type="text"
-                      id="workLocation"
-                      value={editData.workLocation}
-                      onChange={handleInputChange}
-                      placeholder="Enter work location"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="mailingAddress">Mailing Address</label>
-                    <input
-                      type="text"
-                      id="mailingAddress"
-                      value={editData.mailingAddress}
-                      onChange={handleInputChange}
-                      placeholder="Enter mailing address"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="phoneNumber">Phone Number</label>
-                    <input
-                      type="text"
-                      id="phoneNumber"
-                      value={editData.phoneNumber}
-                      onChange={handleInputChange}
-                      placeholder="Enter phone number"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="businessFax">Business Fax Number</label>
-                    <input
-                      type="text"
-                      id="businessFax"
-                      value={editData.businessFax}
-                      onChange={handleInputChange}
-                      placeholder="Enter business fax number"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="jobTitle">Job Title</label>
-                    <input
-                      type="text"
-                      id="jobTitle"
-                      value={editData.jobTitle}
-                      onChange={handleInputChange}
-                      placeholder="Enter job title"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="department">Department</label>
-                    <input
-                      type="text"
-                      id="department"
-                      value={editData.department}
-                      onChange={handleInputChange}
-                      placeholder="Enter department"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="address">Address</label>
-                    <input
-                      type="text"
-                      id="address"
-                      value={editData.address}
-                      onChange={handleInputChange}
-                      placeholder="Your address"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label htmlFor="bio">Bio</label>
-                    <textarea
-                      id="bio"
-                      value={editData.bio}
-                      onChange={handleInputChange}
-                      placeholder="Tell us about yourself..."
-                      rows="4"
-                    />
-                  </div>
+            <div className="wallet-modal__content">
+              <form className="wallet-form">
+                <div className="wallet-form__group">
+                  <label htmlFor="firstName" className="wallet-form__label">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={editData?.firstName || ""}
+                    onChange={handleInputChange}
+                    className="wallet-form__input"
+                  />
                 </div>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button className="btn-secondary" onClick={handleCloseModal}>
-                Cancel
-              </button>
-              <button className="btn-primary" onClick={handleSaveProfile}>
-                Save Changes
-              </button>
+                <div className="wallet-form__group">
+                  <label htmlFor="lastName" className="wallet-form__label">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={editData?.lastName || ""}
+                    onChange={handleInputChange}
+                    className="wallet-form__input"
+                  />
+                </div>
+                <div className="wallet-form__group">
+                  <label htmlFor="email" className="wallet-form__label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={editData?.email || ""}
+                    readOnly
+                    className="wallet-form__input"
+                  />
+                </div>
+                <div className="wallet-form__group">
+                  <label htmlFor="phoneNumber" className="wallet-form__label">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    value={editData?.phoneNumber || ""}
+                    onChange={handleInputChange}
+                    className="wallet-form__input"
+                  />
+                </div>
+                <div className="wallet-form__group">
+                  <label htmlFor="bio" className="wallet-form__label">
+                    Bio
+                  </label>
+                  <textarea
+                    id="bio"
+                    value={editData?.bio || ""}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className="wallet-form__input"
+                  />
+                </div>
+                <div className="wallet-form__group">
+                  <label htmlFor="avatarUrl" className="wallet-form__label">
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    disabled={uploading}
+                    className="wallet-form__input"
+                  />
+                  {uploading && <p>Uploading...</p>}
+                </div>
+                <div className="wallet-form__actions">
+                  <button
+                    type="button"
+                    className="wallet-btn wallet-btn--secondary"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="wallet-btn wallet-btn--primary"
+                    onClick={handleSaveProfile}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

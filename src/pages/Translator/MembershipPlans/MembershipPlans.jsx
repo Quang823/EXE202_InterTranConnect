@@ -27,45 +27,47 @@ const MembershipPlans = () => {
   const navigate = useNavigate();
   const { user, login, token, refreshToken } = useAuth();
 
+  // Function to fetch plans and current subscription
+  const fetchPlansAndCurrent = async () => {
+    try {
+      setLoading(true);
+      const [plansResponse, currentSub] = await Promise.all([
+        getSubPlans(),
+        getCurrentSubPlans(),
+      ]);
+      const mappedPlans = Array.isArray(plansResponse)
+        ? plansResponse.map((plan) => ({
+            id: plan.id || plan._id || `plan-${Math.random()}`,
+            name: plan.name || "Unnamed Plan",
+            subtitle: plan.subtitle || "No subtitle",
+            price: plan.price
+              ? `${plan.price.toLocaleString("vi-VN")} VNĐ`
+              : "Contact Sales",
+            priceSubtext: plan.priceSubtext || "Pricing details",
+            popular: plan.popular || false,
+            current: false, // sẽ set lại bên dưới
+            features: plan.description
+              ? plan.description.split(". ").filter(Boolean)
+              : ["No features available"],
+          }))
+        : [];
+      let currentName = null;
+      if (currentSub && currentSub.planName) {
+        currentName = currentSub.planName;
+      }
+      setCurrentPlanName(currentName);
+      setCurrentSub(currentSub);
+      setPlans(mappedPlans);
+    } catch (error) {
+      setError("Failed to load subscription plans. Please try again later.");
+      setPlans([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch plans from API when component mounts
   useEffect(() => {
-    const fetchPlansAndCurrent = async () => {
-      try {
-        setLoading(true);
-        const [plansResponse, currentSub] = await Promise.all([
-          getSubPlans(),
-          getCurrentSubPlans(),
-        ]);
-        const mappedPlans = Array.isArray(plansResponse)
-          ? plansResponse.map((plan) => ({
-              id: plan.id || plan._id || `plan-${Math.random()}`,
-              name: plan.name || "Unnamed Plan",
-              subtitle: plan.subtitle || "No subtitle",
-              price: plan.price
-                ? `${plan.price.toLocaleString("vi-VN")} VNĐ`
-                : "Contact Sales",
-              priceSubtext: plan.priceSubtext || "Pricing details",
-              popular: plan.popular || false,
-              current: false, // sẽ set lại bên dưới
-              features: plan.description
-                ? plan.description.split(". ").filter(Boolean)
-                : ["No features available"],
-            }))
-          : [];
-        let currentName = null;
-        if (currentSub && currentSub.planName) {
-          currentName = currentSub.planName;
-        }
-        setCurrentPlanName(currentName);
-        setCurrentSub(currentSub);
-        setPlans(mappedPlans);
-      } catch (error) {
-        setError("Failed to load subscription plans. Please try again later.");
-        setPlans([]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPlansAndCurrent();
   }, []);
 
@@ -107,7 +109,8 @@ const MembershipPlans = () => {
               refreshToken,
               latestUser.priority
             );
-            if (latestUser.planName) setCurrentPlanName(latestUser.planName);
+            // Reload the component to get updated subscription data
+            await fetchPlansAndCurrent();
           } catch (e) {
             // Có thể log hoặc toast lỗi nếu cần
           }
@@ -159,8 +162,8 @@ const MembershipPlans = () => {
   // Render error state
   if (error) {
     return (
-      <div className="membership-plans-translator">
-        <div className="membership-plans-translator__container">
+      <div className="membership-plans">
+        <div className="membership-plans__container">
           <p style={{ color: "red" }}>{error}</p>
           <Button onClick={() => window.location.reload()}>Retry</Button>
         </div>
@@ -170,26 +173,24 @@ const MembershipPlans = () => {
 
   // Render main content
   return (
-    <div className="membership-plans-translator">
+    <div className="membership-plans">
       {/* Main Content Section */}
-      <div className="membership-plans-translator__container">
+      <div className="membership-plans__container">
         {/* Title Section */}
-        <div className="membership-plans-translator__title-section">
-          <div className="membership-plans-translator__badge">
-            <Award className="membership-plans-translator__badge-icon" />
+        <div className="membership-plans__title-section">
+          <div className="membership-plans__badge">
+            <Award className="membership-plans__badge-icon" />
             <span>Choose Your Plan</span>
           </div>
-          <h1 className="membership-plans-translator__title">
-            Membership Plans
-          </h1>
-          <p className="membership-plans-translator__subtitle">
+          <h1 className="membership-plans__title">Membership Plans</h1>
+          <p className="membership-plans__subtitle">
             Select a plan that suits your needs and unlock your business
             potential
           </p>
         </div>
 
         {/* Plans Grid */}
-        <div className="membership-plans-translator__grid">
+        <div className="membership-plans__grid">
           {Array.isArray(plans) && plans.length > 0 ? (
             plans.map((plan, index) => (
               <PlanCard
@@ -207,7 +208,7 @@ const MembershipPlans = () => {
               />
             ))
           ) : (
-            <div className="membership-plans-translator__container">
+            <div className="membership-plans__container">
               <p>No plans available at the moment.</p>
             </div>
           )}

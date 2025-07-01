@@ -11,6 +11,8 @@ import {
 import {
   fetchUserWallet,
   fetchWalletTransactions,
+  createWithdrawalRequestService,
+  getMyWithdrawalRequestsService,
 } from "../../../services/walletService";
 import { createDepositDetail } from "../../../services/paymentService";
 import {
@@ -42,6 +44,12 @@ const WalletClient = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const pageSize = 5;
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [withdrawNote, setWithdrawNote] = useState("");
+  const [withdrawError, setWithdrawError] = useState(null);
+  const [activeTab, setActiveTab] = useState("transaction");
+  const [withdrawHistory, setWithdrawHistory] = useState([]);
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const accountId = user?.id;
@@ -188,19 +196,72 @@ const WalletClient = () => {
       .join(" ");
   };
 
+  const fetchWithdrawHistory = async () => {
+    try {
+      const data = await getMyWithdrawalRequestsService();
+      setWithdrawHistory(data || []);
+    } catch (err) {
+      setWithdrawHistory([]);
+    }
+  };
+
+  const openWithdrawModal = () => setIsWithdrawModalOpen(true);
+  const closeWithdrawModal = () => {
+    setIsWithdrawModalOpen(false);
+    setWithdrawAmount("");
+    setWithdrawNote("");
+    setWithdrawError(null);
+  };
+
+  const handleWithdraw = async (e) => {
+    e.preventDefault();
+    setWithdrawError(null);
+    const amount = parseFloat(withdrawAmount);
+    if (!withdrawAmount || isNaN(amount) || amount <= 0) {
+      setWithdrawError("Amount must be a valid positive number!");
+      return;
+    }
+    try {
+      await createWithdrawalRequestService({ amount, note: withdrawNote });
+      ToastManager.showSuccess(
+        "Withdrawal request submitted! Please wait for approval. You will receive an notification when your request is approved."
+      );
+      closeWithdrawModal();
+      if (activeTab === "withdraw") fetchWithdrawHistory();
+    } catch (err) {
+      if (
+        err.response &&
+        err.response.status === 400 &&
+        err.response.data?.message === "Insufficient balance"
+      ) {
+        ToastManager.showInfo("Insufficient balance");
+      } else if (
+        err.response &&
+        err.response.status === 400 &&
+        err.response.data?.message
+          ?.toLowerCase()
+          .includes("update your bank account")
+      ) {
+        ToastManager.showInfo(
+          "Please update your bank account before withdrawing!"
+        );
+      } else {
+        setWithdrawError(err.message || "Failed to submit withdrawal request");
+      }
+    }
+  };
+
   if (loading) {
     return (
-      <div className="container-fluid">
-        <div className="row justify-content-center">
-          <div className="col-md-10">
-            <div className="post-history-detail-container">
-              <div className="post-history-detail-loading">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-                <p>Loading job details...</p>
-              </div>
-            </div>
+      <div className="notifications-loading">
+        <div className="loading-content">
+          <div className="loading-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring spinner-ring-reverse"></div>
+          </div>
+          <div className="loading-text">
+            <h3>Loading wallet...</h3>
+            <p>Please wait while we fetch your wallet details</p>
           </div>
         </div>
       </div>
@@ -314,8 +375,10 @@ const WalletClient = () => {
                   <ArrowDown className="w-4 h-4" />
                   Deposit
                 </button>
-
-                <button className="wallet-action-btn wallet-action-btn--withdraw">
+                <button
+                  className="wallet-action-btn wallet-action-btn--withdraw"
+                  onClick={openWithdrawModal}
+                >
                   <ArrowUp className="w-4 h-4" />
                   Withdraw
                 </button>
@@ -545,87 +608,239 @@ const WalletClient = () => {
           </div>
         )}
 
-        <div className="wallet-transactions">
-          <div className="wallet-transactions__header">
-            <h3 className="wallet-transactions__title">Transaction History</h3>
-            <button className="wallet-report-btn">
-              <FileText className="w-4 h-4" />
-              View Report
-            </button>
-          </div>
-          <div className="wallet-transactions__content">
-            <div className="wallet-table-container">
-              <table className="wallet-table">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Balance</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map((transaction, index) => (
-                    <tr
-                      key={index}
-                      className={`wallet-transaction-row wallet-transaction-row--${transaction.transactionStatus?.toLowerCase()}`}
+        {/* Modal Withdraw */}
+        {isWithdrawModalOpen && (
+          <div className="wallet-modal-overlay" onClick={closeWithdrawModal}>
+            <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="wallet-modal__header">
+                <h3 className="wallet-modal__title">
+                  <ArrowUp className="w-5 h-5" />
+                  Withdraw Money
+                </h3>
+                <button
+                  className="wallet-modal__close"
+                  onClick={closeWithdrawModal}
+                >
+                  ×
+                </button>
+              </div>
+              <div className="wallet-modal__content">
+                {withdrawError && (
+                  <div className="wallet-modal__error">{withdrawError}</div>
+                )}
+                <form onSubmit={handleWithdraw} className="wallet-form">
+                  <div className="wallet-form__group">
+                    <label
+                      htmlFor="withdraw-amount"
+                      className="wallet-form__label"
                     >
-                      <td
-                        className={`wallet-transaction__type wallet-transaction__type--${transaction.transactionType?.toLowerCase()}`}
-                      >
-                        {toTitleCase(transaction.transactionType)}
-                      </td>
-                      <td className="wallet-transaction__amount">
-                        {transaction.amount?.toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }) || "0 VND"}
-                      </td>
-                      <td className="wallet-transaction__balance">
-                        {transaction.transactionBalance?.toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
-                          }
-                        ) || "0 VND"}
-                      </td>
-                      <td className="wallet-transaction__date">
-                        {transaction.transactionDate || "N/A"}
-                      </td>
-                      <td className="wallet-transaction__status">
-                        <span
-                          className={`wallet-status-badge wallet-status-badge--${transaction.transactionStatus?.toLowerCase()}`}
-                        >
-                          <span className="wallet-status-indicator"></span>
-                          {toTitleCase(transaction.transactionStatus) || "N/A"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                breakLabel={null}
-                pageCount={pageCount}
-                marginPagesDisplayed={0}
-                pageRangeDisplayed={0}
-                onPageChange={handlePageChange}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-                previousClassName={"page-item"}
-                previousLinkClassName={"page-link"}
-                nextClassName={"page-item"}
-                nextLinkClassName={"page-link"}
-                disabledClassName={"disabled"}
-                forcePage={currentPage > pageCount ? 0 : currentPage - 1}
-              />
+                      Amount (VND)
+                    </label>
+                    <input
+                      type="number"
+                      id="withdraw-amount"
+                      value={withdrawAmount}
+                      onChange={(e) => setWithdrawAmount(e.target.value)}
+                      placeholder="Enter amount"
+                      className="wallet-form__input"
+                      required
+                      min="1"
+                      step="1"
+                    />
+                  </div>
+                  <div className="wallet-form__group">
+                    <label
+                      htmlFor="withdraw-note"
+                      className="wallet-form__label"
+                    >
+                      Note (optional)
+                    </label>
+                    <input
+                      type="text"
+                      id="withdraw-note"
+                      value={withdrawNote}
+                      onChange={(e) => setWithdrawNote(e.target.value)}
+                      placeholder="Enter note"
+                      className="wallet-form__input"
+                    />
+                  </div>
+                  <div className="wallet-form__actions">
+                    <button
+                      type="button"
+                      className="wallet-btn wallet-btn--secondary"
+                      onClick={closeWithdrawModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="wallet-btn wallet-btn--primary"
+                    >
+                      Submit Withdraw
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
+        )}
+
+        {/* Tabs for Transaction/Withdraw History */}
+        <div className="wallet-tabs">
+          <button
+            className={`wallet-tab${
+              activeTab === "transaction" ? " active" : ""
+            }`}
+            onClick={() => setActiveTab("transaction")}
+          >
+            Transaction History
+          </button>
+          <button
+            className={`wallet-tab${activeTab === "withdraw" ? " active" : ""}`}
+            onClick={() => {
+              setActiveTab("withdraw");
+              fetchWithdrawHistory();
+            }}
+          >
+            Withdraw History
+          </button>
         </div>
+
+        {/* Transaction Table */}
+        {activeTab === "transaction" && (
+          <div className="wallet-transactions">
+            <div className="wallet-transactions__header">
+              <h3 className="wallet-transactions__title">
+                Transaction History
+              </h3>
+              <button className="wallet-report-btn">
+                <FileText className="w-4 h-4" />
+                View Report
+              </button>
+            </div>
+            <div className="wallet-transactions__content">
+              <div className="wallet-table-container">
+                <table className="wallet-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Amount</th>
+                      <th>Balance</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactions.map((transaction, index) => (
+                      <tr
+                        key={index}
+                        className={`wallet-transaction-row wallet-transaction-row--${transaction.transactionStatus?.toLowerCase()}`}
+                      >
+                        <td
+                          className={`wallet-transaction__type wallet-transaction__type--${transaction.transactionType?.toLowerCase()}`}
+                        >
+                          {toTitleCase(transaction.transactionType)}
+                        </td>
+                        <td className="wallet-transaction__amount">
+                          {transaction.amount?.toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }) || "0 VND"}
+                        </td>
+                        <td className="wallet-transaction__balance">
+                          {transaction.transactionBalance?.toLocaleString(
+                            "vi-VN",
+                            {
+                              style: "currency",
+                              currency: "VND",
+                            }
+                          ) || "0 VND"}
+                        </td>
+                        <td className="wallet-transaction__date">
+                          {transaction.transactionDate || "N/A"}
+                        </td>
+                        <td className="wallet-transaction__status">
+                          <span
+                            className={`wallet-status-badge wallet-status-badge--${transaction.transactionStatus?.toLowerCase()}`}
+                          >
+                            <span className="wallet-status-indicator"></span>
+                            {toTitleCase(transaction.transactionStatus) ||
+                              "N/A"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={null}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={0}
+                  pageRangeDisplayed={0}
+                  onPageChange={handlePageChange}
+                  containerClassName={"pagination"}
+                  activeClassName={"active"}
+                  previousClassName={"page-item"}
+                  previousLinkClassName={"page-link"}
+                  nextClassName={"page-item"}
+                  nextLinkClassName={"page-link"}
+                  disabledClassName={"disabled"}
+                  forcePage={currentPage > pageCount ? 0 : currentPage - 1}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Withdraw History Table */}
+        {activeTab === "withdraw" && (
+          <div className="wallet-transactions">
+            <div className="wallet-transactions__header">
+              <h3 className="wallet-transactions__title">Withdraw History</h3>
+            </div>
+            <div className="wallet-transactions__content">
+              <div className="wallet-table-container">
+                <table className="wallet-table">
+                  <thead>
+                    <tr>
+                      <th>Amount</th>
+                      <th>Note</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {withdrawHistory.length === 0 ? (
+                      <tr>
+                        <td colSpan="4">No withdraw history</td>
+                      </tr>
+                    ) : (
+                      withdrawHistory.map((item, idx) => (
+                        <tr key={idx}>
+                          <td>
+                            {item.amount?.toLocaleString("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
+                          </td>
+                          <td>{item.note || "-"}</td>
+                          <td>{item.status || "-"}</td>
+                          <td>
+                            {item.createdAt
+                              ? new Date(item.createdAt).toLocaleString()
+                              : "-"}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

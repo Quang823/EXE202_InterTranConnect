@@ -44,6 +44,11 @@ const SelectRole = () => {
 
   return (
     <div className={`upwork-role-container ${darkMode ? "dark-mode" : ""}`}>
+      <div className="upwork-background">
+        <div className="upwork-background__orb upwork-background__orb--1"></div>
+        <div className="upwork-background__orb upwork-background__orb--2"></div>
+        <div className="upwork-background__orb upwork-background__orb--3"></div>
+      </div>
       <div className="dark-mode-toggle" onClick={toggleDarkMode}>
         {darkMode ? <MdLightMode size={30} /> : <MdDarkMode size={30} />}
       </div>

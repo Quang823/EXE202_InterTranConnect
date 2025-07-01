@@ -1,5 +1,6 @@
 :root {
   --primary-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  --secondary-gradient: linear-gradient(135deg, #112764 0%, #0847ac 100%);
   --primary-dark: #1e3a8a;
   --primary-light: #3b82f6;
   --text-dark: #1a1a1a;
@@ -34,6 +35,60 @@
   transition: transform 0.3s ease;
   &:hover {
     transform: scale(1.2) rotate(15deg);
+  }
+}
+.upwork-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.upwork-background__orb {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(188, 214, 255, 0.1); /* Subtle blue opacity */
+  backdrop-filter: blur(10px);
+  animation: upworkFloat 20s ease-in-out infinite;
+}
+
+.upwork-background__orb--1 {
+  width: 300px;
+  height: 300px;
+  top: 13%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.upwork-background__orb--2 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  right: 10%;
+  animation-delay: -7s;
+}
+
+.upwork-background__orb--3 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 20%;
+  animation-delay: -14s;
+}
+
+@keyframes upworkFloat {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-30px) rotate(5deg);
+  }
+  66% {
+    transform: translateY(15px) rotate(-3deg);
   }
 }
 
@@ -121,6 +176,7 @@
       color: var(--text-light);
     }
   }
+  z-index: 1;
 }
 
 .dark-mode .upwork-role-card {
@@ -131,6 +187,7 @@
   &.selected {
     background: var(--primary-gradient);
   }
+  z-index: 1;
 }
 
 .upwork-role-input {
@@ -178,7 +235,9 @@
     cursor: not-allowed;
   }
 }
-
+.dark-mode .upwork-role-continue-btn {
+  background: var(--secondary-gradient);
+}
 @keyframes fadeInDown {
   0% {
     opacity: 0;
