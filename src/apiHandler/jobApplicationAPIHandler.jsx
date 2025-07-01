@@ -3,9 +3,7 @@ import apiClient from "../services/axiosConfig";
 const rootJobApplication = "/JobApplication";
 
 export const getJobApplication = async (jobId) => {
-  const response = await apiClient.get(
-    `${rootJobApplication}/${jobId}/applications`
-  );
+  const response = await apiClient.get(`${rootJobApplication}/job/${jobId}`);
   return response.data;
 };
 
