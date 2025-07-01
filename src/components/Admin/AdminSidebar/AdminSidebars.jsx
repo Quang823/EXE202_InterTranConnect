@@ -132,7 +132,7 @@ export default function AdminSidebars({ children, currentPageName }) {
 
       <div className="ap-sidebar-footer">
         <div className="ap-footer-content">
-          <div className="ap-avatar-container">
+          <div className="ap-avatar-container1">
             <span className="ap-avatar-text">{getAvatarText()}</span>
           </div>
           <div className="ap-user-info">

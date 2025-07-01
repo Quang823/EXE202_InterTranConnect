@@ -384,10 +384,9 @@ $border-radius-xs: 8px;
   }
   
   .stat-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: $text-primary;
+    font-size: 15px;
+    color: #6b7280;
+    font-weight: 600;
   }
   
   .stat-description {
@@ -1069,4 +1068,12 @@ $border-radius-xs: 8px;
       display: none;
     }
   }
+}
+
+.stat-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 12px;
+  line-height: 1.2;
 }

@@ -1,22 +1,11 @@
-import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const rootSubPlan = `${API_URL}/api/SubPlan`;
-const rootSubscription = `${API_URL}/api/Subscription`;
-
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    Authorization: token ? `Bearer ${token}` : "",
-    Accept: "*/*",
-  };
-};
+const rootSubPlan = '/SubPlan';
+const rootSubscription = '/Subscription';
 
 export const getSubPlans = async () => {
   try {
-    const response = await axios.get(rootSubPlan, {
-      headers: getAuthHeaders(),
-    });
+    const response = await apiClient.get(rootSubPlan);
     return response.data;
   } catch (error) {
     throw error;
@@ -25,13 +14,7 @@ export const getSubPlans = async () => {
 
 export const subscribeToPlan = async (subscriptionPlanId) => {
   try {
-    const response = await axios.post(
-      `${rootSubscription}/subscribe`,
-      { subscriptionPlanId },
-      {
-        headers: getAuthHeaders(),
-      }
-    );
+    const response = await apiClient.post(`${rootSubscription}/subscribe`, { subscriptionPlanId });
     return response.data;
   } catch (error) {
     throw error;
@@ -40,9 +23,7 @@ export const subscribeToPlan = async (subscriptionPlanId) => {
 
 export const getCurrentSubPlans = async () => {
   try {
-    const response = await axios.get(`${rootSubscription}/current`, {
-      headers: getAuthHeaders(),
-    });
+    const response = await apiClient.get(`${rootSubscription}/current`);
     return response.data;
   } catch (error) {
     throw error;

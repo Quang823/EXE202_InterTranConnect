@@ -1,22 +1,10 @@
-import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const rootTrans = `${API_URL}/api/TranslatorCertificate`;
-
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    Authorization: token ? `Bearer ${token}` : "",
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  };
-};
+const rootTrans = '/TranslatorCertificate';
 
 export const getTranslatorCertificates = async (userId) => {
   try {
-    const response = await axios.get(`${rootTrans}/user/${userId}`, {
-      headers: getAuthHeaders(),
-    });
+    const response = await apiClient.get(`${rootTrans}/user/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -25,13 +13,7 @@ export const getTranslatorCertificates = async (userId) => {
 
 export const updateTranslatorCertificate = async (userId, certificateData) => {
   try {
-    const response = await axios.post(
-      `${rootTrans}/user/${userId}`,
-      certificateData,
-      {
-        headers: getAuthHeaders(),
-      }
-    );
+    const response = await apiClient.post(`${rootTrans}/user/${userId}`, certificateData);
     return response.data;
   } catch (error) {
     throw error;

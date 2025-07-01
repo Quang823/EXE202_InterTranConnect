@@ -1,44 +1,25 @@
-import axios from "axios";
+import apiClient from '../services/axiosConfig';
 
-const API_URL = import.meta.env.VITE_API_URL;
-const rootPayment = `${API_URL}/api/payments`;
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("accessToken");
-  return {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
-  };
-};
+const rootPayment = '/payments';
 
 export const createPayment = async ({ orderId, price }) => {
-  const response = await axios.post(
-    `${rootPayment}/createPayment`,
-    {
-      orderId,
-      price,
-    },
-    { headers: getAuthHeaders() }
-  );
+  const response = await apiClient.post(`${rootPayment}/createPayment`, {
+    orderId,
+    price,
+  });
   return response.data;
 };
 
 export const createDeposit = async ({ accountId, price }) => {
-  const response = await axios.post(
-    `${rootPayment}/createDeposit`,
-    {
-      accountId,
-      price,
-    },
-    { headers: getAuthHeaders() }
-  );
+  const response = await apiClient.post(`${rootPayment}/createDeposit`, {
+    accountId,
+    price,
+  });
   return response.data;
 };
 
 export const getPaymentInfobyOrdercode = async (orderCode) => {
-  const response = await axios.get(`${rootPayment}/${orderCode}`, {
-    headers: getAuthHeaders(),
-  });
+  const response = await apiClient.get(`${rootPayment}/${orderCode}`);
   return response.data;
 };
 
@@ -49,16 +30,12 @@ export const payInterpreter = async ({
   interpreterId,
 }) => {
   try {
-    const response = await axios.post(
-      `${rootPayment}/pay-interpreter`,
-      {
-        jobId,
-        customerId,
-        amount,
-        interpreterId,
-      },
-      { headers: getAuthHeaders() }
-    );
+    const response = await apiClient.post(`${rootPayment}/pay-interpreter`, {
+      jobId,
+      customerId,
+      amount,
+      interpreterId,
+    });
     return response.data;
   } catch (error) {
     console.error("API error paying interpreter:", {
