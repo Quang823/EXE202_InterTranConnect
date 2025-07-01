@@ -127,11 +127,15 @@
 }
 
 .home-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 700;
   text-transform: uppercase;
-  font-weight: 900;
+  background: var(--header-background);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-shift 3s ease-in-out infinite;
+  letter-spacing: 0.5px;
 }
 
 .register-container {

@@ -441,14 +441,14 @@
 
 /* Stat Value */
 .wallet-stat__value {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #1e40af;
 }
 
 /* Empty Stat Value */
 .wallet-stat__value--empty {
-  color: #9ca3af;
+  color: #4f5155;
   font-style: italic;
 }
 
@@ -641,12 +641,14 @@
 }
 
 .wallet-modal {
-  background: #ffffff; /* White */
+  background: #ffffff;
   border-radius: 1rem;
   width: 90%;
   max-width: 500px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
   animation: modalSlideIn 0.3s ease-out;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 @keyframes modalSlideIn {
@@ -1160,4 +1162,37 @@
       }
     }
   }
+}
+
+.wallet-tabs {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0 1.5rem 0;
+  justify-content: flex-start;
+}
+
+.wallet-tab {
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem 0.75rem 0 0;
+  background: #e6f0fa;
+  color: #1e40af;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.05);
+}
+
+.wallet-tab.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+  z-index: 2;
+}
+
+.wallet-tab:not(.active):hover {
+  background: #bfdbfe;
+  color: #1e40af;
 }

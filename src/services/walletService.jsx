@@ -3,6 +3,9 @@ import {
   depositWallet,
   purchaseWallet,
   getWalletTransactions,
+  createWithdrawalRequest,
+  confirmWithdrawalReceived,
+  getMyWithdrawalRequests,
 } from "../apiHandler/walletAPIHandler";
 
 export const fetchUserWallet = async (accountId) => {
@@ -92,6 +95,37 @@ export const fetchWalletTransactions = async (
       "Error fetching wallet transactions:",
       error.response?.data || error.message
     );
+    throw error;
+  }
+};
+
+export const createWithdrawalRequestService = async (data) => {
+  try {
+    if (!data || typeof data.amount !== "number") {
+      throw new Error("amount is required");
+    }
+    return await createWithdrawalRequest(data);
+  } catch (error) {
+    console.error("Error creating withdrawal request:", error);
+    throw error;
+  }
+};
+
+export const confirmWithdrawalReceivedService = async (id) => {
+  try {
+    if (!id) throw new Error("id is required");
+    return await confirmWithdrawalReceived(id);
+  } catch (error) {
+    console.error("Error confirming withdrawal received:", error);
+    throw error;
+  }
+};
+
+export const getMyWithdrawalRequestsService = async () => {
+  try {
+    return await getMyWithdrawalRequests();
+  } catch (error) {
+    console.error("Error fetching my withdrawal requests:", error);
     throw error;
   }
 };

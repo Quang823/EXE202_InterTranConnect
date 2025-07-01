@@ -468,6 +468,7 @@ const AddCertificatePage = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

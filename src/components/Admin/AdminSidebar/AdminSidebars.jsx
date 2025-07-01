@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  Users, 
-  UserCheck, 
+import {
+  LayoutDashboard,
+  Users,
+  UserCheck,
   Shield,
   LogOut,
-  LogIn
+  LogIn,
 } from "lucide-react";
-import Sidebar from 'react-sidebar';
-import { Badge } from 'react-bootstrap';
-import { getUserByUserId } from '../../../apiHandler/authAPIHandler';
-import './AdminSidebars.scss';
+import Sidebar from "react-sidebar";
+import { Badge } from "react-bootstrap";
+import { getUserByUserId } from "../../../apiHandler/authAPIHandler";
+import "./AdminSidebars.scss";
 
 const navigationItems = [
   {
@@ -37,6 +37,11 @@ const navigationItems = [
   {
     title: "Quản trị đăng ký",
     url: "/admin/subscription",
+    icon: UserCheck,
+  },
+  {
+    title: "Quản lý khiếu nại",
+    url: "/admin/complaint",
     icon: UserCheck,
   },
 ];
@@ -76,10 +81,10 @@ export default function AdminSidebars({ children, currentPageName }) {
 
   const getRoleText = () => {
     if (user && user.role) {
-      if (user.role === 'admin') return 'Quản trị viên hệ thống';
+      if (user.role === "admin") return "Quản trị viên hệ thống";
       return user.role;
     }
-    return 'Quản trị viên hệ thống';
+    return "Quản trị viên hệ thống";
   };
 
   const sidebarContent = (
@@ -95,20 +100,26 @@ export default function AdminSidebars({ children, currentPageName }) {
           </div>
         </div>
       </div>
-      
+
       <div className="ap-sidebar-content">
         <div className="ap-sidebar-group">
           <div className="ap-sidebar-menu">
             {navigationItems.map((item) => (
               <div key={item.title} className="ap-menu-item">
-                <Link 
-                  to={item.url} 
-                  className={`ap-menu-button ${location.pathname === item.url ? 'ap-active' : ''}`}
+                <Link
+                  to={item.url}
+                  className={`ap-menu-button ${
+                    location.pathname === item.url ? "ap-active" : ""
+                  }`}
                 >
                   <item.icon className="ap-menu-icon" />
                   <span className="ap-menu-title">{item.title}</span>
                   {item.title === "Phê duyệt" && (
-                    <Badge bg="warning" text="dark" className="ap-approval-badge">
+                    <Badge
+                      bg="warning"
+                      text="dark"
+                      className="ap-approval-badge"
+                    >
                       5
                     </Badge>
                   )}
@@ -125,7 +136,11 @@ export default function AdminSidebars({ children, currentPageName }) {
             <span className="ap-avatar-text">{getAvatarText()}</span>
           </div>
           <div className="ap-user-info">
-            <p className="ap-user-name">{user ? (user.fullName || user.userName || 'Admin User') : 'Admin User'}</p>
+            <p className="ap-user-name">
+              {user
+                ? user.fullName || user.userName || "Admin User"
+                : "Admin User"}
+            </p>
             <p className="ap-user-role">{getRoleText()}</p>
           </div>
         </div>
@@ -148,11 +163,9 @@ export default function AdminSidebars({ children, currentPageName }) {
     <Sidebar
       sidebar={sidebarContent}
       docked={true}
-      styles={{ sidebar: { width: '250px' } }}
+      styles={{ sidebar: { width: "250px" } }}
     >
-      <div className="ap-layout-container">
-        {children}
-      </div>
+      <div className="ap-layout-container">{children}</div>
     </Sidebar>
   );
 }

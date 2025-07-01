@@ -15,3 +15,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* Ẩn AI Preny bot khi body có class hide-preny-bot */
+body.hide-preny-bot > div[style*="z-index: 10000"] {
+  display: none !important;
+}
+
+/* Ẩn widget khiếu nại khi body có class hide-complaint-widget */
+body.hide-complaint-widget .complaint-widget-btn,
+body.hide-complaint-widget .complaint-widget-box {
+  display: none !important;
+}
+
+/* Các class này sẽ được điều khiển tự động trong AppRoutes.jsx */

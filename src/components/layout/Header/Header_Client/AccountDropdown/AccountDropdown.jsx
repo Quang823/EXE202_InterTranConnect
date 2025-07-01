@@ -62,6 +62,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           onClick={() => {
             onLogout();
             closeDropdown();
+            window.location.reload();
           }}
         >
           <LogOut className="itc-user-dropdown__icon" />

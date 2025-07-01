@@ -160,20 +160,15 @@ const PostHistory = () => {
 
   if (loading) {
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-3">
-            <JobSidebar />
+      <div className="notifications-loading">
+        <div className="loading-content">
+          <div className="loading-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring spinner-ring-reverse"></div>
           </div>
-          <div className="col-md-9">
-            <div className="ph-post-history-container">
-              <Loading
-                isLoading={loading}
-                fullScreen
-                size="medium"
-                color="#3b82f6"
-              />
-            </div>
+          <div className="loading-text">
+            <h3>Loading post history...</h3>
+            <p>Please wait while we fetch your post history</p>
           </div>
         </div>
       </div>

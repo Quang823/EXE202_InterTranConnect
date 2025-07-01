@@ -12,7 +12,7 @@ import ContactPages from "../../pages/Translator/ContactPages/ContactPages";
 import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
-import NotificationsPage from "../../components/layout/Header/Header_Client/NotificationsPage/NotificationsPage";
+import NotificationsPage from "../../pages/NotificationsPage/NotificationsPage";
 
 const ClientRoute = () => {
   return (

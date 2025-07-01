@@ -64,10 +64,9 @@ const JobDetails = () => {
         message:
           applicationMessage || "I am interested in applying for this job.",
       };
-      console.log("payload", payload);
 
       const response = await axios.post(
-        `${API_URL}/api/JobApplication`,
+        `${API_URL}/api/applications`,
         payload,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -171,8 +170,18 @@ const JobDetails = () => {
         <div className="job-details2">
           {/* Show centered message if resultFileUrl is null */}
           {job.uploadFileUrl === "" ? (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px', fontSize: '1.2rem', color: '#888', textAlign: 'center' }}>
-             There are no output files for this job.
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "200px",
+                fontSize: "1.2rem",
+                color: "#888",
+                textAlign: "center",
+              }}
+            >
+              There are no output files for this job.
             </div>
           ) : (
             // Display PDF if uploadFileUrl exists

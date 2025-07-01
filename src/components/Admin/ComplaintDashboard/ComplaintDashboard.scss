@@ -1,0 +1,230 @@
+.complaint-dashboard-container {
+  display: flex;
+  height: 100vh;
+  background: #f7fafd;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(80, 80, 180, 0.08);
+  overflow: hidden;
+  font-family: inherit;
+}
+
+.complaint-list-panel {
+  width: 320px;
+  min-width: 220px;
+  background: #fff;
+  border-right: 1.5px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+.complaint-list-title {
+  font-weight: 700;
+  font-size: 18px;
+  padding: 18px 20px 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f7fafd;
+}
+
+.complaint-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 0 10px 0;
+}
+
+.complaint-list-item {
+  padding: 14px 20px 10px 20px;
+  border-bottom: 1px solid #f1f3f5;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: #fff;
+  &:hover,
+  &.active {
+    background: #e8f0fe;
+  }
+  .complaint-list-type {
+    font-weight: 600;
+    color: #1976d2;
+    font-size: 15px;
+  }
+  .complaint-list-user {
+    font-size: 13px;
+    color: #555;
+    margin-top: 2px;
+  }
+  .complaint-list-status {
+    font-size: 13px;
+    color: #888;
+    margin-top: 2px;
+  }
+  .complaint-list-time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+}
+
+.complaint-chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafd;
+}
+
+.complaint-chat-header {
+  font-weight: 700;
+  font-size: 17px;
+  padding: 18px 24px 12px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.complaint-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 24px 12px 24px;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafd;
+}
+
+.complaint-chat-message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 8px;
+
+  &.mine {
+    align-items: flex-end;
+    .message-bubble {
+      background: #2266ec;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 16px;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+    .message-meta {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      .message-avatar {
+        margin-left: 8px;
+        margin-right: 0;
+      }
+    }
+  }
+  &.other {
+    align-items: flex-start;
+    .message-bubble {
+      background: #fff;
+      color: #222;
+      border: 1px solid #e0e0e0;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 16px;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+    .message-meta {
+      flex-direction: row;
+      justify-content: flex-start;
+      .message-avatar {
+        margin-right: 8px;
+        margin-left: 0;
+      }
+    }
+  }
+  .message-meta {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 1px;
+    gap: 6px;
+  }
+  .message-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #e0e0e0;
+    background: #f7fafd;
+  }
+  .message-bubble {
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 15px;
+    max-width: 60%;
+    word-break: break-word;
+    box-shadow: 0 2px 8px #0001;
+    transition: background 0.2s;
+  }
+}
+
+.complaint-chat-form {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  background: #fff;
+  input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    font-size: 15px;
+    background: #f7fafd;
+    transition: border-color 0.2s;
+    &:focus {
+      border-color: #1976d2;
+      outline: none;
+      background: #fff;
+    }
+  }
+  button {
+    padding: 0 22px;
+    border-radius: 8px;
+    background: #1976d2;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover:not(:disabled) {
+      background: #1251a3;
+    }
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.complaint-chat-empty,
+.complaint-no-messages {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 16px;
+  background: #f9fafd;
+}
+
+@media (max-width: 900px) {
+  .complaint-dashboard-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .complaint-list-panel {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1.5px solid #e0e0e0;
+  }
+  .complaint-chat-panel {
+    min-height: 300px;
+  }
+}

@@ -144,7 +144,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           >
             <CheckSquare className="itc-user-dropdown__icon" /> Applied Job
           </div>
-          <div
+          {/* <div
             className="itc-user-dropdown__item"
             onClick={() => {
               navigate("/translator/jobFavorite");
@@ -152,7 +152,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <Heart className="itc-user-dropdown__icon" /> Favorite Job
-          </div>
+          </div> */}
           <div
             className="itc-user-dropdown__item"
             onClick={() => {
