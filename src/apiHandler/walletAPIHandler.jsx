@@ -41,3 +41,26 @@ export const getWalletTransactions = async (walletId, pageNumber, pageSize) => {
   );
   return response.data;
 };
+
+// Withdrawal requests
+export const getMyWithdrawalRequests = async () => {
+  const response = await apiClient.get("/withdrawal-requests/my-requests");
+  return response.data;
+};
+
+export const getWithdrawalRequestById = async (id) => {
+  const response = await apiClient.get(`/withdrawal-requests/${id}`);
+  return response.data;
+};
+
+export const createWithdrawalRequest = async (data) => {
+  const response = await apiClient.post("/withdrawal-requests", data);
+  return response.data;
+};
+
+export const confirmWithdrawalReceived = async (id) => {
+  const response = await apiClient.patch(
+    `/withdrawal-requests/${id}/confirm-received`
+  );
+  return response.data;
+};
