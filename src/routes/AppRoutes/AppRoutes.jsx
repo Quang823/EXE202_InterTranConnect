@@ -36,6 +36,7 @@ const AppRoutes = () => {
     "/deposit_fail",
     "/welcome",
     "/verify_email",
+    "/admin/complaint",
   ];
 
   const shouldShowWidgets = !hiddenPaths.includes(location.pathname);
