@@ -24,10 +24,10 @@ const TranslatorRoute = () => {
       <Route path="/jobFavorite" element={<FavoriteJob />} />
       <Route path="/applyJob" element={<ApplyJobs />} />
       <Route path="/wallet" element={<WalletTrans />} />
-      <Route path="/subscriptionPlans" element={<MembershipPlans />} />
+      <Route path="/subscriptionPlan" element={<MembershipPlans />} />
       <Route path="/contactPages" element={<ContactPages />} />
       <Route path="/forum" element={<Forums />} />
-      <Route path="/aboutUs" element={<InterTransConnects />} />
+      <Route path="/about" element={<InterTransConnects />} />
       <Route path="/dashboard" element={<AdminDashboards />} />
       <Route path="/news_blog" element={<NewsBlog />} />
       <Route path="/add_certificate" element={<AddCertificatePage />} />

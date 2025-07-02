@@ -1,0 +1,57 @@
+{
+  "home": "首页",
+  "post": "发布",
+  "job": "工作",
+  "news": "新闻与博客",
+  "about": "关于我们",
+  "contact": "联系我们",
+  "pricing": "价格",
+  "forum": "论坛",
+  "hero": {
+    "title": { "line": "顶级译者", "highlight": "立即连接！" },
+    "subtitle": "专业译者——满足您所有翻译需求，卓越品质与闪电般速度！",
+    "cta": "立即雇佣译者",
+    "search": {
+      "select": {
+        "category": "选择工作类别",
+        "source": "选择源语言",
+        "target": "选择目标语言",
+        "expertise": "选择专业领域"
+      },
+      "category": {
+        "translation": "笔译",
+        "interpretation": "口译",
+        "localization": "本地化"
+      },
+      "language": {
+        "english": "英语",
+        "spanish": "西班牙语",
+        "french": "法语"
+      },
+      "expertise": {
+        "legal": "法律",
+        "medical": "医疗",
+        "technical": "技术"
+      }
+    }
+  },
+  "account": {
+    "profile": "个人资料设置",
+    "postHistory": "发布历史",
+    "wallet": "钱包",
+    "logout": "退出登录",
+    "appliedJob": "已申请的工作",
+    "favoriteJob": "收藏的工作",
+    "certificate": "证书"
+  },
+  "businessCard": {
+    "title": "试用 Business Plus",
+    "description": "升级以更快接触顶级1%自由职业者。无需预付费用。",
+    "upgrade": "了解更多"
+  },
+  "onlineToggle": {
+    "title": "在线接收消息",
+    "online": "您现在在线，可以接收消息",
+    "offline": "您现在离线"
+  }
+}

@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import BusinessPlusCard from "./BusinessPlusCards";
 import OnlineToggle from "./OnlineToggle";
 import "./AccountDropdown.scss";
+import { useTranslation } from "react-i18next";
 
 const AccountDropdown = ({ user, onLogout, mobile = false }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
+  const { t } = useTranslation();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
@@ -41,7 +43,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           }}
         >
           <User className="itc-user-dropdown__icon" />
-          Profile Settings
+          {t("account.profile")}
         </div>
         <div
           className="itc-user-dropdown__mobile-item"
@@ -50,7 +52,8 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             closeDropdown();
           }}
         >
-          <CheckSquare className="itc-user-dropdown__icon" /> Applied Job
+          <CheckSquare className="itc-user-dropdown__icon" />{" "}
+          {t("account.appliedJob")}
         </div>
         <div
           className="itc-user-dropdown__mobile-item"
@@ -60,7 +63,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           }}
         >
           <Heart className="itc-user-dropdown__icon" />
-          Favorite Job
+          {t("account.favoriteJob")}
         </div>
 
         <div
@@ -71,7 +74,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           }}
         >
           <Wallet className="itc-user-dropdown__icon" />
-          Wallet
+          {t("account.wallet")}
         </div>
 
         <div
@@ -82,7 +85,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           }}
         >
           <Award className="itc-user-dropdown__icon" />
-          Certificate
+          {t("account.certificate")}
         </div>
 
         {priority === 0 && <BusinessPlusCard />}
@@ -96,7 +99,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           }}
         >
           <LogOut className="itc-user-dropdown__icon" />
-          Logout
+          {t("account.logout")}
         </div>
       </div>
     );
@@ -133,7 +136,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <User className="itc-user-dropdown__icon" />
-            Profile Settings
+            {t("account.profile")}
           </div>
           <div
             className="itc-user-dropdown__item"
@@ -142,7 +145,8 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
               closeDropdown();
             }}
           >
-            <CheckSquare className="itc-user-dropdown__icon" /> Applied Job
+            <CheckSquare className="itc-user-dropdown__icon" />{" "}
+            {t("account.appliedJob")}
           </div>
           {/* <div
             className="itc-user-dropdown__item"
@@ -161,7 +165,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <Award className="itc-user-dropdown__icon" />
-            Certificate
+            {t("account.certificate")}
           </div>
           <div
             className="itc-user-dropdown__item"
@@ -171,7 +175,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <Wallet className="itc-user-dropdown__icon" />
-            Wallet
+            {t("account.wallet")}
           </div>
           <div className="itc-user-dropdown__separator"></div>
           <div
@@ -182,7 +186,7 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
             }}
           >
             <LogOut className="itc-user-dropdown__icon" />
-            Logout
+            {t("account.logout")}
           </div>
         </div>
       )}

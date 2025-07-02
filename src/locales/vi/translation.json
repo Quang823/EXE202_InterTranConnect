@@ -1,0 +1,60 @@
+{
+  "home": "Trang chủ",
+  "post": "Đăng bài",
+  "job": "Công việc",
+  "news": "Tin tức & Blog",
+  "about": "Về chúng tôi",
+  "contact": "Liên hệ",
+  "pricing": "Bảng giá",
+  "forum": "Diễn đàn",
+  "hero": {
+    "title": {
+      "line": "Dịch giả hàng đầu",
+      "highlight": "Kết nối NGAY HÔM NAY!"
+    },
+    "subtitle": "Dịch giả chuyên nghiệp – Đáp ứng mọi nhu cầu dịch thuật của bạn với chất lượng xuất sắc và tốc độ thần tốc!",
+    "cta": "Thuê dịch giả ngay",
+    "search": {
+      "select": {
+        "category": "Chọn loại công việc",
+        "source": "Chọn ngôn ngữ nguồn",
+        "target": "Chọn ngôn ngữ đích",
+        "expertise": "Chọn chuyên môn"
+      },
+      "category": {
+        "translation": "Dịch thuật",
+        "interpretation": "Phiên dịch",
+        "localization": "Bản địa hóa"
+      },
+      "language": {
+        "english": "Tiếng Anh",
+        "spanish": "Tiếng Tây Ban Nha",
+        "french": "Tiếng Pháp"
+      },
+      "expertise": {
+        "legal": "Pháp lý",
+        "medical": "Y tế",
+        "technical": "Kỹ thuật"
+      }
+    }
+  },
+  "account": {
+    "profile": "Cài đặt hồ sơ",
+    "postHistory": "Lịch sử bài đăng",
+    "wallet": "Ví tiền",
+    "logout": "Đăng xuất",
+    "appliedJob": "Công việc đã ứng tuyển",
+    "favoriteJob": "Công việc yêu thích",
+    "certificate": "Chứng chỉ"
+  },
+  "businessCard": {
+    "title": "Dùng thử Business Plus",
+    "description": "Nâng cấp để tiếp cận nhanh hơn với top 1% freelancer. Không phí trả trước.",
+    "upgrade": "Tìm hiểu thêm"
+  },
+  "onlineToggle": {
+    "title": "Trực tuyến để nhận tin nhắn",
+    "online": "Bạn đang hiển thị trực tuyến để nhận tin nhắn",
+    "offline": "Bạn đang ẩn/offline"
+  }
+}
