@@ -12,6 +12,14 @@ import { getUserInfoByUserIdService } from "../../services/authService";
 import "./ComplaintChatWidget.scss";
 import AuthContext from "../../context/AuthContext";
 import { useComplaintChat } from "../../hooks/useComplaintChat";
+import {
+  CheckCircle,
+  X,
+  MessageCircle,
+  AlertCircle,
+  Send,
+  PlusCircle,
+} from "lucide-react";
 
 const ComplaintChatWidget = () => {
   const [open, setOpen] = useState(false);
@@ -63,7 +71,6 @@ const ComplaintChatWidget = () => {
     try {
       const data = await fetchComplaintMessages(complaintId);
       setMessages(data || []);
-      // Lấy thông tin user cho tất cả senderId chưa có trong cache
       const uniqueSenderIds = Array.from(
         new Set((data || []).map((m) => m.senderId))
       );
@@ -102,7 +109,6 @@ const ComplaintChatWidget = () => {
     try {
       const msgs = await fetchComplaintMessages(complaint.id);
       setMessages(msgs || []);
-      // Lấy thông tin user cho tất cả senderId chưa có trong cache
       const uniqueSenderIds = Array.from(
         new Set((msgs || []).map((m) => m.senderId))
       );
@@ -176,7 +182,6 @@ const ComplaintChatWidget = () => {
       const user = JSON.parse(sessionStorage.getItem("user") || "{}");
       const customerId = user.id;
       const jobsData = await getJobsByCustomerService(customerId);
-      // jobsData.items nếu là dạng phân trang
       setJobs(jobsData.items || jobsData || []);
     } catch (err) {
       setJobs([]);
@@ -221,9 +226,7 @@ const ComplaintChatWidget = () => {
     setNewComplaint({ ...newComplaint, attachment: url });
   };
 
-  // Realtime chat: nhận tin nhắn mới qua SignalR
   useComplaintChat(user?.id, token, (message) => {
-    // Nếu message thuộc khiếu nại đang mở, luôn gọi lại API để lấy tin nhắn mới nhất
     if (selectedComplaint && message.complaintId === selectedComplaint.id) {
       loadMessages(selectedComplaint.id);
     }
@@ -231,38 +234,23 @@ const ComplaintChatWidget = () => {
 
   return (
     <>
-      {/* Nút mở chat khiếu nại */}
       {!open && (
         <button
           className="complaint-widget-btn"
           title="Complaint Chat"
           onClick={() => setOpen(true)}
         >
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path
-              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <MessageCircle size={24} color="#ffffff" />
           <span className="complaint-widget-btn-text">Support</span>
         </button>
       )}
 
-      {/* Khung chat khiếu nại */}
       {open && (
         <div className="complaint-widget-box">
           <div className="complaint-widget-header">
             <div className="complaint-widget-header-content">
               <div className="complaint-widget-header-icon">
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                  <path
-                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <MessageCircle size={20} color="#ffffff" />
               </div>
               <span>Complaint & Support</span>
             </div>
@@ -270,32 +258,15 @@ const ComplaintChatWidget = () => {
               className="complaint-widget-close"
               onClick={() => setOpen(false)}
             >
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-                <path
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M18 6L6 18M6 6l12 12"
-                />
-              </svg>
+              <X size={18} color="#ffffff" />
             </button>
           </div>
 
           <div className="complaint-widget-body">
-            {/* Danh sách khiếu nại */}
             <div className="complaint-widget-list">
               <div className="complaint-widget-list-title">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <path
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Complaint List
+                <CheckCircle size={16} color="#1f2937" />
+                <span>Complaint List</span>
               </div>
 
               {loading && (
@@ -315,14 +286,7 @@ const ComplaintChatWidget = () => {
                     onClick={() => handleSelectComplaint(c)}
                   >
                     <div className="complaint-item-icon">
-                      <svg
-                        width="12"
-                        height="12"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
+                      <CheckCircle size={12} color="#ffffff" />
                     </div>
                     <div className="complaint-item-content">
                       <div className="complaint-item-type">
@@ -457,21 +421,7 @@ const ComplaintChatWidget = () => {
                     </>
                   ) : (
                     <>
-                      <svg
-                        width="16"
-                        height="16"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        style={{ verticalAlign: "middle", marginRight: 4 }}
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 5v14m7-7H5"
-                        />
-                      </svg>
+                      <PlusCircle size={16} color="#ffffff" />
                       Create Complaint
                     </>
                   )}
@@ -479,20 +429,11 @@ const ComplaintChatWidget = () => {
               </form>
             </div>
 
-            {/* Khung chat */}
             <div className="complaint-widget-chat">
               {!selectedComplaint ? (
                 <div className="complaint-widget-empty">
                   <div className="empty-icon">
-                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24">
-                      <path
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                      />
-                    </svg>
+                    <MessageCircle size={48} color="#6b7280" />
                   </div>
                   <p>Select a complaint to start chatting</p>
                 </div>
@@ -508,20 +449,7 @@ const ComplaintChatWidget = () => {
                   <div className="complaint-widget-chat-messages">
                     {messages.length === 0 ? (
                       <div className="no-messages">
-                        <svg
-                          width="32"
-                          height="32"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                          />
-                        </svg>
+                        <AlertCircle size={32} color="#6b7280" />
                         <p>No messages yet. Start the conversation!</p>
                       </div>
                     ) : (
@@ -582,20 +510,7 @@ const ComplaintChatWidget = () => {
                         required
                       />
                       <button type="submit" className="send-btn">
-                        <svg
-                          width="18"
-                          height="18"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m12 19-7-7 7-7m7 7H5"
-                          />
-                        </svg>
+                        <Send size={18} color="#ffffff" />
                       </button>
                     </div>
                   </form>
@@ -604,15 +519,7 @@ const ComplaintChatWidget = () => {
 
               {error && (
                 <div className="complaint-widget-error">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                    <path
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <AlertCircle size={16} color="#dc3545" />
                   {error}
                 </div>
               )}

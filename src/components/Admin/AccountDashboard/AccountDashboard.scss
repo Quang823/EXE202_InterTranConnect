@@ -20,15 +20,17 @@ $gray-900: #111827;
 $border-radius: 12px;
 $border-radius-sm: 8px;
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
 // Base styles
 .dashboard {
   min-height: 100vh;
   background-color: $gray-50;
   padding: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: $gray-800;
 
   * {
@@ -65,7 +67,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 
     .search-container {
       position: relative;
-      
+
       .search-icon {
         position: absolute;
         left: 12px;
@@ -87,7 +89,6 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
           border-color: $primary-color;
           box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
-
       }
     }
 
@@ -302,7 +303,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
             padding: 10px 22px;
             margin: 0 6px;
             &:hover {
-              background-color: darken($primary-color, 8%);
+              background-color: #4338ca;
             }
           }
           .action-btn1.green,
@@ -323,7 +324,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
             cursor: pointer;
             transition: background 0.18s, color 0.18s;
             &:hover {
-              background-color: darken($primary-color, 8%);
+              background-color: #4338ca;
             }
           }
         }
@@ -352,7 +353,8 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     overflow: hidden;
     margin-bottom: 32px;
 
-    th, td {
+    th,
+    td {
       padding: 16px 12px;
       text-align: left;
       font-size: 15px;
@@ -455,7 +457,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 
     .header-right {
       width: 100%;
-      
+
       .search-container .search-input {
         width: 100%;
       }
@@ -495,8 +497,11 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 
 .acd-modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.25);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -515,8 +520,14 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   animation: modalFadeIn 0.2s;
 }
 @keyframes modalFadeIn {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .acd-modal-close {
   position: absolute;
@@ -560,7 +571,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   }
   .acd-modal-section {
     margin-bottom: 28px;
-    &:last-child { margin-bottom: 0; }
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   .acd-modal-section-title {
     font-size: 18px;
@@ -600,7 +613,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       color: $info-color;
       font-weight: 600;
       text-decoration: underline;
-      &:hover { color: $danger-color; }
+      &:hover {
+        color: $danger-color;
+      }
     }
   }
   .acd-modal-files-grid {
@@ -624,7 +639,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       color: $primary-color;
       font-weight: 600;
       text-decoration: underline;
-      &:hover { color: $danger-color; }
+      &:hover {
+        color: $danger-color;
+      }
     }
     .acd-modal-file-img {
       width: 56px;
@@ -646,7 +663,8 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     }
   }
 }
-.acd-modal-loading, .acd-modal-error {
+.acd-modal-loading,
+.acd-modal-error {
   text-align: center;
   font-size: 16px;
   color: $gray-600;
@@ -704,12 +722,16 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       color: $info-color;
       font-weight: 600;
       text-decoration: underline;
-      &:hover { color: $danger-color; }
+      &:hover {
+        color: $danger-color;
+      }
     }
   }
   .modal-section {
     margin-bottom: 28px;
-    &:last-child { margin-bottom: 0; }
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   .modal-section-title {
     font-size: 18px;
@@ -742,7 +764,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       color: $primary-color;
       font-weight: 600;
       text-decoration: underline;
-      &:hover { color: $danger-color; }
+      &:hover {
+        color: $danger-color;
+      }
     }
     .modal-file-img {
       width: 56px;
@@ -765,7 +789,8 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   }
 }
 
-.acd-accept-btn, .acd-cancel-btn {
+.acd-accept-btn,
+.acd-cancel-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;

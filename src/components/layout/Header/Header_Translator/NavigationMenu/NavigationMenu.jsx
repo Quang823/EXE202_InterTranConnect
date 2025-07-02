@@ -20,7 +20,9 @@ const NavigationMenu = ({
     { path: "/translator/news_blog", label: "News & Blog" },
     { path: "/translator/aboutUs", label: "About Us" },
     { path: "/translator/contactPages", label: "Contact Us" },
-    { path: "/translator/subscriptionPlans", label: "Pricing" },
+    ...(user
+      ? [{ path: "/translator/subscriptionPlans", label: "Pricing" }]
+      : []),
     ...(user ? [{ path: "/translator/forum", label: "Forum" }] : []),
   ];
 

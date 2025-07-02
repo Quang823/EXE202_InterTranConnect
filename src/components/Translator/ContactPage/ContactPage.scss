@@ -1,23 +1,28 @@
 .contact-container {
   width: 100%;
   background-color: #f8f9fa;
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 1rem;
 
   @media (max-width: 768px) {
-    padding: 2rem 1rem;
+    padding: 1rem;
   }
 }
 
 .contact-wrapper {
-  max-width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   background-color: #fff;
-  border-radius: 16px;
-  border: 1px solid rgb(226, 214, 214);
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 
   @media (max-width: 992px) {
     flex-direction: column;
@@ -27,8 +32,25 @@
 .contact-left {
   flex: 2;
   padding: 3rem;
-  background: linear-gradient(135deg, #4361ee, #3a0ca3);
+  background: linear-gradient(135deg, #4b6cb7, #2a4494);
   color: #fff;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    animation: pulse 8s infinite;
+  }
 
   @media (max-width: 768px) {
     padding: 2rem;
@@ -40,10 +62,13 @@
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
 
   span {
     display: block;
-    color: #3498db;
+    color: #a3bffa;
+    font-weight: 600;
   }
 
   @media (max-width: 768px) {
@@ -51,15 +76,9 @@
   }
 }
 
-.contact-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-  opacity: 0.9;
-}
-
 .benefits-container {
   margin-bottom: 2.5rem;
+  z-index: 1;
 }
 
 .benefits-title {
@@ -68,6 +87,7 @@
   margin-bottom: 1.5rem;
   position: relative;
   padding-bottom: 0.75rem;
+  color: #a3bffa;
 
   &:after {
     content: "";
@@ -76,7 +96,12 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background-color: #3498db;
+    background-color: #a3bffa;
+    transition: width 0.3s ease;
+  }
+
+  &:hover:after {
+    width: 80px;
   }
 }
 
@@ -94,6 +119,11 @@
 .benefit-item {
   display: flex;
   align-items: flex-start;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateX(10px);
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -106,11 +136,16 @@
   justify-content: center;
   width: 42px;
   height: 42px;
-  background-color: rgba(52, 152, 219, 0.2);
+  background-color: rgba(163, 191, 250, 0.3);
   border-radius: 50%;
   margin-right: 1rem;
   flex-shrink: 0;
-  color: #3498db;
+  color: #a3bffa;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(163, 191, 250, 0.5);
+  }
 }
 
 .benefit-content {
@@ -118,23 +153,27 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 0.25rem;
+    color: #fff;
   }
 
   p {
     font-size: 14px;
     margin: 0;
-    opacity: 0.8;
+    opacity: 0.9;
     line-height: 1.5;
+    color: #d1e0ff;
   }
 }
 
 .contact-info {
+  z-index: 1;
   .info-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     position: relative;
     padding-bottom: 0.75rem;
+    color: #a3bffa;
 
     &:after {
       content: "";
@@ -143,7 +182,12 @@
       left: 0;
       width: 60px;
       height: 3px;
-      background-color: #3498db;
+      background-color: #a3bffa;
+      transition: width 0.3s ease;
+    }
+
+    &:hover:after {
+      width: 80px;
     }
   }
 }
@@ -161,24 +205,36 @@
 .info-item {
   display: flex;
   align-items: flex-start;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateX(10px);
+  }
 
   .info-icon {
     width: 24px;
     height: 24px;
     margin-right: 0.75rem;
-    color: #3498db;
+    color: #a3bffa;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #fff;
+    }
   }
 
   h4 {
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 0.25rem;
+    color: #fff;
   }
 
   p {
     font-size: 14px;
     margin: 0;
-    opacity: 0.8;
+    opacity: 0.9;
+    color: #d1e0ff;
   }
 }
 
@@ -186,6 +242,23 @@
   flex: 1;
   padding: 3rem;
   background-color: #fff;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(163, 191, 250, 0.1) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    border-radius: 50%;
+    z-index: 0;
+  }
 
   @media (max-width: 768px) {
     padding: 2rem;
@@ -195,25 +268,39 @@
 .form-container {
   max-width: 500px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .form-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 0.75rem;
-}
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
 
-.form-subtitle {
-  font-size: 1rem;
-  color: #7f8c8d;
-  margin-bottom: 2rem;
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: #4b6cb7;
+    transition: width 0.3s ease;
+  }
+
+  &:hover:after {
+    width: 80px;
+  }
 }
 
 .contact-form {
   .form-row {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
 
     @media (max-width: 576px) {
@@ -224,62 +311,112 @@
 
   .form-group {
     flex: 1;
-    margin-bottom: 1.5rem;
 
     label {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      color: #2c3e50;
+      color: #34495e;
       margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
     }
 
     input,
     textarea {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
+      padding: 0.875rem 1.25rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
       font-size: 1rem;
+      background-color: #f9f9f9;
       transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 
       &:focus {
         outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        border-color: #4b6cb7;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.1);
       }
 
       &::placeholder {
-        color: #bdc3c7;
+        color: #7f8c8d;
+        font-weight: 500;
       }
     }
 
     textarea {
       resize: vertical;
+      min-height: 120px;
     }
   }
 
   .submit-button {
     display: inline-block;
-    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    background: linear-gradient(135deg, #4b6cb7, #2a4494);
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    padding: 0.875rem 2rem;
+    padding: 0.875rem 2.5rem;
     border: none;
-    border-radius: 8px;
-    margin-left: 30%;
+    border-radius: 10px;
+    margin: 1rem auto 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 250px;
 
-    &:hover {
-      background-color: #2980b9;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #2a4494, #1e2f66);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(75, 108, 183, 0.3);
     }
 
-    &:active {
+    &:active:not(:disabled) {
       transform: translateY(0);
     }
+
+    &:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #fff;
+      border-top: 3px solid #a3bffa;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
   }
 }

@@ -276,7 +276,7 @@ $gray-900: #111827;
           color: white;
 
           &:hover {
-            background: darken($primary-color, 10%);
+            background: #3730a3;
           }
 
           svg {
@@ -293,7 +293,7 @@ $gray-900: #111827;
           color: white;
 
           &:hover {
-            background: darken($danger-color, 10%);
+            background: #b91c1c;
           }
 
           svg {
@@ -397,35 +397,19 @@ $gray-900: #111827;
       transition: transform 0.3s ease;
 
       &.stat-gradient-blue {
-        background: linear-gradient(
-          90deg,
-          $primary-color,
-          lighten($primary-color, 20%)
-        );
+        background: linear-gradient(90deg, $primary-color, #818cf8);
       }
 
       &.stat-gradient-red {
-        background: linear-gradient(
-          90deg,
-          $danger-color,
-          lighten($danger-color, 20%)
-        );
+        background: linear-gradient(90deg, $danger-color, #fca5a5);
       }
 
       &.stat-gradient-orange {
-        background: linear-gradient(
-          90deg,
-          $warning-color,
-          lighten($warning-color, 20%)
-        );
+        background: linear-gradient(90deg, $warning-color, #fde68a);
       }
 
       &.stat-gradient-green {
-        background: linear-gradient(
-          90deg,
-          $success-color,
-          lighten($success-color, 20%)
-        );
+        background: linear-gradient(90deg, $success-color, #bbf7d0);
       }
     }
 

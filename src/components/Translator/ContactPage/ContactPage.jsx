@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Book, Briefcase, Clock, Mail, MapPin, Phone } from 'lucide-react';
-import "./ContactPage.scss"
+import React, { useState } from "react";
+import { Book, Briefcase, Clock, Mail, MapPin, Phone } from "lucide-react";
+import "./ContactPage.scss";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,15 +18,23 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Add your form submission logic here
+    setIsSubmitting(true);
+    console.log("Form submitted:", formData);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert("Message sent successfully!"); // Feedback
+      setFormData({ firstName: "", lastName: "", email: "", message: "" });
+    }, 1500);
   };
 
   return (
     <div className="contact-container">
       <div className="contact-wrapper">
         <div className="contact-left">
-          <h1 className="contact-heading">You Will Grow, You Will Succeed. <span>We Promise That.</span></h1>
+          <h1 className="contact-heading">
+            You Will Grow, You Will Succeed. <span>We Promise That.</span>
+          </h1>
           <div className="benefits-container">
             <h3 className="benefits-title">Why Choose Us</h3>
             <div className="benefits-list">
@@ -35,7 +44,9 @@ const ContactPage = () => {
                 </div>
                 <div className="benefit-content">
                   <h4>Continuous Learning</h4>
-                  <p>Gain access to training, resources, and industry insights.</p>
+                  <p>
+                    Gain access to training, resources, and industry insights.
+                  </p>
                 </div>
               </div>
               <div className="benefit-item">
@@ -44,7 +55,10 @@ const ContactPage = () => {
                 </div>
                 <div className="benefit-content">
                   <h4>Career Advancement</h4>
-                  <p>Work with global clients and expand your professional network.</p>
+                  <p>
+                    Work with global clients and expand your professional
+                    network.
+                  </p>
                 </div>
               </div>
               <div className="benefit-item">
@@ -67,7 +81,7 @@ const ContactPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="contact-info">
             <h3 className="info-title">Get In Touch</h3>
             <div className="info-grid">
@@ -102,7 +116,7 @@ const ContactPage = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="contact-right">
           <div className="form-container">
             <h2 className="form-title">Send Message</h2>
@@ -117,6 +131,7 @@ const ContactPage = () => {
                     value={formData.firstName}
                     onChange={handleChange}
                     placeholder="Enter your first name"
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -128,10 +143,11 @@ const ContactPage = () => {
                     value={formData.lastName}
                     onChange={handleChange}
                     placeholder="Enter your last name"
+                    required
                   />
                 </div>
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <input
@@ -141,9 +157,10 @@ const ContactPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email address"
+                  required
                 />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="message">Message</label>
                 <textarea
@@ -153,11 +170,20 @@ const ContactPage = () => {
                   onChange={handleChange}
                   placeholder="How can we help you?"
                   rows={5}
+                  required
                 />
               </div>
-              
-              <button type="submit" className="submit-button">
-                Send Message
+
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="spinner"></span>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </form>
           </div>
