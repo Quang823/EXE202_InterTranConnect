@@ -126,3 +126,13 @@
     transform: translateY(0);
   }
 }
+
+.language-option {
+  padding: 8px 16px;
+  cursor: pointer;
+  &:hover,
+  &.selected {
+    background: #f3f4f6;
+    font-weight: bold;
+  }
+}

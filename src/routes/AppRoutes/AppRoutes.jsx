@@ -36,10 +36,14 @@ const AppRoutes = () => {
     "/deposit_fail",
     "/welcome",
     "/verify_email",
-    "/admin/complaint",
   ];
 
-  const shouldShowWidgets = !hiddenPaths.includes(location.pathname);
+  const isHiddenPath =
+    hiddenPaths.includes(location.pathname) ||
+    location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/staff");
+
+  const shouldShowWidgets = !isHiddenPath;
 
   // Ẩn/hiện AI chatbot và widget khiếu nại bằng class trên body
   useEffect(() => {

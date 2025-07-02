@@ -1,8 +1,10 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import "./OnlineToggle.scss";
+import { useTranslation } from "react-i18next";
 
 const OnlineToggle = ({ isOnline, onToggle, className = "" }) => {
+  const { t } = useTranslation();
   const toggleClassName = isOnline ? `${className} is-online` : className;
 
   return (
@@ -11,11 +13,9 @@ const OnlineToggle = ({ isOnline, onToggle, className = "" }) => {
         <div className="online-toggle-status">
           <div className="online-toggle-dot"></div>
           <div className="online-toggle-text">
-            <h3 className="online-toggle-title">Online for messages</h3>
+            <h3 className="online-toggle-title">{t("onlineToggle.title")}</h3>
             <p className="online-toggle-subtitle">
-              {isOnline
-                ? "You appear online to receive messages"
-                : "You appear offline"}
+              {isOnline ? t("onlineToggle.online") : t("onlineToggle.offline")}
             </p>
           </div>
         </div>

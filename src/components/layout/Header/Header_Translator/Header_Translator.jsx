@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import { Menu, X, Zap } from "lucide-react";
 import NavigationMenu from "../Header_Translator/NavigationMenu/NavigationMenu";
 import AccountDropdown from "../Header_Translator/AccountDropdown/AccountDropdown";
-import LanguageDropdown from "../Header_Translator/LanguageDropdown/LanguageDropdown";
+import LanguageDropdown from "../Header_Client/LanguageDropdown/LanguageDropdown";
 import HeroSection from "../Header_Translator/HeroSection/HeroSection";
 import Image from "../../../../assets/images/Image";
 import "./Header_Translator.scss";

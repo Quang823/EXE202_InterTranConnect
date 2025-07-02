@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./NavigationMenu.scss";
+import { useTranslation } from "react-i18next";
 
 const NavigationMenu = ({
   user,
@@ -9,19 +10,23 @@ const NavigationMenu = ({
   mobile = false,
   onItemClick,
 }) => {
+  const { t } = useTranslation();
+
   const navItems = [
-    { path: "/client/", label: "Home" },
+    { path: "/client/", label: t("home") },
     {
       path: "/client/create_post",
-      label: "Post",
+      label: t("post"),
       requiresAuth: true,
       onClick: onPostClick,
     },
-    { path: "/client/news_blog", label: "News & Blog" },
-    { path: "/client/aboutUs", label: "About Us" },
-    { path: "/client/contactPages", label: "Contact Us" },
-    { path: "/client/subscriptionPlan", label: "Pricing" },
-    ...(user ? [{ path: "/client/forum", label: "Forum" }] : []),
+    { path: "/client/news_blog", label: t("news") },
+    { path: "/client/aboutUs", label: t("about") },
+    { path: "/client/contactPages", label: t("contact") },
+    ...(user
+      ? [{ path: "/client/subscriptionPlan", label: t("pricing") }]
+      : []),
+    ...(user ? [{ path: "/client/forum", label: t("forum") }] : []),
   ];
 
   return (

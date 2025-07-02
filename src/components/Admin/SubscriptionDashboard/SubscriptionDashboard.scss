@@ -1,7 +1,7 @@
-@import '../AdminCommon.scss';
+@use "../AdminCommon.scss" as *;
 
 .subscription-dashboard {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: #f8fafc;
   color: #1f2937;
   padding: 24px;
@@ -45,7 +45,7 @@
             background: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease;
-            
+
             &:focus {
               outline: none;
               border-color: #3b82f6;
@@ -65,11 +65,11 @@
           padding: 8px;
           border-radius: 8px;
           transition: all 0.2s ease;
-          
+
           &:hover {
             background: rgba(59, 130, 246, 0.1);
           }
-          
+
           svg {
             color: #6b7280;
             cursor: pointer;
@@ -94,11 +94,11 @@
           padding: 8px;
           border-radius: 8px;
           transition: all 0.2s ease;
-          
+
           &:hover {
             background: rgba(59, 130, 246, 0.1);
           }
-          
+
           svg {
             color: #6b7280;
             cursor: pointer;
@@ -130,7 +130,7 @@
         margin: 0;
         font-weight: 500;
       }
-      
+
       .demo-notice {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -141,19 +141,19 @@
         margin: 10px 0;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         transition: all 0.3s ease;
-        
+
         &:hover {
           transform: translateY(-1px);
           box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         span {
           display: flex;
           align-items: center;
           gap: 8px;
         }
       }
-      
+
       .date-range-picker {
         display: flex;
         align-items: center;
@@ -175,7 +175,7 @@
           width: 150px;
           text-align: center;
           transition: all 0.2s ease;
-          
+
           &:focus {
             outline: none;
             border-color: #3b82f6;
@@ -194,12 +194,12 @@
           gap: 6px;
           font-weight: 600;
           transition: all 0.3s ease;
-          
+
           &:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
           }
-          
+
           svg {
             color: white;
           }
@@ -216,7 +216,7 @@
       margin-bottom: 24px;
       text-align: center;
       box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
-      
+
       p {
         margin: 0;
         font-size: 14px;
@@ -233,7 +233,7 @@
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       border: 1px solid #e5e7eb;
-      
+
       p {
         color: #6b7280;
         font-size: 16px;
@@ -259,7 +259,7 @@
         overflow: hidden;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
@@ -368,14 +368,14 @@
 
         .chart-header {
           margin-bottom: 15px;
-          
+
           h3 {
             font-size: 16px;
             font-weight: 600;
             margin: 0 0 5px 0;
             color: #1f2937;
           }
-          
+
           p {
             font-size: 12px;
             color: #6b7280;
@@ -400,16 +400,16 @@
             font-size: 14px;
             text-align: center;
           }
-          
+
           canvas {
             max-width: 100%;
             max-height: 100%;
           }
-          
+
           .view-more-dates {
             margin-top: 15px;
             text-align: center;
-            
+
             .view-more-btn {
               background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
               color: white;
@@ -420,7 +420,7 @@
               font-weight: 500;
               cursor: pointer;
               transition: all 0.3s ease;
-              
+
               &:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
@@ -490,7 +490,7 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    
+
     .date-modal {
       background: white;
       border-radius: 12px;
@@ -499,7 +499,7 @@
       max-height: 80vh;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      
+
       .modal-header {
         display: flex;
         justify-content: space-between;
@@ -508,13 +508,13 @@
         border-bottom: 1px solid #e5e7eb;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        
+
         h3 {
           margin: 0;
           font-size: 18px;
           font-weight: 600;
         }
-        
+
         .close-btn {
           background: none;
           border: none;
@@ -529,18 +529,18 @@
           justify-content: center;
           border-radius: 50%;
           transition: background-color 0.3s ease;
-          
+
           &:hover {
             background-color: rgba(255, 255, 255, 0.2);
           }
         }
       }
-      
+
       .modal-content {
         padding: 24px;
         max-height: 60vh;
         overflow-y: auto;
-        
+
         .modal-actions {
           display: flex;
           justify-content: space-between;
@@ -548,7 +548,7 @@
           margin-bottom: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #e5e7eb;
-          
+
           .select-all-btn {
             background: #667eea;
             color: white;
@@ -559,25 +559,25 @@
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            
+
             &:hover {
               background: #5a67d8;
             }
           }
-          
+
           .selected-count {
             font-size: 14px;
             color: #6b7280;
             font-weight: 500;
           }
         }
-        
+
         .date-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
           gap: 12px;
           margin-bottom: 20px;
-          
+
           .date-item {
             background: #f8fafc;
             border: 2px solid #e2e8f0;
@@ -589,24 +589,24 @@
             align-items: center;
             gap: 10px;
             position: relative;
-            
+
             &:hover {
               transform: translateY(-2px);
               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
               border-color: #667eea;
             }
-            
+
             &.selected {
               background: #eff6ff;
               border-color: #667eea;
               box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
-              
+
               .date-label {
                 color: #1e40af;
                 font-weight: 700;
               }
             }
-            
+
             .checkbox {
               input[type="checkbox"] {
                 width: 16px;
@@ -615,7 +615,7 @@
                 cursor: pointer;
               }
             }
-            
+
             .date-label {
               font-size: 14px;
               font-weight: 600;
@@ -623,7 +623,7 @@
               flex: 1;
               transition: color 0.3s ease;
             }
-            
+
             .selected-indicator {
               color: #667eea;
               display: flex;
@@ -634,7 +634,7 @@
               background: #667eea;
               border-radius: 50%;
               color: white;
-              
+
               svg {
                 width: 12px;
                 height: 12px;
@@ -642,12 +642,12 @@
             }
           }
         }
-        
+
         .modal-footer {
           text-align: center;
           padding-top: 16px;
           border-top: 1px solid #e5e7eb;
-          
+
           .apply-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -658,12 +658,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            
+
             &:hover {
               transform: translateY(-2px);
               box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
             }
-            
+
             &:disabled {
               opacity: 0.6;
               cursor: not-allowed;
@@ -797,5 +797,5 @@
   }
 
   @media (max-width: 1024px) {
-}
+  }
 }

@@ -1,0 +1,57 @@
+{
+  "home": "Home",
+  "post": "Post",
+  "job": "Job",
+  "news": "News & Blog",
+  "about": "About Us",
+  "contact": "Contact Us",
+  "pricing": "Pricing",
+  "forum": "Forum",
+  "hero": {
+    "title": { "line": "Top Translators", "highlight": "Connect TODAY!" },
+    "subtitle": "Professional Translators – Meeting all your translation needs with exceptional quality and lightning speed!",
+    "cta": "Hire a Translator Now",
+    "search": {
+      "select": {
+        "category": "Select Job Category",
+        "source": "Select Source Language",
+        "target": "Select Target Language",
+        "expertise": "Select Expertise"
+      },
+      "category": {
+        "translation": "Translation",
+        "interpretation": "Interpretation",
+        "localization": "Localization"
+      },
+      "language": {
+        "english": "English",
+        "spanish": "Spanish",
+        "french": "French"
+      },
+      "expertise": {
+        "legal": "Legal",
+        "medical": "Medical",
+        "technical": "Technical"
+      }
+    }
+  },
+  "account": {
+    "profile": "Profile Settings",
+    "postHistory": "Post History",
+    "wallet": "Wallet",
+    "logout": "Logout",
+    "appliedJob": "Applied Job",
+    "favoriteJob": "Favorite Job",
+    "certificate": "Certificate"
+  },
+  "businessCard": {
+    "title": "Try Business Plus",
+    "description": "Upgrade for quicker access to the top 1% of freelancers. No upfront costs.",
+    "upgrade": "Learn More"
+  },
+  "onlineToggle": {
+    "title": "Online for messages",
+    "online": "You appear online to receive messages",
+    "offline": "You appear offline"
+  }
+}

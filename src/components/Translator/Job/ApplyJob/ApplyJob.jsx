@@ -40,7 +40,7 @@ const getRandomGradient = () => {
 const fetchJobApplications = async (interpreterId, accessToken) => {
   try {
     const response = await axios.get(
-      `${API_URL}/api/JobApplication/interpreter/${interpreterId}`,
+      `${API_URL}/api/applications/interpreter/${interpreterId}`,
       {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
