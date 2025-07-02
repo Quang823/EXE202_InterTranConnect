@@ -32,17 +32,16 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getAllJobs } from "../../../apiHandler/jobAPIHandler";
-
-import "./content.scss";
+import "./Content.scss";
 
 const formatDateTime = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
@@ -203,11 +202,17 @@ const Content = () => {
                 className="search-container"
                 data-aos="fade-up"
                 data-aos-delay="400"
-              >
-              </div>
+              ></div>
             </div>
-            <div className="hero-image" data-aos="fade-left" data-aos-delay="500">
-              <img src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp" alt="Translation Services" />
+            <div
+              className="hero-image"
+              data-aos="fade-left"
+              data-aos-delay="500"
+            >
+              <img
+                src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp"
+                alt="Translation Services"
+              />
             </div>
           </div>
         </Parallax>
@@ -298,7 +303,9 @@ const Content = () => {
               data-aos="fade-up"
               data-aos-delay={index * 50}
             >
-              {index % 3 === 0 && <div className="featured-badge">Featured</div>}
+              {index % 3 === 0 && (
+                <div className="featured-badge">Featured</div>
+              )}
               <div className="job-header">
                 <div className="job-actions">
                   <FaRegBookmark className="bookmark-icon" />
@@ -345,7 +352,10 @@ const Content = () => {
                     <span>{formatDateTime(job.createdAt)}</span>
                   </div>
                 </div>
-                <button className="job-button" onClick={() => navigate(`/translator/jobDetails/${job.id}`)}>
+                <button
+                  className="job-button"
+                  onClick={() => navigate(`/translator/jobDetails/${job.id}`)}
+                >
                   View Details
                 </button>
               </div>
@@ -482,7 +492,10 @@ const Content = () => {
           </div>
         </div>
         <div className="cta-image">
-          <img src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp" alt="Translation career" />
+          <img
+            src="https://cdn.maestra.ai/images/2025/01/13112749/Artboard-2025-01-13T142713.708-1.webp"
+            alt="Translation career"
+          />
         </div>
       </section>
     </div>
