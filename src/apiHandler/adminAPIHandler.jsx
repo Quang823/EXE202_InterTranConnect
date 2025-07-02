@@ -113,4 +113,26 @@ export const updateWithdrawalRequestStatus = async (requestId, status, note) => 
     console.error('Error updating withdrawal request status:', error);
     throw error;
   }
+};
+
+// Approve certificate
+export const approveCertificate = async (certificateId) => {
+  try {
+    const response = await apiClient.post(`/admin/approve-certificate/${certificateId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error approving certificate:', error);
+    throw error;
+  }
+};
+
+// Reject certificate
+export const rejectCertificate = async (certificateId) => {
+  try {
+    const response = await apiClient.post(`/admin/reject-certificate/${certificateId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error rejecting certificate:', error);
+    throw error;
+  }
 }; 

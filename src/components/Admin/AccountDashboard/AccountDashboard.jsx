@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './AccountDashboard.scss';
 import { Search, Bell, Settings, Clock, AlertTriangle, Calendar, CheckCircle, Users, Plus, X, Eye, GraduationCap, Briefcase, Globe2, FileText, Image as ImageIcon, Languages, FileUp, Check } from 'lucide-react';
 import Swal from 'sweetalert2';
-import { getPendingCertificates, getUserById, approveUser, rejectUser } from '../../../apiHandler/adminAPIHandler';
+import { getPendingCertificates, approveCertificate, rejectCertificate } from '../../../apiHandler/adminAPIHandler';
 
 const AccountDashboard = () => {
   const [accounts, setAccounts] = useState([]);
@@ -12,32 +12,30 @@ const AccountDashboard = () => {
   const [modalData, setModalData] = useState(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
+  const token = sessionStorage.getItem('accessToken');
+
   const fetchAccounts = async () => {
     setIsLoading(true);
     try {
-      const certificates = await getPendingCertificates();
-      const accountsData = await Promise.all(
-        certificates.map(async (cert) => {
-          try {
-            const user = await getUserById(cert.applicationUserId);
-            return {
-              id: cert.id,
-              applicationUserId: cert.applicationUserId,
-              full_name: user.fullName,
-              email: user.email,
-              phone: user.phoneNumber,
-              status: user.approvalStatus,
-              createdAt: user.createdAt,
-            };
-          } catch (e) {
-            console.error(`Error fetching user details for cert ${cert.id}:`, e);
-            return null;
-          }
-        })
-      );
-      setAccounts(accountsData.filter(Boolean));
-    } catch (error) {
-      console.error("Failed to fetch pending certificates:", error);
+      const response = await getPendingCertificates();
+      // response là mảng [{ certificate, talent }]
+      const accountsData = response.map(item => {
+        const { certificate, talent } = item;
+        return {
+          id: certificate.id,
+          applicationUserId: certificate.applicationUserId,
+          full_name: talent.fullName,
+          email: talent.email,
+          phone: talent.phoneNumber,
+          status: talent.approvalStatus,
+          createdAt: talent.createAt,
+          // Thêm các trường cần thiết cho modal
+          ...certificate,
+        };
+      });
+      setAccounts(accountsData);
+    } catch (e) {
+      console.error('Failed to fetch pending certificates:', e);
     } finally {
       setIsLoading(false);
     }
@@ -70,17 +68,9 @@ const AccountDashboard = () => {
   }).length;
 
   // Modal open handler
-  const handleOpenModal = async (account) => {
+  const handleOpenModal = (account) => {
     setModalOpen(true);
-    setModalData(null);
-    try {
-      const certificates = await getPendingCertificates();
-      // Find the certificate for this account
-      const cert = certificates.find(c => c.id === account.id);
-      setModalData(cert);
-    } catch (e) {
-      setModalData({ error: 'Không thể tải thông tin chứng chỉ.' });
-    }
+    setModalData(account); // account đã có đủ thông tin certificate
   };
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -90,8 +80,8 @@ const AccountDashboard = () => {
   // Approve certificate
   const handleApprove = async (account) => {
     const result = await Swal.fire({
-      title: 'Xác nhận duyệt tài khoản?',
-      text: `Bạn chắc chắn muốn duyệt tài khoản này?`,
+      title: 'Xác nhận duyệt chứng chỉ?',
+      text: `Bạn chắc chắn muốn duyệt chứng chỉ này?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Duyệt',
@@ -102,7 +92,7 @@ const AccountDashboard = () => {
     if (!result.isConfirmed) return;
     setActionLoadingId(account.id);
     try {
-      await approveUser(account.applicationUserId);
+      await approveCertificate(account.id);
       await Swal.fire({ icon: 'success', title: 'Duyệt thành công!' });
       fetchAccounts();
     } catch (e) {
@@ -115,8 +105,8 @@ const AccountDashboard = () => {
   // Reject certificate
   const handleReject = async (account) => {
     const result = await Swal.fire({
-      title: 'Xác nhận từ chối tài khoản?',
-      text: `Bạn chắc chắn muốn từ chối tài khoản này?`,
+      title: 'Xác nhận từ chối chứng chỉ?',
+      text: `Bạn chắc chắn muốn từ chối chứng chỉ này?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Từ chối',
@@ -127,7 +117,7 @@ const AccountDashboard = () => {
     if (!result.isConfirmed) return;
     setActionLoadingId(account.id);
     try {
-      await rejectUser(account.applicationUserId);
+      await rejectCertificate(account.id);
       await Swal.fire({ icon: 'success', title: 'Từ chối thành công!' });
       fetchAccounts();
     } catch (e) {
@@ -135,6 +125,63 @@ const AccountDashboard = () => {
     } finally {
       setActionLoadingId(null);
     }
+  };
+
+  // Duyệt tất cả
+  const handleApproveAll = async () => {
+    const result = await Swal.fire({
+      title: 'Xác nhận duyệt tất cả?',
+      text: `Bạn chắc chắn muốn duyệt tất cả chứng chỉ này?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Duyệt tất cả',
+      cancelButtonText: 'Hủy',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    });
+    if (!result.isConfirmed) return;
+    setActionLoadingId('all');
+    try {
+      await Promise.all(accounts.map(acc => approveCertificate(acc.id)));
+      await Swal.fire({ icon: 'success', title: 'Duyệt tất cả thành công!' });
+      fetchAccounts();
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Duyệt tất cả thất bại!' });
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  // Từ chối tất cả
+  const handleRejectAll = async () => {
+    const result = await Swal.fire({
+      title: 'Xác nhận từ chối tất cả?',
+      text: `Bạn chắc chắn muốn từ chối tất cả chứng chỉ này?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Từ chối tất cả',
+      cancelButtonText: 'Hủy',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+    if (!result.isConfirmed) return;
+    setActionLoadingId('all');
+    try {
+      await Promise.all(accounts.map(acc => rejectCertificate(acc.id)));
+      await Swal.fire({ icon: 'success', title: 'Từ chối tất cả thành công!' });
+      fetchAccounts();
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Từ chối tất cả thất bại!' });
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  // Status mapping
+  const statusMap = {
+    0: 'Pending',
+    1: 'Waiting For Confirmation',
+    2: 'Completed',
   };
 
   return (
@@ -217,8 +264,8 @@ const AccountDashboard = () => {
               <p>Phê duyệt toàn bộ tài khoản</p>
               <div className="action-footer">
                 <span className="account-count">{pendingCount} tài khoản</span>
-                <button className="action-btn1 green">
-                  <CheckCircle size={16} />
+                <button className="action-btn1 green" onClick={handleApproveAll} disabled={actionLoadingId === 'all'}>
+                  {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <CheckCircle size={16} />}
                   Accept
                 </button>
               </div>
@@ -233,8 +280,8 @@ const AccountDashboard = () => {
               <p>Từ chối hàng loạt</p>
               <div className="action-footer">
                 <span className="account-count danger">Thao tác nguy hiểm</span>
-                <button className="action-btn1 red">
-                  <X size={16} />
+                <button className="action-btn1 red" onClick={handleRejectAll} disabled={actionLoadingId === 'all'}>
+                  {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <X size={16} />}
                   Cancel
                 </button>
               </div>
@@ -278,7 +325,7 @@ const AccountDashboard = () => {
                   <td>{account.full_name}</td>
                   <td>{account.email}</td>
                   <td>{account.phone}</td>
-                  <td>{account.status}</td>
+                  <td>{statusMap[account.status] || account.status}</td>
                   <td>
                     <div className="acd-action-buttons-dashboard">
                       <button className="view-btn" title="Xem chi tiết" onClick={() => handleOpenModal(account)}>
