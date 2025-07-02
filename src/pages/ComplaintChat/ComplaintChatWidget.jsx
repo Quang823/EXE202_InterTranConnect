@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   fetchComplaints,
   fetchComplaintMessages,
@@ -10,6 +10,8 @@ import { fetchJobApplications } from "../../services/jobApplicationService";
 import { uploadToCloudinaryService } from "../../services/uploadToCloudinaryService";
 import { getUserInfoByUserIdService } from "../../services/authService";
 import "./ComplaintChatWidget.scss";
+import AuthContext from "../../context/AuthContext";
+import { useComplaintChat } from "../../hooks/useComplaintChat";
 
 const ComplaintChatWidget = () => {
   const [open, setOpen] = useState(false);
@@ -33,6 +35,7 @@ const ComplaintChatWidget = () => {
   const [loadingApplications, setLoadingApplications] = useState(false);
   const [userCache, setUserCache] = useState({});
   const userId = useRef(null);
+  const { user, token } = useContext(AuthContext);
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -217,6 +220,14 @@ const ComplaintChatWidget = () => {
     const url = await uploadToCloudinaryService(file);
     setNewComplaint({ ...newComplaint, attachment: url });
   };
+
+  // Realtime chat: nhận tin nhắn mới qua SignalR
+  useComplaintChat(user?.id, token, (message) => {
+    // Nếu message thuộc khiếu nại đang mở, luôn gọi lại API để lấy tin nhắn mới nhất
+    if (selectedComplaint && message.complaintId === selectedComplaint.id) {
+      loadMessages(selectedComplaint.id);
+    }
+  });
 
   return (
     <>

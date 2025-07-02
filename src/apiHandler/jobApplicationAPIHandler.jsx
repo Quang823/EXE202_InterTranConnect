@@ -10,7 +10,7 @@ export const getJobApplication = async (jobId) => {
 export const selectTranslatorForJob = async (jobId, interpreterId) => {
   try {
     const response = await apiClient.post(
-      "/select",
+      `${rootJobApplication}/select`,
       { jobId, interpreterId },
       {
         timeout: 10000,

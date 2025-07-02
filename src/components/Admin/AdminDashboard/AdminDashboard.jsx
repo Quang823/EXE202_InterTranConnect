@@ -71,7 +71,9 @@ export default function AdminDashboard() {
           </div>
           <div className="card-body">
             <div className="stats-value">{statsData.approved}</div>
-            <div className="stats-trend">{statsData.approvalRate}% tỷ lệ duyệt</div>
+            <div className="stats-trend">
+              {statsData.approvalRate}% tỷ lệ duyệt
+            </div>
             <CheckCircle2 className="stats-icon" />
           </div>
         </div>
