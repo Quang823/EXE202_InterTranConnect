@@ -240,10 +240,8 @@ const WithdrawalRequests = () => {
       {/* Header */}
       <div className="wp-header">
         <div className="wp-header-text">
-          <h1 className="wp-title">Yêu cầu rút tiền</h1>
-          <p className="wp-subtitle">
-            Quản lý và xử lý các yêu cầu rút tiền từ khách hàng
-          </p>
+          <h1 className="wp-title">Withdrawal Requests</h1>
+          <p className="wp-subtitle">Manage and process withdrawal requests from customers</p>
         </div>
         <div className="wp-header-buttons">
           <button
@@ -251,11 +249,11 @@ const WithdrawalRequests = () => {
             onClick={() => setRefreshTrigger((c) => c + 1)}
           >
             <ArrowPathIcon className="wp-icon" />
-            Làm mới
+            Refresh
           </button>
           <button className="wp-export-button">
             <ArrowDownTrayIcon className="wp-icon" />
-            Xuất Excel
+            Export Excel
           </button>
         </div>
       </div>
@@ -265,7 +263,7 @@ const WithdrawalRequests = () => {
         <div className="wp-filter-header">
           <h3 className="wp-filter-title">
             <FunnelIcon className="wp-filter-icon" />
-            Bộ lọc tìm kiếm
+            Search Filters
           </h3>
         </div>
         <div className="wp-filter-content">
@@ -274,7 +272,7 @@ const WithdrawalRequests = () => {
               <MagnifyingGlassIcon className="wp-search-icon" />
               <input
                 type="text"
-                placeholder="Tìm theo tên, email, STK..."
+                placeholder="Search by name, email, bank account..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="wp-search-input"
@@ -286,10 +284,10 @@ const WithdrawalRequests = () => {
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
               >
-                <option value="all">Tất cả thời gian</option>
-                <option value="today">Hôm nay</option>
-                <option value="week">7 ngày qua</option>
-                <option value="month">30 ngày qua</option>
+                <option value="all">All time</option>
+                <option value="today">Today</option>
+                <option value="week">Last 7 days</option>
+                <option value="month">Last 30 days</option>
               </select>
             </div>
             <div>
@@ -298,10 +296,10 @@ const WithdrawalRequests = () => {
                 value={amountFilter}
                 onChange={(e) => setAmountFilter(e.target.value)}
               >
-                <option value="all">Tất cả số tiền</option>
-                <option value="small">&lt; 1 triệu</option>
-                <option value="medium">1 - 10 triệu</option>
-                <option value="large">&gt; 10 triệu</option>
+                <option value="all">All amounts</option>
+                <option value="small">&lt; 1 million</option>
+                <option value="medium">1 - 10 million</option>
+                <option value="large">&gt; 10 million</option>
               </select>
             </div>
             <div>
@@ -310,12 +308,12 @@ const WithdrawalRequests = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <option value="all">Tất cả trạng thái</option>
-                <option value="0">Chờ xử lý</option>
-                <option value="1">Đã duyệt</option>
-                <option value="2">Từ chối</option>
-                <option value="3">Đang xử lý</option>
-                <option value="4">Hoàn thành</option>
+                <option value="all">All statuses</option>
+                <option value="0">Pending</option>
+                <option value="1">Approved</option>
+                <option value="2">Rejected</option>
+                <option value="3">Processing</option>
+                <option value="4">Completed</option>
               </select>
             </div>
           </div>
@@ -325,34 +323,28 @@ const WithdrawalRequests = () => {
       {/* Results */}
       <div className="wp-results-card">
         <div className="wp-results-header">
-          <h2 className="wp-results-title">
-            Danh sách yêu cầu ({withdrawalRequests.length})
-          </h2>
+          <h2 className="wp-results-title">Request List ({withdrawalRequests.length})</h2>
         </div>
         <div className="wp-table-container">
           <table className="wp-requests-table">
             <thead className="wp-table-head">
               <tr>
-                <th className="wp-table-header">Khách hàng</th>
-                <th className="wp-table-header">Số tiền</th>
-                <th className="wp-table-header">Thông tin ngân hàng</th>
-                <th className="wp-table-header">Trạng thái</th>
-                <th className="wp-table-header">Ngày tạo</th>
-                <th className="wp-table-header">Thao tác</th>
+                <th className="wp-table-header">Customer</th>
+                <th className="wp-table-header">Amount</th>
+                <th className="wp-table-header">Bank Info</th>
+                <th className="wp-table-header">Status</th>
+                <th className="wp-table-header">Created Date</th>
+                <th className="wp-table-header">Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="wp-no-results">
-                    Đang tải...
-                  </td>
+                  <td colSpan={6} className="wp-no-results">Loading...</td>
                 </tr>
               ) : withdrawalRequests.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="wp-no-results">
-                    Không tìm thấy yêu cầu nào phù hợp với bộ lọc
-                  </td>
+                  <td colSpan={6} className="wp-no-results">No requests found matching the filter</td>
                 </tr>
               ) : (
                 withdrawalRequests.map((request) => (
@@ -413,9 +405,7 @@ const WithdrawalRequests = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="wp-modal-header">
-              <h2 className="wp-modal-title">
-                Chi tiết yêu cầu
-              </h2>
+              <h2 className="wp-modal-title">Request Details</h2>
               <button
                 className="wp-modal-close-button"
                 onClick={handleCloseModals}
@@ -444,7 +434,7 @@ const WithdrawalRequests = () => {
           >
             <div className="wp-modal-header">
               <h2 className="wp-modal-title">
-                Phê duyệt yêu cầu
+                Approve Request
               </h2>
               <button
                 className="wp-modal-close-button"

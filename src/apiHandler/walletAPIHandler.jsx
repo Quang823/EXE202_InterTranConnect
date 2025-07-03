@@ -59,8 +59,16 @@ export const createWithdrawalRequest = async (data) => {
 };
 
 export const confirmWithdrawalReceived = async (id) => {
-  const response = await apiClient.patch(
+  const response = await apiClient.post(
     `/withdrawal-requests/${id}/confirm-received`
+  );
+  return response.data;
+};
+
+// Cancel withdrawal request
+export const cancelWithdrawalRequest = async (id) => {
+  const response = await apiClient.put(
+    `/withdrawal-requests/${id}/cancel`
   );
   return response.data;
 };

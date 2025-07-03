@@ -31,7 +31,7 @@ const RevenueDashboard = () => {
       setDashboardData(data);
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
-      setError('Không thể tải dữ liệu dashboard. Vui lòng thử lại.');
+      setError('Unable to load dashboard data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -175,9 +175,9 @@ const RevenueDashboard = () => {
     return (
       <div className="dashboard">
         <div className="error-message">
-          <h3>Lỗi</h3>
+          <h3>Error</h3>
           <p>{error}</p>
-          <button onClick={() => fetchDashboardData()}>Thử lại</button>
+          <button onClick={() => fetchDashboardData()}>Retry</button>
         </div>
       </div>
     );
@@ -187,8 +187,8 @@ const RevenueDashboard = () => {
     <div className="dashboard">
       <div className="dashboard-header">
         <div>
-          <h1>Dashboard Doanh thu</h1>
-          <p>Phân tích và theo dõi dòng tiền</p>
+          <h1>Revenue Dashboard</h1>
+          <p>Analyze and track cash flow</p>
         </div>
         <div className="header-controls">
           <div className="date-filter-container">
@@ -200,7 +200,7 @@ const RevenueDashboard = () => {
                 startDate={customDateRange.startDate}
                 endDate={customDateRange.endDate}
                 dateFormat="dd/MM/yyyy"
-                placeholderText="Từ ngày"
+                placeholderText="From date"
                 className="date-input"
                 maxDate={customDateRange.endDate}
               />
@@ -213,7 +213,7 @@ const RevenueDashboard = () => {
                 endDate={customDateRange.endDate}
                 minDate={customDateRange.startDate}
                 dateFormat="dd/MM/yyyy"
-                placeholderText="Đến ngày"
+                placeholderText="To date"
                 className="date-input"
               />
               {(customDateRange.startDate || customDateRange.endDate) && (
@@ -239,34 +239,34 @@ const RevenueDashboard = () => {
 
       <div className="stats-grid">
         <StatCard
-          title="Tổng doanh thu"
+          title="Total Revenue"
           value={formatCurrency(statistics.totalRevenue)}
           trend="up"
-          trendText="Tăng trưởng mọi thời điểm"
+          trendText="Growth over time"
           color="green"
           icon={DollarSign}
         />
         <StatCard
-          title="Doanh thu tháng này"
+          title="Revenue this month"
           value={formatCurrency(dashboardData?.monthlyRevenue || 0)}
           trend="neutral"
-          trendText="0.0% so với tháng trước"
+          trendText="0.0% compared to last month"
           color="blue"
           icon={TrendingUp}
         />
         <StatCard
-          title="Tổng giao dịch"
+          title="Total Transactions"
           value={statistics.totalTransactions.toString()}
           trend="up"
-          trendText="Số lượng giao dịch"
+          trendText="Number of transactions"
           color="purple"
           icon={Users}
         />
         <StatCard
-          title="Giá giao dịch trung bình"
+          title="Average Transaction Value"
           value={formatCurrency(statistics.avgTransactionValue)}
           trend="up"
-          trendText="Giá trị mỗi giao dịch"
+          trendText="Value of each transaction"
           color="orange"
           icon={DollarSign}
         />
@@ -274,7 +274,7 @@ const RevenueDashboard = () => {
 
       <div className="charts-grid">
         <div className="chart-container">
-          <h3>Doanh thu theo thời gian (VNĐ)</h3>
+          <h3>Revenue over time (VND)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={statistics.lineChartData}>
               <defs>
@@ -310,7 +310,7 @@ const RevenueDashboard = () => {
         </div>
 
         <div className="chart-container">
-          <h3>Phân bổ doanh thu theo danh mục</h3>
+          <h3>Revenue distribution by category</h3>
           <div className="pie-chart-wrapper">
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
@@ -374,14 +374,14 @@ const RevenueDashboard = () => {
       </div>
 
       <div className="transactions-section">
-        <h3>Giao dịch gần đây</h3>
+        <h3>Recent Transactions</h3>
         <div className="transactions-table">
           <div className="table-header">
-            <div>Khách hàng</div>
-            <div>Ngày</div>
-            <div>Số tiền</div>
-            <div>Danh mục</div>
-            <div>Nguồn</div>
+            <div>Customer</div>
+            <div>Date</div>
+            <div>Amount</div>
+            <div>Category</div>
+            <div>Source</div>
           </div>
           {currentTransactions.map((transaction, index) => (
             <div key={index} className="table-row">
@@ -399,9 +399,9 @@ const RevenueDashboard = () => {
           <div className="pagination-container">
             <div className="pagination-info">
               <span>
-                Hiển thị {indexOfFirstTransaction + 1}-
-                {Math.min(indexOfLastTransaction, dashboardData.recentTransactions.length)} của{" "}
-                {dashboardData.recentTransactions.length} giao dịch
+                Displaying {indexOfFirstTransaction + 1}-
+                {Math.min(indexOfLastTransaction, dashboardData.recentTransactions.length)} of{" "}
+                {dashboardData.recentTransactions.length} transactions
               </span>
             </div>
             <div className="pagination-controls">
@@ -411,7 +411,7 @@ const RevenueDashboard = () => {
                 disabled={currentPage === 1}
               >
                 <ChevronLeft size={16} />
-                <span>Trước</span>
+                <span>Previous</span>
               </button>
 
               <div className="pagination-numbers">
@@ -435,7 +435,7 @@ const RevenueDashboard = () => {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
-                <span>Sau</span>
+                <span>Next</span>
                 <ChevronRight size={16} />
               </button>
             </div>

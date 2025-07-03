@@ -6,6 +6,7 @@ import {
   createWithdrawalRequest,
   confirmWithdrawalReceived,
   getMyWithdrawalRequests,
+  cancelWithdrawalRequest,
 } from "../apiHandler/walletAPIHandler";
 
 export const fetchUserWallet = async (accountId) => {
@@ -126,6 +127,16 @@ export const getMyWithdrawalRequestsService = async () => {
     return await getMyWithdrawalRequests();
   } catch (error) {
     console.error("Error fetching my withdrawal requests:", error);
+    throw error;
+  }
+};
+
+export const cancelWithdrawalRequestService = async (id) => {
+  try {
+    if (!id) throw new Error("id is required");
+    return await cancelWithdrawalRequest(id);
+  } catch (error) {
+    console.error("Error canceling withdrawal request:", error);
     throw error;
   }
 };

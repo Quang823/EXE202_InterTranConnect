@@ -15,9 +15,9 @@ import BulkActions from './BulkActions/BulkActions';
 import { getPendingCertificates, getUserById } from '../../../apiHandler/adminAPIHandler';
 
 const statusConfig = {
-  pending: { label: "Chờ duyệt", className: "ap-status-pending" },
-  approved: { label: "Đã duyệt", className: "ap-status-approved" },
-  suspended: { label: "Tạm khóa", className: "ap-status-suspended" }
+  pending: { label: "Pending", className: "ap-status-pending" },
+  approved: { label: "Approved", className: "ap-status-approved" },
+  suspended: { label: "Suspended", className: "ap-status-suspended" }
 };
 
 export default function Accounts() {
@@ -118,27 +118,27 @@ export default function Accounts() {
             <Search className="ap-search-icon" />
             <input
               type="text"
-              placeholder="Tìm kiếm theo tên, email, công ty..."
+              placeholder="Search by name, email, company..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="ap-search-input"
             />
           </div>
           <select className="ap-filter-select" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="all">Tất cả</option>
-            <option value="pending">Chờ duyệt</option>
-            <option value="approved">Đã duyệt</option>
-            <option value="suspended">Tạm khóa</option>
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="suspended">Suspended</option>
           </select>
         </div>
         <div className="ap-action-buttons">
           <button className="ap-export-button">
             <Download className="ap-button-icon" />
-            Xuất Excel
+            Export Excel
           </button>
           <button className="ap-add-button">
             <Plus className="ap-button-icon" />
-            Thêm tài khoản
+            Add Account
           </button>
         </div>
       </div>
@@ -160,10 +160,10 @@ export default function Accounts() {
       <div className="ap-table-card">
         <div className="ap-table-header">
           <div className="ap-table-title">
-            Danh sách tài khoản ({filteredAccounts.length})
+            Account List ({filteredAccounts.length})
           </div>
           <div className="ap-table-selection">
-            {selectedAccounts.length > 0 && `${selectedAccounts.length} đã chọn`}
+            {selectedAccounts.length > 0 && `${selectedAccounts.length} selected`}
           </div>
         </div>
         <div className="ap-table-wrapper">
@@ -178,9 +178,9 @@ export default function Accounts() {
                     className="ap-checkbox"
                   />
                 </th>
-                <th className="ap-table-header-cell">Tài khoản</th>
-                <th className="ap-table-header-cell">Liên hệ</th>
-                <th className="ap-table-header-cell">Trạng thái</th>
+                <th className="ap-table-header-cell">Account</th>
+                <th className="ap-table-header-cell">Contact</th>
+                <th className="ap-table-header-cell">Status</th>
                 <th className="ap-table-header-cell"></th>
               </tr>
             </thead>

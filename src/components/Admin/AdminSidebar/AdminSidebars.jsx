@@ -20,27 +20,27 @@ const navigationItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Quản lý Tài khoản",
+    title: "Account Management",
     url: "/admin/accountAdmin",
     icon: Users,
   },
   {
-    title: "Phê duyệt",
+    title: "Approval",
     url: "/admin/accountAccept",
     icon: UserCheck,
   },
   {
-    title: "Quản trị doanh thu",
+    title: "Revenue Management",
     url: "/admin/revenue",
     icon: UserCheck,
   },
   {
-    title: "Quản trị đăng ký",
+    title: "Subscription Management",
     url: "/admin/subscription",
     icon: UserCheck,
   },
   {
-    title: "Quản lý khiếu nại",
+    title: "Complaint Management",
     url: "/admin/complaint",
     icon: UserCheck,
   },
@@ -81,10 +81,10 @@ export default function AdminSidebars({ children, currentPageName }) {
 
   const getRoleText = () => {
     if (user && user.role) {
-      if (user.role === "admin") return "Quản trị viên hệ thống";
+      if (user.role === "admin") return "System Administrator";
       return user.role;
     }
-    return "Quản trị viên hệ thống";
+    return "System Administrator";
   };
 
   const sidebarContent = (
@@ -96,7 +96,7 @@ export default function AdminSidebars({ children, currentPageName }) {
           </div>
           <div>
             <h2 className="ap-title">AdminPanel</h2>
-            <p className="ap-subtitle">Quản lý hệ thống</p>
+            <p className="ap-subtitle">System Management</p>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function AdminSidebars({ children, currentPageName }) {
                 >
                   <item.icon className="ap-menu-icon" />
                   <span className="ap-menu-title">{item.title}</span>
-                  {item.title === "Phê duyệt" && (
+                  {item.title === "Approval" && (
                     <Badge
                       bg="warning"
                       text="dark"
@@ -147,12 +147,12 @@ export default function AdminSidebars({ children, currentPageName }) {
         {user ? (
           <button className="ap-logout-button" onClick={handleLogout}>
             <LogOut className="ap-logout-icon" />
-            Đăng xuất
+            Logout
           </button>
         ) : (
           <button className="ap-login-button" onClick={handleLogin}>
             <LogIn className="ap-login-icon" />
-            Đăng nhập
+            Login
           </button>
         )}
       </div>
