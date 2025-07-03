@@ -20,9 +20,12 @@ export const useComplaintChat = (userId, accessToken, onMessage) => {
       .withAutomaticReconnect()
       .build();
 
-    connection.start();
+    connection.start().then(() => {
+      console.log("[ADMIN] SignalR connected");
+    });
 
     connection.on("ReceiveComplaintMessage", (message) => {
+      console.log("[ADMIN] SignalR received message:", message);
       onMessage && onMessage(message);
     });
 

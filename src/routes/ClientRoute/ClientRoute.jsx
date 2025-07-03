@@ -13,7 +13,7 @@ import Forums from "../../pages/Translator/Forums/Forums";
 import InterTransConnects from "../../pages/Translator/InterTransConnects/InterTransConnects";
 import NewsBlog from "../../pages/Shared/NewBlog/NewsBlog";
 import NotificationsPage from "../../pages/NotificationsPage/NotificationsPage";
-
+import Review from "../../pages/Client/Review/Review";
 const ClientRoute = () => {
   return (
     <Routes>
@@ -34,6 +34,7 @@ const ClientRoute = () => {
       <Route path="/aboutUs" element={<InterTransConnects />} />
       <Route path="/news_blog" element={<NewsBlog />} />
       <Route path="/notifications" element={<NotificationsPage />} />
+      <Route path="/review" element={<Review />} />
     </Routes>
   );
 };

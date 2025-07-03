@@ -9,76 +9,84 @@ import {
   Activity,
 } from "lucide-react";
 import { getPendingCertificates } from "../../../apiHandler/adminAPIHandler";
-import { Doughnut } from 'react-chartjs-2';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 Chart.register(ArcElement, Tooltip, Legend);
+import ComplaintDashboard from "../ComplaintDashboard/ComplaintDashboard";
 
 export default function AdminDashboard() {
   // Thêm biến đếm
-  const [approvedCount, setApprovedCount] = useState(() => Number(localStorage.getItem('approvedCount')) || 0);
-  const [rejectedCount, setRejectedCount] = useState(() => Number(localStorage.getItem('rejectedCount')) || 0);
+  const [approvedCount, setApprovedCount] = useState(
+    () => Number(localStorage.getItem("approvedCount")) || 0
+  );
+  const [rejectedCount, setRejectedCount] = useState(
+    () => Number(localStorage.getItem("rejectedCount")) || 0
+  );
   const [pendingCount, setPendingCount] = useState(0);
 
   // Lấy số lượng pending thực tế từ API
   useEffect(() => {
     // Lấy số lượng pending thực tế từ API
-    getPendingCertificates().then(data => setPendingCount(data.length)).catch(() => setPendingCount(0));
+    getPendingCertificates()
+      .then((data) => setPendingCount(data.length))
+      .catch(() => setPendingCount(0));
   }, []);
 
   // Lưu vào localStorage khi thay đổi
   useEffect(() => {
-    localStorage.setItem('approvedCount', approvedCount);
+    localStorage.setItem("approvedCount", approvedCount);
   }, [approvedCount]);
   useEffect(() => {
-    localStorage.setItem('rejectedCount', rejectedCount);
+    localStorage.setItem("rejectedCount", rejectedCount);
   }, [rejectedCount]);
 
   useEffect(() => {
     const handleStorage = (e) => {
-      if (e.key === 'approvedCount') setApprovedCount(Number(e.newValue) || 0);
-      if (e.key === 'rejectedCount') setRejectedCount(Number(e.newValue) || 0);
+      if (e.key === "approvedCount") setApprovedCount(Number(e.newValue) || 0);
+      if (e.key === "rejectedCount") setRejectedCount(Number(e.newValue) || 0);
     };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   // Hàm xử lý bấm approve/reject
   const handleApprove = () => {
-    setApprovedCount(prev => prev + 1);
-    setPendingCount(prev => (prev > 0 ? prev - 1 : 0));
+    setApprovedCount((prev) => prev + 1);
+    setPendingCount((prev) => (prev > 0 ? prev - 1 : 0));
   };
   const handleReject = () => {
-    setRejectedCount(prev => prev + 1);
-    setPendingCount(prev => (prev > 0 ? prev - 1 : 0));
+    setRejectedCount((prev) => prev + 1);
+    setPendingCount((prev) => (prev > 0 ? prev - 1 : 0));
   };
 
   // Hàm reset số liệu
   const handleResetCounts = () => {
     setApprovedCount(0);
     setRejectedCount(0);
-    localStorage.setItem('approvedCount', 0);
-    localStorage.setItem('rejectedCount', 0);
+    localStorage.setItem("approvedCount", 0);
+    localStorage.setItem("rejectedCount", 0);
   };
 
   // Tính toán tổng
   const total = approvedCount + rejectedCount + pendingCount;
-  const approvalRate = total > 0 ? Math.round((approvedCount / total) * 100) : 0;
+  const approvalRate =
+    total > 0 ? Math.round((approvedCount / total) * 100) : 0;
 
   // Dữ liệu cho doughnut chart
   const doughnutData = {
-    labels: ['Approved', 'Rejected', 'Pending Approval'],
+    labels: ["Approved", "Rejected", "Pending Approval"],
     datasets: [
       {
         data: [approvedCount, rejectedCount, pendingCount],
         backgroundColor: [
-          'rgba(54, 162, 235, 0.7)', // Approved
-          'rgba(255, 99, 132, 0.7)', // Rejected
-          'rgba(255, 206, 86, 0.7)', // Pending
+          "rgba(54, 162, 235, 0.7)", // Approved
+          "rgba(255, 99, 132, 0.7)", // Rejected
+          "rgba(255, 206, 86, 0.7)", // Pending
         ],
         borderColor: [
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 206, 86, 1)',
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
         ],
         borderWidth: 1,
       },
@@ -89,10 +97,10 @@ export default function AdminDashboard() {
     plugins: {
       legend: {
         display: true,
-        position: 'bottom',
+        position: "bottom",
       },
     },
-    cutout: '70%',
+    cutout: "70%",
     responsive: true,
     maintainAspectRatio: false,
   };
@@ -104,7 +112,9 @@ export default function AdminDashboard() {
         <div className="welcome-overlay"></div>
         <div className="welcome-content">
           <h2 className="welcome-title">Welcome back!</h2>
-          <p className="welcome-text">There are {pendingCount} accounts pending approval today</p>
+          <p className="welcome-text">
+            There are {pendingCount} accounts pending approval today
+          </p>
           <div className="welcome-stats">
             <div className="welcome-stat">
               <Activity className="welcome-icon" />
@@ -166,10 +176,23 @@ export default function AdminDashboard() {
       </div>
 
       {/* Doughnut Chart */}
-      <div style={{maxWidth:400, margin:'32px auto', height:320, background:'#fff', borderRadius:16, boxShadow:'0 2px 8px #eee', padding:24}}>
-        <h3 style={{textAlign:'center', marginBottom:16}}>Account Status Overview</h3>
+      <div
+        style={{
+          maxWidth: 400,
+          margin: "32px auto",
+          height: 320,
+          background: "#fff",
+          borderRadius: 16,
+          boxShadow: "0 2px 8px #eee",
+          padding: 24,
+        }}
+      >
+        <h3 style={{ textAlign: "center", marginBottom: 16 }}>
+          Account Status Overview
+        </h3>
         <Doughnut data={doughnutData} options={doughnutOptions} />
       </div>
+      <ComplaintDashboard />
     </div>
   );
 }

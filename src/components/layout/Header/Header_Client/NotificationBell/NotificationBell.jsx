@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNotification } from "../../../../../hooks/useNotification";
 import AuthContext from "../../../../../context/AuthContext";
 import { getUserInfoByUserIdService } from "../../../../../services/authService";
+import useRefreshUserInfo from "../../../../../hooks/useRefreshUserInfo";
 import { Bell, X } from "lucide-react";
 import "./NotificationBell.scss";
 
@@ -12,30 +13,16 @@ const NotificationBell = ({ onClick, mobile }) => {
   const [showCertificateWarning, setShowCertificateWarning] = useState(false);
   const [showPriorityWarning, setShowPriorityWarning] = useState(false);
 
+  const refreshUserInfo = useRefreshUserInfo();
+
   useNotification(user?.id, token, (notification) => {
     setNotifications((prev) => [notification, ...prev]);
     setShowDropdown(true); // Show dropdown on new notification
   });
 
-  // Fetch latest approvalStatus from backend when mount
+  // Fetch latest approvalStatus from backend when mount or user.id changes
   useEffect(() => {
-    const fetchLatestUser = async () => {
-      if (user?.id) {
-        try {
-          const latestUser = await getUserInfoByUserIdService(user.id);
-          // Cập nhật lại context nếu muốn đồng bộ toàn app
-          login(
-            { ...user, approvalStatus: latestUser.approvalStatus },
-            token,
-            sessionStorage.getItem("refreshToken"),
-            priority
-          );
-        } catch (err) {
-          // handle error nếu cần
-        }
-      }
-    };
-    fetchLatestUser();
+    refreshUserInfo();
   }, [user?.id]);
 
   useEffect(() => {

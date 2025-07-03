@@ -18,7 +18,7 @@ const AdminDashboards = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-container container mx-auto">
-        <AdminDashboard newSignalRMessage={newSignalRMessage} /> 
+        <AdminDashboard />
       </div>
     </div>
   );

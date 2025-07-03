@@ -44,7 +44,7 @@ const TranslatorProfile = () => {
           name: response.fullName,
           avatar:
             response?.avatarUrl ||
-            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=300&fit=crop&crop=face",
+            "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
           role: "English–Vietnamese Translator",
           email: response.email,
           phone: "+1 (555) 123-4567",

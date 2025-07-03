@@ -22,3 +22,13 @@ export const selectTranslatorForJob = async (jobId, interpreterId) => {
     throw error;
   }
 };
+
+export const getJobApplicationById = async (id) => {
+  try {
+    const response = await apiClient.get(`${rootJobApplication}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw error;
+  }
+};

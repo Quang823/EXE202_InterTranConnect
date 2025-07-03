@@ -11,7 +11,7 @@ import PlanCard from "./PlanCard"; // Adjust the import path as needed
 import ToastManager from "../../../components/common/Toast/ToastManager";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
-import { getUserInfoByUserIdService } from "../../../services/authService";
+import useRefreshUserInfo from "../../../hooks/useRefreshUserInfo";
 
 // Main component
 const MembershipPlans = () => {
@@ -26,6 +26,7 @@ const MembershipPlans = () => {
   const [currentSub, setCurrentSub] = useState(null);
   const navigate = useNavigate();
   const { user, login, token, refreshToken } = useAuth();
+  const refreshUserInfo = useRefreshUserInfo();
 
   // Function to fetch plans and current subscription
   const fetchPlansAndCurrent = async () => {
@@ -95,31 +96,12 @@ const MembershipPlans = () => {
         navigate("/client/wallet");
       } else {
         ToastManager.showSuccess("Package purchase successful!");
-        if (user?.id) {
-          try {
-            const latestUser = await getUserInfoByUserIdService(user.id);
-            login(
-              {
-                fullName: latestUser.fullName,
-                id: latestUser.id,
-                role: latestUser.role || user.role,
-                approvalStatus: latestUser.approvalStatus,
-              },
-              token,
-              refreshToken,
-              latestUser.priority
-            );
-            // Reload the component to get updated subscription data
-            await fetchPlansAndCurrent();
-          } catch (e) {
-            // Có thể log hoặc toast lỗi nếu cần
-          }
-        }
+        await refreshUserInfo();
+        // Reload the component to get updated subscription data
+        await fetchPlansAndCurrent();
       }
-    } catch (error) {
-      ToastManager.showError(
-        "An error occurred while purchasing the package. Please try again!"
-      );
+    } catch (e) {
+      // Có thể log hoặc toast lỗi nếu cần
     } finally {
       setIsSubscribing(false);
     }

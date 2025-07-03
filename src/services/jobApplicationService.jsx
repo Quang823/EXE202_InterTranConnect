@@ -1,6 +1,7 @@
 import {
   getJobApplication,
   selectTranslatorForJob,
+  getJobApplicationById,
 } from "../apiHandler/jobApplicationAPIHandler";
 
 export const fetchJobApplications = async (jobId) => {
@@ -60,6 +61,25 @@ export const selectTranslator = async (jobId, interpreterId) => {
       error.response?.data?.message ||
         error.message ||
         "Failed to select translator. Please try again later."
+    );
+  }
+};
+
+export const fetchJobApplicationById = async (id) => {
+  try {
+    if (!id || typeof id !== "string") {
+      throw new Error("Application ID is required and must be a string!");
+    }
+    const application = await getJobApplicationById(id);
+    if (!application) {
+      throw new Error("Application not found or invalid response.");
+    }
+    return application;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch job application. Please try again later."
     );
   }
 };

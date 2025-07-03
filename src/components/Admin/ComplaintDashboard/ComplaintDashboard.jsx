@@ -6,6 +6,9 @@ import {
 } from "../../../services/complainService";
 import { getUserInfoByUserIdService } from "../../../services/authService";
 import "./ComplaintDashboard.scss";
+import { useComplaintChat } from "../../../hooks/useComplaintChat";
+import AuthContext from "../../../context/AuthContext";
+import { useContext } from "react";
 
 const complaintTypeMap = ["Job", "User", "Technical", "Payment", "Other"];
 
@@ -18,6 +21,10 @@ const ComplaintDashboard = () => {
   const [sending, setSending] = useState(false);
   const [userCache, setUserCache] = useState({}); // { userId: { fullName, avatarUrl } }
   const userId = useRef(null);
+  const { user, accessToken: contextToken } = useContext(AuthContext) || {};
+  const accessToken = contextToken || sessionStorage.getItem("accessToken");
+  console.log("[ADMIN] user:", user);
+  console.log("[ADMIN] accessToken:", accessToken);
 
   useEffect(() => {
     // Lấy userId admin hiện tại từ sessionStorage
@@ -25,6 +32,22 @@ const ComplaintDashboard = () => {
     userId.current = user.id;
     loadComplaints();
   }, []);
+
+  useComplaintChat(user?.id, accessToken, (message) => {
+    console.log("[ADMIN] SignalR message received:", message);
+    console.log("[ADMIN] Current selectedComplaint:", selectedComplaint);
+    if (
+      message &&
+      selectedComplaint &&
+      message.complaintId === selectedComplaint.id
+    ) {
+      console.log(
+        "[ADMIN] Reloading messages for complaint:",
+        selectedComplaint.id
+      );
+      handleSelectComplaint(selectedComplaint);
+    }
+  });
 
   const loadComplaints = async () => {
     setLoading(true);

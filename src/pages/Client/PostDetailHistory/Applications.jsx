@@ -580,70 +580,90 @@ const Applications = ({ job }) => {
           )}
         </div>
       )}
-      <Modal
-        show={showPaymentModal}
-        onHide={handlePaymentCancel}
-        className="custom-payment-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Payment Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p style={{ marginBottom: "15px" }}>Confirm payment details below:</p>
-          <ul>
-            <li>
-              <strong>Hourly Rate:</strong>{" "}
-              {paymentDetails.hourlyRate.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}{" "}
-              VND
-            </li>
-            <li>
-              <strong>Platform Service Fee:</strong>{" "}
-              {paymentDetails.platformServiceFee.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}{" "}
-              VND
-            </li>
-            <li>
-              <strong>Total Amount:</strong>{" "}
-              {paymentDetails.totalFee.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}{" "}
-              VND
-            </li>
-          </ul>
-          <div className="notes-section">
-            <h5>Notes:</h5>
-            <ul>
-              <li>
-                The <strong>Hourly Rate</strong> is the base cost.
-              </li>
-              <li>
-                The <strong>Platform Service Fee</strong> covers support costs.
-              </li>
-              <li>
-                <strong>Total Amount</strong> is the final payment.
-              </li>
-            </ul>
-            <p>
-              Payment deducts from your wallet. Insufficient funds redirect to
-              deposit.
-            </p>
+      {showPaymentModal && (
+        <div className="wallet-modal-overlay" onClick={handlePaymentCancel}>
+          <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="wallet-modal__header">
+              <h3 className="wallet-modal__title">Payment Confirmation</h3>
+              <button
+                className="wallet-modal__close"
+                onClick={handlePaymentCancel}
+              >
+                ×
+              </button>
+            </div>
+            <div className="wallet-modal__content">
+              <p style={{ marginBottom: "15px" }}>
+                Confirm payment details below:
+              </p>
+              <ul>
+                <li>
+                  <strong>Hourly Rate:</strong>{" "}
+                  {Number(paymentDetails.hourlyRate).toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}{" "}
+                  VND
+                </li>
+                <li>
+                  <strong>Platform Service Fee:</strong>{" "}
+                  {Number(paymentDetails.platformServiceFee).toLocaleString(
+                    "vi-VN",
+                    {
+                      style: "currency",
+                      currency: "VND",
+                    }
+                  )}{" "}
+                  VND
+                </li>
+                <li>
+                  <strong>Total Amount:</strong>{" "}
+                  {Number(paymentDetails.totalFee).toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}{" "}
+                  VND
+                </li>
+              </ul>
+              <div className="notes-section">
+                <p>Notes:</p>
+                <ul>
+                  <li>
+                    The <strong>Hourly Rate</strong> is the base cost.
+                  </li>
+                  <li>
+                    The <strong>Platform Service Fee</strong> covers support
+                    costs.
+                  </li>
+                  <li>
+                    <strong>Total Amount</strong> is the final payment.
+                  </li>
+                </ul>
+                <p>
+                  Payment deducts from your wallet. Insufficient funds redirect
+                  to deposit.
+                </p>
+              </div>
+              <div className="wallet-form__actions">
+                <button
+                  type="button"
+                  className="wallet-btn wallet-btn--secondary"
+                  onClick={handlePaymentCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="wallet-btn wallet-btn--primary"
+                  onClick={handlePaymentConfirm}
+                >
+                  Confirm Payment
+                </button>
+              </div>
+            </div>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-secondary" onClick={handlePaymentCancel}>
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handlePaymentConfirm}>
-            Confirm Payment
-          </button>
-        </Modal.Footer>
-      </Modal>
+        </div>
+      )}
     </div>
   );
 };
