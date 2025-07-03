@@ -127,9 +127,13 @@ export const approveCertificate = async (certificateId) => {
 };
 
 // Reject certificate
-export const rejectCertificate = async (certificateId) => {
+export const rejectCertificate = async (certificateId, reason = 'string') => {
   try {
-    const response = await apiClient.post(`/admin/reject-certificate/${certificateId}`);
+    const response = await apiClient.post(
+      `/admin/reject-certificate/${certificateId}`,
+      { reason },
+      { headers: { 'Content-Type': 'application/json-patch+json' } }
+    );
     return response.data;
   } catch (error) {
     console.error('Error rejecting certificate:', error);

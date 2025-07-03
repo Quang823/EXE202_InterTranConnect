@@ -18,6 +18,9 @@
   border-right: 1px solid #e5e7eb;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .ap-sidebar-header {
@@ -207,7 +210,7 @@
 .ap-sidebar-footer {
   padding: 1rem 0;
   border-top: 1px solid #e5e7eb;
-  margin-top: 110%;
+  margin-top: auto;
 }
 
 .ap-footer-content {

@@ -128,11 +128,11 @@ const StaffDashboard = () => {
             <div className="wp-header-text">
               <h1 className="wp-title">Dashboard</h1>
                 <p className="wp-subtitle">
-                  Tổng quan yêu cầu rút tiền từ khách hàng
+                  Overview of customer withdrawal requests
                 </p>
             </div>
             <Link to="/staff/withdrawal-requests" className="wp-view-all-button">
-              Xem tất cả yêu cầu
+              View all requests
               <ArrowTopRightOnSquareIcon className="wp-button-icon" />
             </Link>
           </div>
@@ -141,48 +141,48 @@ const StaffDashboard = () => {
           <div className="wp-stats-grid">
             <div className="wp-stat-card wp-stat-total">
               <div className="wp-card-header">
-                <span className="wp-card-title">Tổng yêu cầu</span>
+                <span className="wp-card-title">Total Requests</span>
                 <CreditCardIcon className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.total}</div>
                 <div className="wp-stat-trend">
                   <ArrowTrendingUpIcon className="wp-trend-icon" />
-                  +12% từ tháng trước
+                  +12% from last month
                 </div>
               </div>
             </div>
 
             <div className="wp-stat-card wp-stat-pending">
               <div className="wp-card-header">
-                <span className="wp-card-title">Chờ xử lý</span>
+                <span className="wp-card-title">Pending</span>
                 <ClockIcon className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.pending}</div>
-                <div className="wp-stat-text">Cần xử lý ngay</div>
+                <div className="wp-stat-text">Needs immediate action</div>
               </div>
             </div>
 
             <div className="wp-stat-card wp-stat-approved">
               <div className="wp-card-header">
-                <span className="wp-card-title">Đã duyệt</span>
+                <span className="wp-card-title">Approved</span>
                 <CheckCircleIcon className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.approved}</div>
-                <div className="wp-stat-text">Thành công</div>
+                <div className="wp-stat-text">Successful</div>
               </div>
             </div>
 
             <div className="wp-stat-card wp-stat-amount">
               <div className="wp-card-header">
-                <span className="wp-card-title">Tổng tiền</span>
+                <span className="wp-card-title">Total Amount</span>
                 <ArrowTrendingUpIcon className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{formatCurrency(stats.totalAmount)}</div>
-                <div className="wp-stat-text">Tổng số tiền yêu cầu</div>
+                <div className="wp-stat-text">Total requested amount</div>
               </div>
             </div>
           </div>
@@ -190,23 +190,23 @@ const StaffDashboard = () => {
           {/* Recent Requests */}
           <div className="wp-requests-card">
             <div className="wp-requests-header">
-              <h2 className="wp-requests-title">Yêu cầu gần đây</h2>
+              <h2 className="wp-requests-title">Recent Requests</h2>
               <Link
                 to="/staff/withdrawal-requests"
                 className="wp-requests-view-all"
               >
-                Xem tất cả
+                View all
               </Link>
             </div>
             <div className="wp-table-container">
               <table className="wp-requests-table">
                 <thead className="wp-table-head">
                   <tr>
-                    <th className="wp-table-header">Khách hàng</th>
-                    <th className="wp-table-header">Số tiền</th>
-                    <th className="wp-table-header">Ngân hàng</th>
-                    <th className="wp-table-header">Trạng thái</th>
-                    <th className="wp-table-header">Ngày tạo</th>
+                    <th className="wp-table-header">Customer</th>
+                    <th className="wp-table-header">Amount</th>
+                    <th className="wp-table-header">Bank</th>
+                    <th className="wp-table-header">Status</th>
+                    <th className="wp-table-header">Created Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -248,7 +248,7 @@ const StaffDashboard = () => {
                   ) : (
                     <tr>
                       <td colSpan="5" className="wp-no-requests">
-                        Không có yêu cầu nào.
+                        No requests found.
                       </td>
                     </tr>
                   )}

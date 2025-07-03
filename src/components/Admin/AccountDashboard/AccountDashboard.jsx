@@ -80,12 +80,12 @@ const AccountDashboard = () => {
   // Approve certificate
   const handleApprove = async (account) => {
     const result = await Swal.fire({
-      title: 'Xác nhận duyệt chứng chỉ?',
-      text: `Bạn chắc chắn muốn duyệt chứng chỉ này?`,
+      title: 'Confirm certificate approval?',
+      text: `Are you sure you want to approve this certificate?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Duyệt',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Approve',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
     });
@@ -93,10 +93,12 @@ const AccountDashboard = () => {
     setActionLoadingId(account.id);
     try {
       await approveCertificate(account.id);
-      await Swal.fire({ icon: 'success', title: 'Duyệt thành công!' });
+      await Swal.fire({ icon: 'success', title: 'Approved successfully!' });
       fetchAccounts();
+      const current = Number(localStorage.getItem('approvedCount')) || 0;
+      localStorage.setItem('approvedCount', current + 1);
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Duyệt thất bại!' });
+      Swal.fire({ icon: 'error', title: 'Approval failed!' });
     } finally {
       setActionLoadingId(null);
     }
@@ -105,23 +107,43 @@ const AccountDashboard = () => {
   // Reject certificate
   const handleReject = async (account) => {
     const result = await Swal.fire({
-      title: 'Xác nhận từ chối chứng chỉ?',
-      text: `Bạn chắc chắn muốn từ chối chứng chỉ này?`,
+      title: 'Confirm certificate rejection?',
+      text: `Are you sure you want to reject this certificate?`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Từ chối',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Reject',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
     });
     if (!result.isConfirmed) return;
+    // Thêm prompt nhập lý do
+    const { value: reason } = await Swal.fire({
+      title: 'Reason for rejection',
+      input: 'text',
+      inputPlaceholder: 'Enter rejection reason...',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You must enter a rejection reason!';
+        }
+      },
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      focusConfirm: false,
+    });
+    if (!reason) return;
     setActionLoadingId(account.id);
     try {
-      await rejectCertificate(account.id);
-      await Swal.fire({ icon: 'success', title: 'Từ chối thành công!' });
+      await rejectCertificate(account.id, reason);
+      await Swal.fire({ icon: 'success', title: 'Rejected successfully!' });
       fetchAccounts();
+      const current = Number(localStorage.getItem('rejectedCount')) || 0;
+      localStorage.setItem('rejectedCount', current + 1);
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Từ chối thất bại!' });
+      Swal.fire({ icon: 'error', title: 'Rejection failed!' });
     } finally {
       setActionLoadingId(null);
     }
@@ -130,12 +152,12 @@ const AccountDashboard = () => {
   // Duyệt tất cả
   const handleApproveAll = async () => {
     const result = await Swal.fire({
-      title: 'Xác nhận duyệt tất cả?',
-      text: `Bạn chắc chắn muốn duyệt tất cả chứng chỉ này?`,
+      title: 'Confirm approve all?',
+      text: `Are you sure you want to approve all these certificates?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Duyệt tất cả',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Approve all',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
     });
@@ -143,10 +165,10 @@ const AccountDashboard = () => {
     setActionLoadingId('all');
     try {
       await Promise.all(accounts.map(acc => approveCertificate(acc.id)));
-      await Swal.fire({ icon: 'success', title: 'Duyệt tất cả thành công!' });
+      await Swal.fire({ icon: 'success', title: 'All approved successfully!' });
       fetchAccounts();
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Duyệt tất cả thất bại!' });
+      Swal.fire({ icon: 'error', title: 'Approve all failed!' });
     } finally {
       setActionLoadingId(null);
     }
@@ -155,12 +177,12 @@ const AccountDashboard = () => {
   // Từ chối tất cả
   const handleRejectAll = async () => {
     const result = await Swal.fire({
-      title: 'Xác nhận từ chối tất cả?',
-      text: `Bạn chắc chắn muốn từ chối tất cả chứng chỉ này?`,
+      title: 'Confirm reject all?',
+      text: `Are you sure you want to reject all these certificates?`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Từ chối tất cả',
-      cancelButtonText: 'Hủy',
+      confirmButtonText: 'Reject all',
+      cancelButtonText: 'Cancel',
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
     });
@@ -168,10 +190,10 @@ const AccountDashboard = () => {
     setActionLoadingId('all');
     try {
       await Promise.all(accounts.map(acc => rejectCertificate(acc.id)));
-      await Swal.fire({ icon: 'success', title: 'Từ chối tất cả thành công!' });
+      await Swal.fire({ icon: 'success', title: 'All rejected successfully!' });
       fetchAccounts();
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Từ chối tất cả thất bại!' });
+      Swal.fire({ icon: 'error', title: 'Reject all failed!' });
     } finally {
       setActionLoadingId(null);
     }
@@ -189,8 +211,8 @@ const AccountDashboard = () => {
       {/* Header */}
       <header className="dashboard-header">
         <div className="header-left">
-          <h1 className="dashboard-title">Phê duyệt Tài khoản</h1>
-          <p className="dashboard-subtitle">Phê duyệt tài khoản chờ xử lý</p>
+          <h1 className="dashboard-title">Account Approval</h1>
+          <p className="dashboard-subtitle">Approve pending accounts</p>
         </div>
         <div className="header-right">
           <div className="search-container">
@@ -216,9 +238,9 @@ const AccountDashboard = () => {
         <div className="stat-card pending">
           <div className="stat-content">
             <div className="stat-info">
-              <h3>Chờ phê duyệt</h3>
+              <h3>Pending Approval</h3>
               <div className="stat-number">{pendingCount}</div>
-              <p>Tài khoản cần xử lý</p>
+              <p>Accounts need processing</p>
             </div>
             <div className="stat-icon orange">
               <Clock size={24} />
@@ -228,9 +250,9 @@ const AccountDashboard = () => {
         <div className="stat-card urgent">
           <div className="stat-content">
             <div className="stat-info">
-              <h3>Cần xử lý gấp</h3>
+              <h3>Urgent</h3>
               <div className="stat-number">{urgentCount}</div>
-              <p>Quá 3 ngày chờ</p>
+              <p>Pending for more than 3 days</p>
             </div>
             <div className="stat-icon pink">
               <AlertTriangle size={24} />
@@ -240,9 +262,9 @@ const AccountDashboard = () => {
         <div className="stat-card today">
           <div className="stat-content">
             <div className="stat-info">
-              <h3>Hôm nay</h3>
+              <h3>Today</h3>
               <div className="stat-number">{todayCount}</div>
-              <p>Đăng ký mới</p>
+              <p>New registrations</p>
             </div>
             <div className="stat-icon blue">
               <Calendar size={24} />
@@ -253,17 +275,17 @@ const AccountDashboard = () => {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <h2>Thao tác nhanh</h2>
+        <h2>Quick Actions</h2>
         <div className="actions-grid">
           <div className="action-card approved">
             <div className="action-icon green">
               <CheckCircle size={24} />
             </div>
             <div className="action-content">
-              <h3>Duyệt tất cả</h3>
-              <p>Phê duyệt toàn bộ tài khoản</p>
+              <h3>Approve all</h3>
+              <p>Approve all accounts</p>
               <div className="action-footer">
-                <span className="account-count">{pendingCount} tài khoản</span>
+                <span className="account-count">{pendingCount} accounts</span>
                 <button className="action-btn1 green" onClick={handleApproveAll} disabled={actionLoadingId === 'all'}>
                   {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <CheckCircle size={16} />}
                   Accept
@@ -276,10 +298,10 @@ const AccountDashboard = () => {
               <X size={24} />
             </div>
             <div className="action-content">
-              <h3>Từ chối</h3>
-              <p>Từ chối hàng loạt</p>
+              <h3>Reject</h3>
+              <p>Reject all accounts</p>
               <div className="action-footer">
-                <span className="account-count danger">Thao tác nguy hiểm</span>
+                <span className="account-count danger">Dangerous action</span>
                 <button className="action-btn1 red" onClick={handleRejectAll} disabled={actionLoadingId === 'all'}>
                   {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <X size={16} />}
                   Cancel
@@ -292,30 +314,30 @@ const AccountDashboard = () => {
 
       {/* Accounts List */}
       <div className="accounts-section">
-        <h2>Tài khoản chờ phê duyệt ({filteredAccounts.length})</h2>
+        <h2>Accounts awaiting approval ({filteredAccounts.length})</h2>
         {isLoading ? (
           <div className="empty-state">
             <div className="empty-icon">
               <Clock size={48} />
             </div>
-            <h3>Đang tải dữ liệu...</h3>
+            <h3>Loading data...</h3>
           </div>
         ) : filteredAccounts.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">
               <CheckCircle size={48} />
             </div>
-            <h3>Tuyệt vời! Không có tài khoản nào chờ phê duyệt</h3>
-            <p>Tất cả tài khoản đã được xử lý xong</p>
+            <h3>Great! No accounts awaiting approval</h3>
+            <p>All accounts have been processed</p>
           </div>
         ) : (
           <table className="accounts-table">
             <thead>
               <tr>
-                <th>Họ tên</th>
+                <th>Full Name</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Trạng thái</th>
+                <th>Phone</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>
@@ -328,13 +350,13 @@ const AccountDashboard = () => {
                   <td>{statusMap[account.status] || account.status}</td>
                   <td>
                     <div className="acd-action-buttons-dashboard">
-                      <button className="view-btn" title="Xem chi tiết" onClick={() => handleOpenModal(account)}>
+                      <button className="view-btn" title="View details" onClick={() => handleOpenModal(account)}>
                         <Eye size={20} />
                       </button>
-                      <button className="acd-accept-btn" title="Duyệt" onClick={() => handleApprove(account)} disabled={actionLoadingId === account.id}>
+                      <button className="acd-accept-btn" title="Approve" onClick={() => handleApprove(account)} disabled={actionLoadingId === account.id}>
                         {actionLoadingId === account.id ? <span className="acd-btn-spinner"></span> : <Check size={18} />}
                       </button>
-                      <button className="acd-cancel-btn" title="Từ chối" onClick={() => handleReject(account)} disabled={actionLoadingId === account.id}>
+                      <button className="acd-cancel-btn" title="Reject" onClick={() => handleReject(account)} disabled={actionLoadingId === account.id}>
                         {actionLoadingId === account.id ? <span className="acd-btn-spinner"></span> : <X size={18} />}
                       </button>
                     </div>
@@ -352,15 +374,15 @@ const AccountDashboard = () => {
           <div className="acd-modal-content" onClick={e => e.stopPropagation()}>
             <button className="acd-modal-close" onClick={handleCloseModal}><X size={22} /></button>
             {modalData === null ? (
-              <div className="acd-modal-loading">Đang tải...</div>
+              <div className="acd-modal-loading">Loading...</div>
             ) : modalData.error ? (
               <div className="acd-modal-error">{modalData.error}</div>
             ) : (
               <div className="acd-modal-details redesigned-modal">
-                <h2 className="acd-modal-title">Thông tin chứng chỉ</h2>
+                <h2 className="acd-modal-title">Certificate Information</h2>
                 {modalData.photoUrl && (
                   <div className="acd-modal-avatar-row">
-                    <img src={modalData.photoUrl} alt="Ảnh" className="acd-modal-avatar" />
+                    <img src={modalData.photoUrl} alt="Image" className="acd-modal-avatar" />
                   </div>
                 )}
                 {/* Basic Information */}
@@ -399,22 +421,22 @@ const AccountDashboard = () => {
                       <FileUp size={22}/>
                       <div>Upload CV</div>
                       {modalData.cvFileUrl ? (
-                        <a href={modalData.cvFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">Xem CV</a>
-                      ) : <span className="acd-modal-file-empty">Chưa có</span>}
+                        <a href={modalData.cvFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">View CV</a>
+                      ) : <span className="acd-modal-file-empty">No file</span>}
                     </div>
                     <div className="acd-modal-file-card">
                       <ImageIcon size={22}/>
                       <div>Upload Photo</div>
                       {modalData.photoUrl ? (
-                        <img src={modalData.photoUrl} alt="Ảnh" className="acd-modal-file-img" />
-                      ) : <span className="acd-modal-file-empty">Chưa có</span>}
+                        <img src={modalData.photoUrl} alt="Image" className="acd-modal-file-img" />
+                      ) : <span className="acd-modal-file-empty">No file</span>}
                     </div>
                     <div className="acd-modal-file-card">
                       <FileText size={22}/>
                       <div>Upload Certificate</div>
                       {modalData.certificateFileUrl ? (
-                        <a href={modalData.certificateFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">Xem file</a>
-                      ) : <span className="acd-modal-file-empty">Chưa có</span>}
+                        <a href={modalData.certificateFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">View file</a>
+                      ) : <span className="acd-modal-file-empty">No file</span>}
                     </div>
                   </div>
                 </div>
