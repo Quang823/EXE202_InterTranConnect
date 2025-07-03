@@ -20,7 +20,7 @@ export default function BulkActions({
           status,
           approved_by: currentUser.email,
           approved_date: new Date().toISOString(),
-          approval_notes: `Phê duyệt hàng loạt - ${status === 'approved' ? 'Đã duyệt' : 'Từ chối'}`
+          approval_notes: `Bulk approval - ${status === 'approved' ? 'Approved' : 'Rejected'}`
         })
       );
       
@@ -57,7 +57,7 @@ export default function BulkActions({
       <div className="bulk-actions-content">
         <div className="bulk-actions-container">
           <div className="selection-info">
-            <span className="selected-count">{selectedCount} tài khoản đã chọn</span>
+            <span className="selected-count">{selectedCount} accounts selected</span>
             <button
               type="button"
               onClick={onClearSelection}
@@ -74,7 +74,7 @@ export default function BulkActions({
               className="approve-button"
             >
               <CheckCircle2 className="approve-icon" />
-              Phê duyệt tất cả
+              Approve all
             </button>
             <button
               type="button"
@@ -83,7 +83,7 @@ export default function BulkActions({
               className="reject-button"
             >
               <XCircle className="reject-icon" />
-              Từ chối tất cả
+              Reject all
             </button>
             <button
               type="button"
@@ -91,7 +91,7 @@ export default function BulkActions({
               className="export-button"
             >
               <Download className="export-icon" />
-              Xuất dữ liệu
+              Export data
             </button>
           </div>
         </div>

@@ -19,7 +19,7 @@ const navigationItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Yêu cầu rút tiền",
+    title: "Withdrawal Requests",
     url: "/staff/withdrawal-requests",
     icon: CreditCard,
   },
@@ -60,10 +60,10 @@ export default function StaffSidebar({ children }) {
 
   const getRoleText = () => {
     if (user && user.role) {
-      if (user.role === 'staff') return 'Nhân viên hệ thống';
+      if (user.role === 'staff') return 'System Staff';
       return user.role;
     }
-    return 'Nhân viên hệ thống';
+    return 'System Staff';
   };
 
   const sidebarContent = (
@@ -75,7 +75,7 @@ export default function StaffSidebar({ children }) {
           </div>
           <div>
             <h2 className="ap-title">StaffPanel</h2>
-            <p className="ap-subtitle">Quản lý hệ thống</p>
+            <p className="ap-subtitle">System Management</p>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function StaffSidebar({ children }) {
                 >
                   <item.icon className="ap-menu-icon" />
                   <span className="ap-menu-title">{item.title}</span>
-                  {item.title === "Yêu cầu rút tiền" && (
+                  {item.title === "Withdrawal Requests" && (
                     <Badge bg="warning" text="dark" className="ap-approval-badge">
                       12
                     </Badge>
@@ -116,12 +116,12 @@ export default function StaffSidebar({ children }) {
         {user ? (
           <button className="ap-logout-button" onClick={handleLogout}>
             <LogOut className="ap-logout-icon" />
-            Đăng xuất
+            Logout
           </button>
         ) : (
           <button className="ap-login-button" onClick={handleLogin}>
             <LogIn className="ap-login-icon" />
-            Đăng nhập
+            Login
           </button>
         )}
       </div>

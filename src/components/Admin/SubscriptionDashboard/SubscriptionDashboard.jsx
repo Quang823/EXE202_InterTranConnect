@@ -68,7 +68,7 @@ const SubscriptionDashboard = () => {
       }
       
     } catch (err) {
-      setError('Không thể tải dữ liệu dashboard');
+      setError('Unable to load dashboard data');
       console.error('Error fetching dashboard data:', err);
     } finally {
       setLoading(false);
@@ -221,7 +221,7 @@ const SubscriptionDashboard = () => {
         data: {
           labels: displayData.map(item => item.time),
           datasets: [{
-            label: 'Số đăng ký mới',
+            label: 'New registrations',
             data: displayData.map(item => item.registrations),
             backgroundColor: [
               'rgba(59, 130, 246, 0.7)',
@@ -263,7 +263,7 @@ const SubscriptionDashboard = () => {
             tooltip: {
               callbacks: {
                 label: function(context) {
-                  return `Đăng ký: ${context.parsed.r}`;
+                  return `Registration: ${context.parsed.r}`;
                 }
               }
             }
@@ -357,7 +357,7 @@ const SubscriptionDashboard = () => {
       <div className="date-modal-overlay" onClick={onClose}>
         <div className="date-modal" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
-            <h3>Chọn ngày hiển thị</h3>
+            <h3>Select display dates</h3>
             <button className="close-btn" onClick={onClose}>×</button>
           </div>
           <div className="modal-content">
@@ -366,10 +366,10 @@ const SubscriptionDashboard = () => {
                 className="select-all-btn"
                 onClick={handleSelectAll}
               >
-                {selectedDates.length === dates.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
+                {selectedDates.length === dates.length ? 'Deselect all' : 'Select all'}
               </button>
               <span className="selected-count">
-                Đã chọn: {selectedDates.length}/{dates.length}
+                Selected: {selectedDates.length}/{dates.length}
               </span>
             </div>
             <div className="date-grid">
@@ -402,7 +402,7 @@ const SubscriptionDashboard = () => {
             </div>
             <div className="modal-footer">
               <button className="apply-btn" onClick={handleApply}>
-                Áp dụng ({selectedDates.length} ngày)
+                Apply ({selectedDates.length} days)
               </button>
             </div>
           </div>
@@ -426,8 +426,8 @@ const SubscriptionDashboard = () => {
     <div className="subscription-dashboard">
       <main className="dashboard-main">
         <div className="dashboard-title">
-          <h2>Tổng quan Gói đăng ký</h2>
-          <p>Theo dõi và phân tích các gói subscription</p>
+          <h2>Subscription Overview</h2>
+          <p>Track and analyze subscription packages</p>
           <div className="date-range-picker">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
@@ -439,7 +439,7 @@ const SubscriptionDashboard = () => {
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}
               dateFormat="dd/MM/yyyy"
-              placeholderText="Từ ngày"
+              placeholderText="From date"
               className="date-input"
             />
             <span style={{ margin: '0 4px' }}>-</span>
@@ -451,7 +451,7 @@ const SubscriptionDashboard = () => {
               endDate={dateRange.endDate}
               minDate={dateRange.startDate}
               dateFormat="dd/MM/yyyy"
-              placeholderText="Đến ngày"
+              placeholderText="To date"
               className="date-input"
             />
           </div>
@@ -465,45 +465,45 @@ const SubscriptionDashboard = () => {
 
         {loading ? (
           <div className="loading-state">
-            <p>Đang tải dữ liệu...</p>
+            <p>Loading data...</p>
           </div>
         ) : (
           <>
             <div className="stats-grid">
               <StatCard
-                title="Tổng đăng ký"
+                title="Total Subscriptions"
                 value={dashboardData.totalSubscriptions}
                 trend="up"
-                trendText="Tăng trưởng mọi thời điểm"
+                trendText="Growth over time"
                 color="purple"
                 icon={Users}
               />
               <StatCard
-                title="Đang hoạt động"
+                title="Active"
                 value={dashboardData.activeSubscriptions}
                 trend="up"
-                trendText={`${dashboardData.totalSubscriptions > 0 ? (dashboardData.activeSubscriptions / dashboardData.totalSubscriptions * 100).toFixed(1) : 0}% tổng số`}
+                trendText={`${dashboardData.totalSubscriptions > 0 ? (dashboardData.activeSubscriptions / dashboardData.totalSubscriptions * 100).toFixed(1) : 0}% of total`}
                 color="green"
                 icon={TrendingUp}
               />
               <StatCard
-                title="Doanh thu"
+                title="Revenue"
                 value={formatCurrency(dashboardData.subscriptionRevenue)}
                 trend="neutral"
-                trendText="Tổng doanh thu từ gói đăng ký"
+                trendText="Total revenue from subscription packages"
                 color="blue"
                 icon={DollarSign}
               />
               <StatCard
-                title="Trung bình/gói"
+                title="Average/package"
                 value={formatCurrency(averagePerSubscription)}
                 trend="neutral"
-                trendText="Giá trị trung bình/gói"
+                trendText="Average value per package"
                 color="orange"
                 icon={DollarSign}
               />
               <StatCard
-                title="Tỷ lệ hủy"
+                title="Cancellation rate"
                 value={`${cancellationRate.toFixed(1)}%`}
                 trend="down"
                 trendText="Churn rate"
@@ -515,13 +515,13 @@ const SubscriptionDashboard = () => {
             <div className="charts-section">
               <div className="chart-container">
                 <div className="chart-header">
-                  <h3>Doanh thu theo gói đăng ký</h3>
-                  <p>Biểu đồ bánh rán thể hiện doanh thu từ mỗi gói</p>
+                  <h3>Revenue by subscription package</h3>
+                  <p>Doughnut chart showing revenue from each package</p>
                 </div>
                 <div className="chart-content">
                   {dashboardData.distributionByPlan.length === 0 ? (
                     <div className="empty-state">
-                      <p>Không có dữ liệu trong khoảng thời gian đã chọn</p>
+                      <p>No data in the selected time range</p>
                     </div>
                   ) : (
                     <canvas ref={lineChartRef} width="400" height="300"></canvas>
@@ -531,13 +531,13 @@ const SubscriptionDashboard = () => {
 
               <div className="chart-container">
                 <div className="chart-header">
-                  <h3>Xu hướng đăng ký theo thời gian</h3>
-                  <p>Biểu đồ vùng cực thể hiện số lượng đăng ký mới theo ngày</p>
+                  <h3>Subscription trend over time</h3>
+                  <p>Polar area chart showing new registrations by date</p>
                 </div>
                 <div className="chart-content">
                   {dashboardData.trendOverTime.length === 0 ? (
                     <div className="empty-state">
-                      <p>Không có dữ liệu trong khoảng thời gian đã chọn</p>
+                      <p>No data in the selected time range</p>
                     </div>
                   ) : (
                     <>
@@ -549,8 +549,8 @@ const SubscriptionDashboard = () => {
                             onClick={handleOpenModal}
                           >
                             {appliedDates.length > 0 
-                              ? `Đã chọn ${appliedDates.length} ngày`
-                              : `Xem tất cả ${dashboardData.trendOverTime.length} ngày`
+                              ? `Selected ${appliedDates.length} days`
+                              : `View all ${dashboardData.trendOverTime.length} days`
                             }
                           </button>
                         </div>
@@ -563,26 +563,26 @@ const SubscriptionDashboard = () => {
 
             <div className="subscriptions-table">
               <div className="table-header">
-                <h3>Đăng ký đang hoạt động ({dashboardData.activeSubscriptionList.length})</h3>
+                <h3>Active subscriptions ({dashboardData.activeSubscriptionList.length})</h3>
               </div>
               <div className="table-container">
                 <table>
                   <thead>
                     <tr>
-                      <th>Khách hàng</th>
-                      <th>Gói đăng ký</th>
-                      <th>Ngày bắt đầu</th>
-                      <th>Hết hạn</th>
-                      <th>Số tiền</th>
-                      <th>Trạng thái</th>
-                      <th>Thanh toán</th>
+                      <th>Customer</th>
+                      <th>Subscription Package</th>
+                      <th>Start Date</th>
+                      <th>Expiry</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Payment</th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentSubscriptions.length === 0 ? (
                       <tr>
                         <td colSpan="7" className="empty-row">
-                          Không có đăng ký nào trong khoảng thời gian đã chọn
+                          No subscriptions in the selected time range
                         </td>
                       </tr>
                     ) : (
@@ -607,9 +607,9 @@ const SubscriptionDashboard = () => {
                 <div className="pagination-container">
                   <div className="pagination-info">
                     <span>
-                      Hiển thị {indexOfFirstSubscription + 1}-
-                      {Math.min(indexOfLastSubscription, dashboardData.activeSubscriptionList.length)} của{" "}
-                      {dashboardData.activeSubscriptionList.length} đăng ký
+                      Displaying {indexOfFirstSubscription + 1}-
+                      {Math.min(indexOfLastSubscription, dashboardData.activeSubscriptionList.length)} of{" "}
+                      {dashboardData.activeSubscriptionList.length} subscriptions
                     </span>
                   </div>
                   <div className="pagination-controls">
@@ -618,8 +618,8 @@ const SubscriptionDashboard = () => {
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
                     >
+                      <span>Previous</span>
                       <ChevronLeft size={16} />
-                      <span>Trước</span>
                     </button>
 
                     <div className="pagination-numbers">
@@ -643,7 +643,7 @@ const SubscriptionDashboard = () => {
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
                     >
-                      <span>Sau</span>
+                      <span>Next</span>
                       <ChevronRight size={16} />
                     </button>
                   </div>

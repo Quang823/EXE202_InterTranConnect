@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -7,12 +7,16 @@ import {
   CreditCard,
   Wallet,
   TrendingUp,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import {
   fetchUserWallet,
   fetchWalletTransactions,
   createWithdrawalRequestService,
   getMyWithdrawalRequestsService,
+  confirmWithdrawalReceivedService,
+  cancelWithdrawalRequestService,
 } from "../../../services/walletService";
 import { createDepositDetail } from "../../../services/paymentService";
 import {
@@ -50,6 +54,8 @@ const WalletTranslator = () => {
   const [withdrawError, setWithdrawError] = useState(null);
   const [activeTab, setActiveTab] = useState("transaction");
   const [withdrawHistory, setWithdrawHistory] = useState([]);
+  const [confirmModal, setConfirmModal] = useState({ open: false, type: '', requestId: null });
+  const [actionLoading, setActionLoading] = useState(false);
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const accountId = user?.id;
@@ -249,6 +255,56 @@ const WalletTranslator = () => {
         setWithdrawError(err.message || "Failed to submit withdrawal request");
       }
     }
+  };
+
+  // Thêm hàm chuyển đổi status withdraw sang tiếng Việt
+  const getWithdrawStatusText = (status) => {
+    switch (status) {
+      case 0:
+      case "Pending":
+        return "Pending"; // BPDV gửi request withdraw
+      case 1:
+      case "WaitingForConfirmation":
+        return "Waiting for Confirmation"; // Staff đã chuyển tiền, chờ BPDV xác nhận
+      case 2:
+      case "Completed":
+        return "Completed"; // BPDV đã xác nhận nhận được tiền
+      case 3:
+      case "Cancel":
+        return "Cancel";
+      default:
+        return "Unknown";
+    }
+  };
+
+  const handleActionClick = (type, requestId) => {
+    console.log('Action click:', type, requestId);
+    setConfirmModal({ open: true, type, requestId });
+  };
+
+  const handleConfirmAction = async () => {
+    console.log('Confirm action:', confirmModal);
+    if (!confirmModal.requestId) return;
+    setActionLoading(true);
+    try {
+      if (confirmModal.type === 'confirm') {
+        await confirmWithdrawalReceivedService(confirmModal.requestId);
+        ToastManager.showSuccess('Withdrawal confirmed successfully!');
+      } else if (confirmModal.type === 'cancel') {
+        await cancelWithdrawalRequestService(confirmModal.requestId);
+        ToastManager.showSuccess('Withdrawal canceled successfully!');
+      }
+      setConfirmModal({ open: false, type: '', requestId: null });
+      fetchWithdrawHistory();
+    } catch (err) {
+      ToastManager.showError(err.message || 'Action failed!');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setConfirmModal({ open: false, type: '', requestId: null });
   };
 
   if (loading) {
@@ -808,35 +864,115 @@ const WalletTranslator = () => {
                       <th>Amount</th>
                       <th>Note</th>
                       <th>Status</th>
-                      <th>Date</th>
+                      <th>Request Date</th>
+                      <th>Processed Date</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {withdrawHistory.length === 0 ? (
                       <tr>
-                        <td colSpan="4">No withdraw history</td>
+                        <td colSpan="6">No withdraw history</td>
                       </tr>
                     ) : (
                       withdrawHistory.map((item, idx) => (
-                        <tr key={idx}>
-                          <td>
-                            {item.amount?.toLocaleString("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            })}
-                          </td>
-                          <td>{item.note || "-"}</td>
-                          <td>{item.status || "-"}</td>
-                          <td>
-                            {item.createdAt
-                              ? new Date(item.createdAt).toLocaleString()
-                              : "-"}
-                          </td>
-                        </tr>
+                        <React.Fragment key={idx}>
+                          <tr>
+                            <td>
+                              {item.amount?.toLocaleString("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              })}
+                            </td>
+                            <td>{item.note || "-"}</td>
+                            <td>{getWithdrawStatusText(item.status)}</td>
+                            <td>
+                              {item.requestDate
+                                ? new Date(item.requestDate).toLocaleString()
+                                : "-"}
+                            </td>
+                            <td>
+                              {item.processedDate
+                                ? new Date(item.processedDate).toLocaleString()
+                                : "-"}
+                            </td>
+                            <td style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                              {(item.status === 1 || item.status === "WaitingForConfirmation") && (
+                                <button
+                                  className="wallet-action-btn wallet-action-btn--confirm"
+                                  title="Confirm received"
+                                  onClick={() => handleActionClick('confirm', item.withdrawalRequestId)}
+                                  disabled={actionLoading}
+                                  style={{ display: 'flex', alignItems: 'center', padding: 4, background: 'none', border: 'none', cursor: 'pointer' }}
+                                >
+                                  <CheckCircle size={20} color="#22c55e" />
+                                </button>
+                              )}
+                              {(item.status === 0 || item.status === "Pending") && (
+                                <button
+                                  className="wallet-action-btn wallet-action-btn--cancel"
+                                  title="Cancel request"
+                                  onClick={() => handleActionClick('cancel', item.withdrawalRequestId)}
+                                  disabled={actionLoading}
+                                  style={{ display: 'flex', alignItems: 'center', padding: 4, background: 'none', border: 'none', cursor: 'pointer' }}
+                                >
+                                  <XCircle size={20} color="#ef4444" />
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                          {/* Add a notification row when status is Waiting for Confirmation */}
+                          {(item.status === 1 || item.status === "WaitingForConfirmation") && (
+                            <tr>
+                              <td colSpan={6} style={{ color: '#dc2626', fontStyle: 'italic', background: '#fff1f2' }}>
+                                If you have not received the money within 24 hours, please use the complaint function to contact us.
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       ))
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal xác nhận action */}
+        {confirmModal.open && (
+          <div className="wallet-modal-overlay" onClick={handleCloseModal}>
+            <div className="wallet-modal" onClick={e => e.stopPropagation()}>
+              <div className="wallet-modal__header">
+                <h3 className="wallet-modal__title">
+                  {confirmModal.type === 'confirm' ? 'Confirm Received' : 'Cancel Withdrawal'}
+                </h3>
+                <button className="wallet-modal__close" onClick={handleCloseModal}>×</button>
+              </div>
+              <div className="wallet-modal__content">
+                <p>
+                  {confirmModal.type === 'confirm'
+                    ? 'Are you sure you have received the money?'
+                    : 'Are you sure you want to cancel this withdrawal request?'}
+                </p>
+                <div className="wallet-form__actions">
+                  <button
+                    type="button"
+                    className="wallet-btn wallet-btn--secondary"
+                    onClick={handleCloseModal}
+                    disabled={actionLoading}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="wallet-btn wallet-btn--primary"
+                    onClick={handleConfirmAction}
+                    disabled={actionLoading}
+                  >
+                    {actionLoading ? 'Processing...' : 'Confirm'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
