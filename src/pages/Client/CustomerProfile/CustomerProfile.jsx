@@ -48,7 +48,7 @@ const CustomerProfile = () => {
     address: "",
     bio: "",
     password: "",
-    avatarUrl: "",
+    avatarURL: "",
     dateOfBirth: "",
     gender: "",
     studentId: "",
@@ -147,8 +147,8 @@ const CustomerProfile = () => {
           address: response.address || "",
           bio: response.bio || "",
           password: "",
-          avatarUrl:
-            response.avatarUrl ||
+          avatarURL:
+            response.avatarURL ||
             "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
           dateOfBirth: response.dateOfBirth || "Not specified",
           gender: response.gender || "Not specified",
@@ -190,7 +190,7 @@ const CustomerProfile = () => {
     try {
       const imageUrl = await uploadToCloudinaryService(file);
       if (imageUrl) {
-        setEditData((prev) => ({ ...prev, avatarUrl: imageUrl }));
+        setEditData((prev) => ({ ...prev, avatarURL: imageUrl }));
       } else {
         throw new Error("Failed to upload image to Cloudinary");
       }
@@ -206,7 +206,7 @@ const CustomerProfile = () => {
       const profileData = {
         id: editData.id,
         fullName: `${editData.firstName} ${editData.lastName}`.trim(),
-        avatarUrl: editData.avatarUrl,
+        avatarURL: editData.avatarURL,
         email: editData.email,
         contactNumber: editData.contactNumber,
         dateOfBirth: editData.dateOfBirth,
@@ -307,7 +307,7 @@ const CustomerProfile = () => {
                     className={`profile-avatar ${membershipInfo.avatarClass}`}
                   >
                     <img
-                      src={userData.avatarUrl}
+                      src={userData.avatarURL}
                       alt={`${userData.firstName} ${userData.lastName}`}
                     />
                     <div className="avatar-fallback">

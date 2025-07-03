@@ -83,13 +83,13 @@ const ComplaintChatWidget = () => {
               const info = await getUserInfoByUserIdService(id);
               newCache[id] = {
                 fullName: info.fullName || "User",
-                avatarUrl:
-                  info.avatarUrl || "https://ui-avatars.com/api/?name=U",
+                avatarURL:
+                  info.avatarURL || "https://ui-avatars.com/api/?name=U",
               };
             } catch {
               newCache[id] = {
                 fullName: "User",
-                avatarUrl: "https://ui-avatars.com/api/?name=U",
+                avatarURL: "https://ui-avatars.com/api/?name=U",
               };
             }
           })
@@ -121,13 +121,13 @@ const ComplaintChatWidget = () => {
               const info = await getUserInfoByUserIdService(id);
               newCache[id] = {
                 fullName: info.fullName || "User",
-                avatarUrl:
-                  info.avatarUrl || "https://ui-avatars.com/api/?name=U",
+                avatarURL:
+                  info.avatarURL || "https://ui-avatars.com/api/?name=U",
               };
             } catch {
               newCache[id] = {
                 fullName: "User",
-                avatarUrl: "https://ui-avatars.com/api/?name=U",
+                avatarURL: "https://ui-avatars.com/api/?name=U",
               };
             }
           })
@@ -457,7 +457,7 @@ const ComplaintChatWidget = () => {
                         const isMine = msg.senderId === userId.current;
                         const userInfo = userCache[msg.senderId] || {
                           fullName: "User",
-                          avatarUrl: "https://ui-avatars.com/api/?name=U",
+                          avatarURL: "https://ui-avatars.com/api/?name=U",
                         };
                         return (
                           <div
@@ -469,7 +469,7 @@ const ComplaintChatWidget = () => {
                             <div className="message-meta">
                               {!isMine && (
                                 <img
-                                  src={userInfo.avatarUrl}
+                                  src={userInfo.avatarURL}
                                   alt="avatar"
                                   className="message-avatar"
                                 />
@@ -484,7 +484,7 @@ const ComplaintChatWidget = () => {
                               </span>
                               {isMine && (
                                 <img
-                                  src={userInfo.avatarUrl}
+                                  src={userInfo.avatarURL}
                                   alt="avatar"
                                   className="message-avatar"
                                 />

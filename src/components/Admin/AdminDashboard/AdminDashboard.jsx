@@ -8,6 +8,7 @@ import {
   TrendingUp,
   Activity,
 } from "lucide-react";
+import ComplaintDashboard from "../ComplaintDashboard/ComplaintDashboard";
 
 const statsData = {
   total: 150,
@@ -152,6 +153,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      <ComplaintDashboard />
     </div>
   );
 }

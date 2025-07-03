@@ -205,7 +205,7 @@ const JobDetails = () => {
 
         <aside className="sidebarjob">
           {/* Hide Apply Job button if status is not 0 */}
-          {job.status === 0 && (
+          {job.status !== 6 && (
             <button className="apply-btn" onClick={handleApplyJob}>
               Apply Job
             </button>

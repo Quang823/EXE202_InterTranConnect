@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { User, History, Wallet, LogOut, ChevronDown } from "lucide-react";
+import {
+  User,
+  History,
+  Wallet,
+  LogOut,
+  ChevronDown,
+  MessageCircle,
+} from "lucide-react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import BusinessPlusCard from "./BusinessPlusCards";
@@ -56,6 +63,16 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
         >
           <Wallet className="itc-user-dropdown__icon" />
           {t("account.wallet")}
+        </div>
+        <div
+          className="itc-user-dropdown__mobile-item"
+          onClick={() => {
+            navigate("/client/review");
+            closeDropdown();
+          }}
+        >
+          <MessageCircle className="itc-user-dropdown__icon" />
+          {t("account.review")}
         </div>
         {priority === 0 && <BusinessPlusCard />}
         <OnlineToggle isOnline={isOnline} onToggle={handleToggleOnline} />
@@ -126,6 +143,16 @@ const AccountDropdown = ({ user, onLogout, mobile = false }) => {
           >
             <Wallet className="itc-user-dropdown__icon" />
             {t("account.wallet")}
+          </div>
+          <div
+            className="itc-user-dropdown__item"
+            onClick={() => {
+              navigate("/client/review");
+              closeDropdown();
+            }}
+          >
+            <MessageCircle className="itc-user-dropdown__icon" />
+            {t("account.review")}
           </div>
           <div className="itc-user-dropdown__separator"></div>
           <div
