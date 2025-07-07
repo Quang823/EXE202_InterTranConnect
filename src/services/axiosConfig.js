@@ -1,18 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Create axios instance with base configuration
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'accept': '*/*'
-  }
+    "Content-Type": "application/json",
+    accept: "*/*",
+  },
 });
 
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const accessToken = sessionStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -36,18 +36,21 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = sessionStorage.getItem('refreshToken');
+        const refreshToken = sessionStorage.getItem("refreshToken");
         if (refreshToken) {
           // Try to refresh the token
-          const response = await axios.post('http://localhost:5000/api/auth/refresh', {
-            refreshToken: refreshToken
-          });
+          const response = await axios.post(
+            "http://localhost:5000/api/auth/refresh",
+            {
+              refreshToken: refreshToken,
+            }
+          );
 
           const { accessToken, refreshToken: newRefreshToken } = response.data;
-          
+
           // Update tokens in session storage
-          sessionStorage.setItem('accessToken', accessToken);
-          sessionStorage.setItem('refreshToken', newRefreshToken);
+          sessionStorage.setItem("accessToken", accessToken);
+          sessionStorage.setItem("refreshToken", newRefreshToken);
 
           // Retry the original request with new token
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -55,10 +58,10 @@ apiClient.interceptors.response.use(
         }
       } catch (refreshError) {
         // If refresh fails, redirect to login
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
-        sessionStorage.removeItem('user');
-        window.location.href = '/login';
+        sessionStorage.removeItem("accessToken");
+        sessionStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("user");
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
@@ -67,4 +70,4 @@ apiClient.interceptors.response.use(
   }
 );
 
-export default apiClient; 
+export default apiClient;
