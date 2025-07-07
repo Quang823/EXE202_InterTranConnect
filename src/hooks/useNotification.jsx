@@ -6,9 +6,15 @@ export const useNotification = (userId, accessToken, onNotification) => {
     if (!userId || !accessToken) return;
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5000/hubs/notification", {
-        accessTokenFactory: () => accessToken,
-      })
+      .withUrl(
+        `${import.meta.env.VITE_API_URL.replace(
+          /\/api$/,
+          ""
+        )}/hubs/notification`,
+        {
+          accessTokenFactory: () => accessToken,
+        }
+      )
       .withAutomaticReconnect()
       .build();
 
