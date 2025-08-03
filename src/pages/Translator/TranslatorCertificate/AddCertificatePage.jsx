@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addTranslatorCertificate } from "../../../services/translatorService";
+import {
+  addTranslatorCertificate,
+  fetchTranslatorCertificateStatus,
+} from "../../../services/translatorService";
 import { uploadToCloudinaryService } from "../../../services/uploadToCloudinaryService";
 import ToastManager from "../../../components/common/Toast/ToastManager";
 import { ToastContainer } from "react-toastify";
@@ -108,13 +111,20 @@ const AddCertificatePage = () => {
         ToastManager.showSuccess("Certificate added successfully!");
         if (user?.id) {
           try {
+            // Lấy approvalStatus mới nhất từ API status
+            let approvalStatus = undefined;
+            try {
+              approvalStatus = await fetchTranslatorCertificateStatus(user.id);
+            } catch (e) {
+              // fallback nếu lỗi
+            }
             const latestUser = await getUserInfoByUserIdService(user.id);
             login(
               {
                 fullName: latestUser.fullName,
                 id: latestUser.id,
                 role: latestUser.role || user.role,
-                approvalStatus: latestUser.approvalStatus,
+                approvalStatus: approvalStatus,
               },
               token,
               refreshToken,

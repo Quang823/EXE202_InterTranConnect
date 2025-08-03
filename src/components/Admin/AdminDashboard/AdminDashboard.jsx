@@ -8,11 +8,28 @@ import {
   TrendingUp,
   Activity,
 } from "lucide-react";
-import { getPendingCertificates } from "../../../apiHandler/adminAPIHandler";
-import { Doughnut } from "react-chartjs-2";
-import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-Chart.register(ArcElement, Tooltip, Legend);
-import ComplaintDashboard from "../ComplaintDashboard/ComplaintDashboard";
+import {
+  getPendingCertificates,
+  getUserCountByRole,
+} from "../../../apiHandler/adminAPIHandler";
+import { Doughnut, Bar } from "react-chartjs-2";
+import {
+  Chart,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
+Chart.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 export default function AdminDashboard() {
   // Thêm biến đếm
@@ -24,12 +41,24 @@ export default function AdminDashboard() {
   );
   const [pendingCount, setPendingCount] = useState(0);
 
+  // User count by role
+  const [userRoleCounts, setUserRoleCounts] = useState({
+    customerCount: 0,
+    talentCount: 0,
+  });
+
   // Lấy số lượng pending thực tế từ API
   useEffect(() => {
-    // Lấy số lượng pending thực tế từ API
     getPendingCertificates()
       .then((data) => setPendingCount(data.length))
       .catch(() => setPendingCount(0));
+  }, []);
+
+  // Lấy số lượng user theo role
+  useEffect(() => {
+    getUserCountByRole()
+      .then((data) => setUserRoleCounts(data))
+      .catch(() => setUserRoleCounts({ customerCount: 0, talentCount: 0 }));
   }, []);
 
   // Lưu vào localStorage khi thay đổi
@@ -105,6 +134,38 @@ export default function AdminDashboard() {
     maintainAspectRatio: false,
   };
 
+  // Dữ liệu cho bar chart role
+  const barData = {
+    labels: ["Customer", "Talent"],
+    datasets: [
+      {
+        label: "Account Count",
+        data: [userRoleCounts.customerCount, userRoleCounts.talentCount],
+        backgroundColor: [
+          "rgba(59, 130, 246, 0.7)", // Customer
+          "rgba(139, 92, 246, 0.7)", // Talent
+        ],
+        borderColor: ["rgba(59, 130, 246, 1)", "rgba(139, 92, 246, 1)"],
+        borderWidth: 1,
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  const barOptions = {
+    plugins: {
+      legend: { display: false },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { stepSize: 1 },
+      },
+    },
+  };
+
   return (
     <div className="admin-dashboard">
       {/* Welcome Section */}
@@ -132,7 +193,7 @@ export default function AdminDashboard() {
       <div className="stats-grid">
         <div className="stats-card">
           <div className="card-header">
-            <h3 className="card-title">Total Accounts</h3>
+            <h3 className="card-title">Total Talent's Certificates</h3>
           </div>
           <div className="card-body">
             <div className="stats-value">{total}</div>
@@ -175,24 +236,51 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Doughnut Chart */}
-      <div
-        style={{
-          maxWidth: 400,
-          margin: "32px auto",
-          height: 320,
-          background: "#fff",
-          borderRadius: 16,
-          boxShadow: "0 2px 8px #eee",
-          padding: 24,
-        }}
-      >
-        <h3 style={{ textAlign: "center", marginBottom: 16 }}>
-          Account Status Overview
-        </h3>
-        <Doughnut data={doughnutData} options={doughnutOptions} />
+      {/* Charts Row */}
+      <div className="admin-dashboard-charts-row">
+        <div
+          style={{
+            maxWidth: 500,
+            width: "100%",
+            height: 320,
+            background: "#fff",
+            borderRadius: 16,
+            boxShadow: "0 2px 8px #eee",
+            padding: 24,
+            margin: 16,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h3 style={{ textAlign: "center", marginBottom: 16 }}>
+            Certificates Status Overview
+          </h3>
+          <Doughnut data={doughnutData} options={doughnutOptions} />
+        </div>
+        <div
+          style={{
+            maxWidth: 400,
+            width: "100%",
+            height: 320,
+            background: "#fff",
+            borderRadius: 16,
+            boxShadow: "0 2px 8px #eee",
+            padding: 24,
+            margin: 16,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h3 style={{ textAlign: "center", marginBottom: 16 }}>
+            Account Role Distribution
+          </h3>
+          <Bar data={barData} options={barOptions} />
+        </div>
       </div>
-      <ComplaintDashboard />
     </div>
   );
 }

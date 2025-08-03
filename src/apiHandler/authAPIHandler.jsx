@@ -1,5 +1,5 @@
 import axios from "axios";
-import apiClient from '../services/axiosConfig';
+import apiClient from "../services/axiosConfig";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const rootAuth = `${API_URL}/api/auth`;
@@ -78,6 +78,15 @@ export const refreshToken = async (refreshToken) => {
     const response = await axios.post(`${rootAuth}/refresh-token`, {
       refreshToken,
     });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const adminRegisterUser = async (userData) => {
+  try {
+    const response = await apiClient.post(`${rootAuth}/registermb`, userData);
     return response.data;
   } catch (error) {
     throw error;

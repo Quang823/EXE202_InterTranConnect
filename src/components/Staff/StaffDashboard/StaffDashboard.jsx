@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  CreditCardIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  ArrowTrendingUpIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/outline";
+  CreditCard,
+  Clock,
+  CheckCircle,
+  TrendingUp,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import "./StaffDashboard.scss";
 import Loading from "../../common/Loading/Loading";
 import { getWithdrawalRequests } from "../../../apiHandler/adminAPIHandler";
@@ -21,6 +23,10 @@ const StaffDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const requestsPerPage = 5;
 
   useEffect(() => {
     const sessionData = JSON.parse(sessionStorage.getItem("user"));
@@ -37,18 +43,14 @@ const StaffDashboard = () => {
 
       try {
         setLoading(true);
-        // Fetch a large number of requests to perform client-side stats
         const response = await getWithdrawalRequests(1, 999);
 
         if (response && Array.isArray(response.items)) {
           const allRequests = response.items;
 
-          // Calculate stats
           const total = allRequests.length;
           const pending = allRequests.filter((req) => req.status === 0).length;
-          const approved = allRequests.filter(
-            (req) => req.status === 1
-          ).length;
+          const approved = allRequests.filter((req) => req.status === 1).length;
           const totalAmount = allRequests.reduce(
             (sum, req) => sum + req.amount,
             0
@@ -56,19 +58,18 @@ const StaffDashboard = () => {
 
           setStats({ total, pending, approved, totalAmount });
 
-          // Get the 5 most recent requests for display
-          const formattedRecentRequests = allRequests
-            .slice(0, 5)
-            .map((item) => ({
-              id: item.withdrawalRequestId,
-              customer_name: item.bankAccountHolderName,
-              customer_email: item.email,
-              amount: item.amount,
-              bank_name: item.bankName,
-              status: item.status,
-              created_date: item.requestDate,
-            }));
-          setRequests(formattedRecentRequests);
+          const formattedRequests = allRequests.map((item) => ({
+            id: item.withdrawalRequestId,
+            customer_name: item.bankAccountHolderName,
+            customer_email: item.email,
+            amount: item.amount,
+            bankName: item.bankName,
+            accountNumber: item.bankAccountNumber,
+            accountName: item.bankAccountHolderName,
+            status: item.status,
+            created_date: item.requestDate,
+          }));
+          setRequests(formattedRequests);
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -99,7 +100,7 @@ const StaffDashboard = () => {
     const colors = {
       0: "wp-status-blue",
       1: "wp-status-purple",
-      2: "wp-status-red",
+      2: "wp-status-completed",
       3: "wp-status-gray",
     };
     return colors[status] || "wp-status-default";
@@ -115,6 +116,61 @@ const StaffDashboard = () => {
     return texts[status] || "Unknown";
   };
 
+  const totalPages = Math.ceil(requests.length / requestsPerPage);
+  const indexOfLastRequest = currentPage * requestsPerPage;
+  const indexOfFirstRequest = indexOfLastRequest - requestsPerPage;
+  const currentRequests = requests.slice(
+    indexOfFirstRequest,
+    indexOfLastRequest
+  );
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push("...");
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push("...");
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push("...");
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   return (
     <div className="wp-dashboard-container">
       {loading ? (
@@ -123,31 +179,32 @@ const StaffDashboard = () => {
         </div>
       ) : (
         <>
-          {/* Header */}
           <div className="wp-header">
             <div className="wp-header-text">
               <h1 className="wp-title">Dashboard</h1>
-                <p className="wp-subtitle">
-                  Overview of customer withdrawal requests
-                </p>
+              <p className="wp-subtitle">
+                Overview of customer withdrawal requests
+              </p>
             </div>
-            <Link to="/staff/withdrawal-requests" className="wp-view-all-button">
+            <Link
+              to="/staff/withdrawal-requests"
+              className="wp-view-all-button"
+            >
               View all requests
-              <ArrowTopRightOnSquareIcon className="wp-button-icon" />
+              <ExternalLink size={16} className="wp-button-icon" />
             </Link>
           </div>
 
-          {/* Stats Cards */}
           <div className="wp-stats-grid">
             <div className="wp-stat-card wp-stat-total">
               <div className="wp-card-header">
                 <span className="wp-card-title">Total Requests</span>
-                <CreditCardIcon className="wp-card-icon" />
+                <CreditCard size={24} className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.total}</div>
                 <div className="wp-stat-trend">
-                  <ArrowTrendingUpIcon className="wp-trend-icon" />
+                  <TrendingUp size={16} className="wp-trend-icon" />
                   +12% from last month
                 </div>
               </div>
@@ -156,7 +213,7 @@ const StaffDashboard = () => {
             <div className="wp-stat-card wp-stat-pending">
               <div className="wp-card-header">
                 <span className="wp-card-title">Pending</span>
-                <ClockIcon className="wp-card-icon" />
+                <Clock size={24} className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.pending}</div>
@@ -167,7 +224,7 @@ const StaffDashboard = () => {
             <div className="wp-stat-card wp-stat-approved">
               <div className="wp-card-header">
                 <span className="wp-card-title">Approved</span>
-                <CheckCircleIcon className="wp-card-icon" />
+                <CheckCircle size={24} className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
                 <div className="wp-stat-value">{stats.approved}</div>
@@ -178,19 +235,25 @@ const StaffDashboard = () => {
             <div className="wp-stat-card wp-stat-amount">
               <div className="wp-card-header">
                 <span className="wp-card-title">Total Amount</span>
-                <ArrowTrendingUpIcon className="wp-card-icon" />
+                <TrendingUp size={24} className="wp-card-icon" />
               </div>
               <div className="wp-card-content">
-                <div className="wp-stat-value">{formatCurrency(stats.totalAmount)}</div>
+                <div className="wp-stat-value">
+                  {formatCurrency(stats.totalAmount)}
+                </div>
                 <div className="wp-stat-text">Total requested amount</div>
               </div>
             </div>
           </div>
 
-          {/* Recent Requests */}
           <div className="wp-requests-card">
             <div className="wp-requests-header">
               <h2 className="wp-requests-title">Recent Requests</h2>
+              <div className="wp-requests-info">
+                Showing {indexOfFirstRequest + 1}-
+                {Math.min(indexOfLastRequest, requests.length)} of{" "}
+                {requests.length} requests
+              </div>
               <Link
                 to="/staff/withdrawal-requests"
                 className="wp-requests-view-all"
@@ -205,13 +268,15 @@ const StaffDashboard = () => {
                     <th className="wp-table-header">Customer</th>
                     <th className="wp-table-header">Amount</th>
                     <th className="wp-table-header">Bank</th>
+                    <th className="wp-table-header">Account Number</th>
+                    <th className="wp-table-header">Account Name</th>
                     <th className="wp-table-header">Status</th>
                     <th className="wp-table-header">Created Date</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {requests.length > 0 ? (
-                    requests.map((request) => (
+                  {currentRequests.length > 0 ? (
+                    currentRequests.map((request) => (
                       <tr key={request.id} className="wp-table-row">
                         <td className="wp-table-cell">
                           <div>
@@ -229,7 +294,17 @@ const StaffDashboard = () => {
                           </span>
                         </td>
                         <td className="wp-table-cell">
-                          <span className="wp-bank">{request.bank_name}</span>
+                          <span className="wp-bank">{request.bankName}</span>
+                        </td>
+                        <td className="wp-table-cell">
+                          <span className="wp-account-number">
+                            {request.accountNumber}
+                          </span>
+                        </td>
+                        <td className="wp-table-cell">
+                          <span className="wp-account-name">
+                            {request.accountName}
+                          </span>
                         </td>
                         <td className="wp-table-cell">
                           <span
@@ -247,7 +322,7 @@ const StaffDashboard = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="wp-no-requests">
+                      <td colSpan="7" className="wp-no-requests">
                         No requests found.
                       </td>
                     </tr>
@@ -255,6 +330,43 @@ const StaffDashboard = () => {
                 </tbody>
               </table>
             </div>
+
+            {!loading && totalPages > 1 && (
+              <div className="wp-pagination">
+                <button
+                  className="wp-pagination-btn"
+                  onClick={goToPreviousPage}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft size={16} />
+                  Previous
+                </button>
+
+                <div className="wp-pagination-numbers">
+                  {getPageNumbers().map((page, index) => (
+                    <button
+                      key={index}
+                      className={`wp-pagination-number ${
+                        page === currentPage ? "active" : ""
+                      } ${page === "..." ? "disabled" : ""}`}
+                      onClick={() => typeof page === "number" && goToPage(page)}
+                      disabled={page === "..."}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  className="wp-pagination-btn"
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}

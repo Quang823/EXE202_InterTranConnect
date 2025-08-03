@@ -1,6 +1,7 @@
 import {
   getTranslatorCertificates,
   updateTranslatorCertificate,
+  getTranslatorCertificateStatus,
 } from "../apiHandler/translatorAPIHandler";
 import { uploadToCloudinaryService } from "../services/uploadToCloudinaryService";
 
@@ -95,6 +96,20 @@ export const addTranslatorCertificate = async (certificateData) => {
       `Failed to add certificate: ${
         error.response?.data?.message || error.message
       }`
+    );
+  }
+};
+
+export const fetchTranslatorCertificateStatus = async (userId) => {
+  try {
+    if (!userId) throw new Error("userId is required");
+    const response = await getTranslatorCertificateStatus(userId);
+    return response;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch certificate status"
     );
   }
 };

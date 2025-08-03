@@ -51,13 +51,13 @@ const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
         <div className="form-fields">
           <div className="salary-input-section">
             <label htmlFor="hourlyRate" className="salary-label">
-              Hourly Rate for Translator (VND/hr)
+              Job Wage (VND)
             </label>
             <input
               type="number"
               id="hourlyRate"
               name="hourlyRate"
-              placeholder="Enter hourly rate"
+              placeholder="Enter job wage"
               value={formData.hourlyRate}
               onChange={handleHourlyRateChange}
               min="0"
@@ -66,15 +66,15 @@ const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
           </div>
 
           <div className="salary-breakdown">
-            <h5>Salary Breakdown</h5>
+            <h5>Wage Breakdown</h5>
             <div className="breakdown-item">
-              <span className="breakdown-label">Hourly Rate:</span>
+              <span className="breakdown-label">Job Wage:</span>
               <span className="breakdown-value">
                 {formData.hourlyRate.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 }) || "0.00"}
-                VND/hr
+                VND
               </span>
             </div>
             <div className="breakdown-item">
@@ -86,23 +86,23 @@ const SalaryModal = ({ isOpen, onClose, formData, onChange }) => {
                   style: "currency",
                   currency: "VND",
                 })}
-                VND/hr
+                VND
               </span>
             </div>
             <div className="breakdown-item total">
-              <span className="breakdown-label">Total Fee:</span>
+              <span className="breakdown-label">Total Cost:</span>
               <span className="breakdown-value">
                 {totalFee.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })}
-                VND/hr
+                VND
               </span>
             </div>
             <p className="breakdown-note">
               Note: The Platform Service Fee is automatically calculated as 30%
-              of the Hourly Rate. The Total Fee is the sum of the Hourly Rate
-              and the Platform Service Fee.
+              of the Job Wage. The Total Cost is the sum of the Job Wage and the
+              Platform Service Fee.
             </p>
           </div>
 

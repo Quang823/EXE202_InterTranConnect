@@ -8,12 +8,12 @@ const ApprovalModal = ({ request, onApprove, onReject }) => {
     <div className="wp-action-card">
       <div className="wp-card-body">
         <p className="wp-action-prompt">
-          Thực hiện hành động phê duyệt hoặc từ chối yêu cầu cho{" "}
+          Perform an approval or rejection action for the request by{" "}
           <strong>{request.customer_name}</strong>.
         </p>
         <textarea
           className="wp-note-textarea"
-          placeholder="Thêm ghi chú (tùy chọn)..."
+          placeholder="Add a note (optional)..."
           value={note}
           onChange={(e) => setNote(e.target.value)}
         ></textarea>
@@ -23,14 +23,14 @@ const ApprovalModal = ({ request, onApprove, onReject }) => {
             onClick={() => onApprove(note)}
           >
             <CheckCircleIcon className="wp-icon" />
-            Phê duyệt
+            Approve
           </button>
           <button
             className="wp-reject-action-button"
             onClick={() => onReject(note)}
           >
             <XCircleIcon className="wp-icon" />
-            Từ chối
+            Reject
           </button>
         </div>
       </div>
@@ -38,4 +38,4 @@ const ApprovalModal = ({ request, onApprove, onReject }) => {
   );
 };
 
-export default ApprovalModal; 
+export default ApprovalModal;

@@ -9,6 +9,10 @@
   "forum": "论坛",
   "hero": {
     "title": { "line": "顶级译者", "highlight": "立即连接！" },
+    "title2": {
+      "line": "智能连接",
+      "highlight": "流畅对话！"
+    },
     "subtitle": "专业译者——满足您所有翻译需求，卓越品质与闪电般速度！",
     "cta": "立即雇佣译者",
     "search": {

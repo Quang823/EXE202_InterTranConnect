@@ -25,10 +25,13 @@ const OrderDetails = ({ job, formatDate }) => (
       </div>
       <div className="post-history-detail-details-row">
         <span className="post-history-detail-details-label">
-          <DollarSign size={16} /> Hourly Rate:
+          <DollarSign size={16} /> Job Wage:
         </span>
         <span className="post-history-detail-details-value">
-          ${job.hourlyRate}
+          {job.hourlyRate?.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
         </span>
       </div>
       <div className="post-history-detail-details-row">
@@ -36,7 +39,10 @@ const OrderDetails = ({ job, formatDate }) => (
           <DollarSign size={16} /> Platform Service Fee:
         </span>
         <span className="post-history-detail-details-value">
-          ${job.platformServiceFee}
+          {job.platformServiceFee?.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
         </span>
       </div>
       <div className="post-history-detail-details-row">
@@ -44,7 +50,10 @@ const OrderDetails = ({ job, formatDate }) => (
           <DollarSign size={16} /> Total Amount:
         </span>
         <span className="post-history-detail-details-value">
-          ${job.totalFee}
+          {job.totalFee?.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
         </span>
       </div>
       <div className="post-history-detail-details-row">

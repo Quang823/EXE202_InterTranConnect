@@ -13,7 +13,10 @@ import {
 import "./WithdrawalRequests.scss";
 import RequestDetails from "./ModalPopup/RequestDetails";
 import ApprovalModal from "./ModalPopup/ApprovalModal";
-import { getWithdrawalRequests, updateWithdrawalRequestStatus } from "../../../apiHandler/adminAPIHandler";
+import {
+  getWithdrawalRequests,
+  updateWithdrawalRequestStatus,
+} from "../../../apiHandler/adminAPIHandler";
 
 const getDateRange = (filter) => {
   const now = new Date();
@@ -219,8 +222,8 @@ const WithdrawalRequests = () => {
     const colors = {
       0: "wp-status-blue",
       1: "wp-status-purple",
-      2: "wp-status-red",
-      3: "wp-status-gray",
+      2: "wp-status-completed",
+      3: "wp-status-red",
     };
     return colors[status] || "wp-status-default";
   };
@@ -241,7 +244,9 @@ const WithdrawalRequests = () => {
       <div className="wp-header">
         <div className="wp-header-text">
           <h1 className="wp-title">Withdrawal Requests</h1>
-          <p className="wp-subtitle">Manage and process withdrawal requests from customers</p>
+          <p className="wp-subtitle">
+            Manage and process withdrawal requests from customers
+          </p>
         </div>
         <div className="wp-header-buttons">
           <button
@@ -323,7 +328,9 @@ const WithdrawalRequests = () => {
       {/* Results */}
       <div className="wp-results-card">
         <div className="wp-results-header">
-          <h2 className="wp-results-title">Request List ({withdrawalRequests.length})</h2>
+          <h2 className="wp-results-title">
+            Request List ({withdrawalRequests.length})
+          </h2>
         </div>
         <div className="wp-table-container">
           <table className="wp-requests-table">
@@ -340,32 +347,48 @@ const WithdrawalRequests = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="wp-no-results">Loading...</td>
+                  <td colSpan={6} className="wp-no-results">
+                    Loading...
+                  </td>
                 </tr>
               ) : withdrawalRequests.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="wp-no-results">No requests found matching the filter</td>
+                  <td colSpan={6} className="wp-no-results">
+                    No requests found matching the filter
+                  </td>
                 </tr>
               ) : (
                 withdrawalRequests.map((request) => (
                   <tr key={request.id} className="wp-table-row">
                     <td className="wp-table-cell">
                       <div>
-                        <p className="wp-customer-name">{request.customer_name}</p>
-                        <p className="wp-customer-email">{request.customer_email}</p>
+                        <p className="wp-customer-name">
+                          {request.customer_name}
+                        </p>
+                        <p className="wp-customer-email">
+                          {request.customer_email}
+                        </p>
                       </div>
                     </td>
                     <td className="wp-table-cell">
-                      <span className="wp-amount">{formatCurrency(request.amount)}</span>
+                      <span className="wp-amount">
+                        {formatCurrency(request.amount)}
+                      </span>
                     </td>
                     <td className="wp-table-cell">
                       <div className="wp-bank-info">
                         <p className="wp-bank-name">{request.bank_name}</p>
-                        <p className="wp-bank-account-number">{request.bank_account_number}</p>
+                        <p className="wp-bank-account-number">
+                          {request.bank_account_number}
+                        </p>
                       </div>
                     </td>
                     <td className="wp-table-cell">
-                      <span className={`wp-status-badge ${getStatusColor(request.status)}`}>
+                      <span
+                        className={`wp-status-badge ${getStatusColor(
+                          request.status
+                        )}`}
+                      >
                         {getStatusText(request.status)}
                       </span>
                     </td>
@@ -433,9 +456,7 @@ const WithdrawalRequests = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="wp-modal-header">
-              <h2 className="wp-modal-title">
-                Approve Request
-              </h2>
+              <h2 className="wp-modal-title">Approve Request</h2>
               <button
                 className="wp-modal-close-button"
                 onClick={handleCloseModals}

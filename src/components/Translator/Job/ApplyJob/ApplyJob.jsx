@@ -77,7 +77,6 @@ const ApplyJob = () => {
           sessionData.accessToken
         );
         setJobApplications(data);
-        console.log("res", data);
         setLoading(false);
       } catch (err) {
         setError(err.message);

@@ -18,10 +18,12 @@ const HeroSection = ({ onHireTranslator, isLoading }) => {
       <div className="itc-hero__container">
         {/* Main Heading */}
         <div className="itc-hero__content">
-          <h1 className="itc-hero__title">
-            <span className="itc-hero__title-line">{t("hero.title.line")}</span>
+          <h1 className="itc-hero__title2">
+            <span className="itc-hero__title-line">
+              {t("hero.title2.line")}
+            </span>
             <span className="itc-hero__title-highlight">
-              {t("hero.title.highlight")}
+              {t("hero.title2.highlight")}
               <div className="itc-hero__sparkle">
                 <Sparkles className="itc-hero__sparkle-icon" />
               </div>

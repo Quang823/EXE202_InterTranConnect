@@ -123,13 +123,18 @@ const Applications = ({ job }) => {
           hasAnyInProgress: jobData.hasAnyInProgress,
           isAllCompleted: jobData.isAllCompleted,
         });
+        const jobApplications = await fetchJobApplications(jobId);
+        const avatar =
+          jobApplications.length > 0
+            ? jobApplications[0].interpreter?.avatarUrl
+            : "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png";
 
-        // Map translators từ jobData.applications thay vì fetchJobApplications
         const mappedTranslators = jobData.applications.map((app) => ({
           interpreterId: app.interpreterId,
           name: app.interpreterName || "Unknown Translator",
           avatar:
-            app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+            avatar ||
+            "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
           email: app.interpreterEmail,
           status:
             app.workStatus === 0
@@ -220,12 +225,19 @@ const Applications = ({ job }) => {
         hasAnyInProgress: jobData.hasAnyInProgress,
         isAllCompleted: jobData.isAllCompleted,
       });
+      const jobApplications = await fetchJobApplications(jobId);
+      const avatar =
+        jobApplications.length > 0
+          ? jobApplications[0].interpreter?.avatarUrl
+          : "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png";
 
+      // Map translators từ jobData.applications, sử dụng avatar lấy được
       const mappedTranslators = jobData.applications.map((app) => ({
         interpreterId: app.interpreterId,
         name: app.interpreterName || "Unknown Translator",
         avatar:
-          app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+          avatar ||
+          "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
         email: app.interpreterEmail,
         status:
           app.workStatus === 0
@@ -245,6 +257,7 @@ const Applications = ({ job }) => {
         workStatus: app.workStatus,
         isPaid: app.isPaid,
       }));
+
       setTranslators(mappedTranslators);
 
       // Nếu status là "Pending" sau khi chọn, cập nhật để hiển thị nút Payment
@@ -339,11 +352,21 @@ const Applications = ({ job }) => {
           isAllCompleted: jobData.isAllCompleted,
         });
 
+        const jobApplications = await fetchJobApplications(jobId);
+
+        // Lấy avatar từ jobApplications (giả sử jobApplications là mảng, lấy avatar của phần tử đầu tiên)
+        const avatar =
+          jobApplications.length > 0
+            ? jobApplications[0].interpreter?.avatarUrl
+            : "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png";
+
+        // Map translators từ jobData.applications, sử dụng avatar lấy được
         const mappedTranslators = jobData.applications.map((app) => ({
           interpreterId: app.interpreterId,
           name: app.interpreterName || "Unknown Translator",
           avatar:
-            app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+            avatar ||
+            "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
           email: app.interpreterEmail,
           status:
             app.workStatus === 0
@@ -452,11 +475,21 @@ const Applications = ({ job }) => {
         isAllCompleted: jobData.isAllCompleted,
       });
 
+      const jobApplications = await fetchJobApplications(jobId);
+
+      // Lấy avatar từ jobApplications (giả sử jobApplications là mảng, lấy avatar của phần tử đầu tiên)
+      const avatar =
+        jobApplications.length > 0
+          ? jobApplications[0].interpreter?.avatarUrl
+          : "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png";
+
+      // Map translators từ jobData.applications, sử dụng avatar lấy được
       const mappedTranslators = jobData.applications.map((app) => ({
         interpreterId: app.interpreterId,
         name: app.interpreterName || "Unknown Translator",
         avatar:
-          app.interpreter?.avatarUrl || "https://i.pravatar.cc/150?img=32",
+          avatar ||
+          "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
         email: app.interpreterEmail,
         status:
           app.workStatus === 0

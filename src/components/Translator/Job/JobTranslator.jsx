@@ -90,7 +90,7 @@ const JobTranslator = () => {
           category: job.translationType,
           languagePair: `${job.sourceLanguage} - ${job.targetLanguage}`,
           hours: new Date(job.createdAt).toLocaleString(),
-          salary: `$${job.totalFee}`,
+          salary: `${job.totalFee} VND`,
         }));
 
         setJobListings(mappedJobs);

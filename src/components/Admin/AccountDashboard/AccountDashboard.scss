@@ -826,3 +826,67 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
   gap: 6px;
   justify-content: flex-start;
 }
+
+// User information styles (similar to Accounts page)
+.acd-account-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.acd-avatar-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.acd-avatar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  font-size: 16px;
+}
+
+.acd-account-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1f2937;
+  font-size: 15px;
+}
+
+.acd-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.acd-contact-icon {
+  color: #9ca3af;
+  width: 16px;
+  height: 16px;
+}
+
+.acd-contact-text {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.acd-address-text {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

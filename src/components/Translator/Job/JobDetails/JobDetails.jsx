@@ -233,7 +233,8 @@ const JobDetails = () => {
               <span className="icon">📂</span> Category: {job.translationType}
             </div>
             <div className="overview-item">
-              <span className="icon">💰</span> Offered Salary: ${job.totalFee}
+              <span className="icon">💰</span> Offered Salary: {job.totalFee}{" "}
+              VND
             </div>
             <div className="overview-item">
               <span className="icon">📍</span> Location: {job.workCity}
