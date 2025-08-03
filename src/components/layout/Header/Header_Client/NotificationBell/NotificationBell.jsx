@@ -2,12 +2,14 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNotification } from "../../../../../hooks/useNotification";
 import AuthContext from "../../../../../context/AuthContext";
 import { getUserInfoByUserIdService } from "../../../../../services/authService";
+import { fetchTranslatorCertificateStatus } from "../../../../../services/translatorService";
 import useRefreshUserInfo from "../../../../../hooks/useRefreshUserInfo";
 import { Bell, X } from "lucide-react";
 import "./NotificationBell.scss";
 
 const NotificationBell = ({ onClick, mobile }) => {
-  const { user, token, login, priority } = useContext(AuthContext);
+  const { user, token, login, priority, refreshToken } =
+    useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCertificateWarning, setShowCertificateWarning] = useState(false);
@@ -20,9 +22,35 @@ const NotificationBell = ({ onClick, mobile }) => {
     setShowDropdown(true); // Show dropdown on new notification
   });
 
-  // Fetch latest approvalStatus from backend when mount or user.id changes
+  // Always fetch latest approvalStatus for Talent
   useEffect(() => {
-    refreshUserInfo();
+    const fetchStatusAndUpdate = async () => {
+      if (user?.id && user?.role === "Talent") {
+        try {
+          const status = await fetchTranslatorCertificateStatus(user.id);
+          if (status && status !== user.approvalStatus) {
+            // Update user context with only needed fields
+            const latestUser = await getUserInfoByUserIdService(user.id);
+            login(
+              {
+                id: latestUser.id,
+                fullName: latestUser.fullName,
+                email: latestUser.email,
+                role: latestUser.role || user.role,
+                approvalStatus: status,
+              },
+              token,
+              refreshToken,
+              priority
+            );
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
+    fetchStatusAndUpdate();
+    // eslint-disable-next-line
   }, [user?.id]);
 
   useEffect(() => {
@@ -40,7 +68,7 @@ const NotificationBell = ({ onClick, mobile }) => {
       setShowCertificateWarning(true);
     } else if (
       user?.role === "Talent" &&
-      user?.approvalStatus === "PendingApproval"
+      user?.approvalStatus === "Pending Approval"
     ) {
       setShowCertificateWarning(true);
     } else {
@@ -97,7 +125,7 @@ const NotificationBell = ({ onClick, mobile }) => {
               <strong>
                 {user?.approvalStatus === "NoCertificate"
                   ? "Complete Your Profile"
-                  : user?.approvalStatus === "PendingApproval"
+                  : user?.approvalStatus === "Pending Approval"
                   ? "Certificate Pending Approval"
                   : ""}
               </strong>
@@ -110,7 +138,7 @@ const NotificationBell = ({ onClick, mobile }) => {
             <p>
               {user?.approvalStatus === "NoCertificate"
                 ? "Translators are required to provide complete certificate information before applying for jobs. Please add your certificate in profile setting!!!"
-                : user?.approvalStatus === "PendingApproval"
+                : user?.approvalStatus === "Pending Approval"
                 ? "Please wait 24 hours for the certificate to be approved."
                 : ""}
             </p>

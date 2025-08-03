@@ -48,7 +48,6 @@ const CertificateDetailsPage = () => {
         }
         setUser(parsedUser);
         const response = await fetchTranslatorCertificates(parsedUser.id);
-        console.log("res", response);
         setCertificates(response);
         setLoading(false);
       } catch (error) {

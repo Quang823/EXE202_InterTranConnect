@@ -8,6 +8,7 @@ import {
   updateUserProfile,
   refreshToken as refreshTokenAPI,
   updateBankAccount,
+  adminRegisterUser,
 } from "../apiHandler/authAPIHandler";
 import { jwtDecode } from "jwt-decode";
 
@@ -274,5 +275,62 @@ export const refreshAccessToken = async (loginContext) => {
     };
   } catch (error) {
     throw handleAuthError(error, "Token refresh failed");
+  }
+};
+
+export const adminRegisterUserService = async (userData) => {
+  const requiredFields = [
+    "userName",
+    "email",
+    "password",
+    "confirmPassword",
+    "phoneNumber",
+    "gender",
+    "address",
+    "role",
+  ];
+  const missingFields = requiredFields.filter((field) => !userData[field]);
+
+  if (missingFields.length > 0) {
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+  }
+
+  if (userData.password !== userData.confirmPassword) {
+    throw new Error("Passwords do not match");
+  }
+
+  // Validate role
+  const validRoles = ["Admin", "Staff", "Talent", "Customer"];
+  if (!validRoles.includes(userData.role)) {
+    throw new Error(
+      "Invalid role. Must be one of: Admin, Staff, Talent, Customer"
+    );
+  }
+
+  try {
+    const response = await adminRegisterUser(userData);
+
+    if (!response.success) {
+      throw new Error(response.message || "User registration failed");
+    }
+
+    return {
+      success: true,
+      message: response.message || "User registered successfully",
+      data: response.data,
+    };
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      if (status === 400) {
+        throw new Error(data.message || "Invalid data provided");
+      } else if (status === 409) {
+        throw new Error(data.message || "Email already exists");
+      } else if (status === 401) {
+        throw new Error("Unauthorized: Admin access required");
+      }
+      throw new Error(data.message || "User registration failed");
+    }
+    throw new Error(error.message || "Network error");
   }
 };

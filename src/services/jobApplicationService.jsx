@@ -37,12 +37,7 @@ export const selectTranslator = async (jobId, interpreterId) => {
       throw new Error("Interpreter ID is required and must be a string!");
     }
 
-    console.log("Calling selectTranslatorForJob with:", {
-      jobId,
-      interpreterId,
-    });
     const response = await selectTranslatorForJob(jobId, interpreterId);
-    console.log("Response from selectTranslatorForJob:", response);
 
     // Kiểm tra response là chuỗi thành công hoặc lỗi
     if (typeof response === "string" && response.includes("successfully")) {

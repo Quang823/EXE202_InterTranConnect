@@ -1,8 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import './AccountDashboard.scss';
-import { Search, Bell, Settings, Clock, AlertTriangle, Calendar, CheckCircle, Users, Plus, X, Eye, GraduationCap, Briefcase, Globe2, FileText, Image as ImageIcon, Languages, FileUp, Check } from 'lucide-react';
-import Swal from 'sweetalert2';
-import { getPendingCertificates, approveCertificate, rejectCertificate } from '../../../apiHandler/adminAPIHandler';
+import React, { useEffect, useState } from "react";
+import "./AccountDashboard.scss";
+import {
+  Search,
+  Bell,
+  Settings,
+  Clock,
+  AlertTriangle,
+  Calendar,
+  CheckCircle,
+  Users,
+  Plus,
+  X,
+  Eye,
+  GraduationCap,
+  Briefcase,
+  Globe2,
+  FileText,
+  Image as ImageIcon,
+  Languages,
+  FileUp,
+  Check,
+  Mail,
+  Phone,
+} from "lucide-react";
+import Swal from "sweetalert2";
+import {
+  getPendingCertificates,
+  approveCertificate,
+  rejectCertificate,
+} from "../../../apiHandler/adminAPIHandler";
 
 const AccountDashboard = () => {
   const [accounts, setAccounts] = useState([]);
@@ -12,21 +38,23 @@ const AccountDashboard = () => {
   const [modalData, setModalData] = useState(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
-  const token = sessionStorage.getItem('accessToken');
+  const token = sessionStorage.getItem("accessToken");
 
   const fetchAccounts = async () => {
     setIsLoading(true);
     try {
       const response = await getPendingCertificates();
       // response là mảng [{ certificate, talent }]
-      const accountsData = response.map(item => {
+      const accountsData = response.map((item) => {
         const { certificate, talent } = item;
         return {
           id: certificate.id,
           applicationUserId: certificate.applicationUserId,
-          full_name: talent.fullName,
+          fullName: talent.fullName,
           email: talent.email,
-          phone: talent.phoneNumber,
+          phoneNumber: talent.phoneNumber,
+          address: talent.address,
+          avatarURL: talent.avatarURL,
           status: talent.approvalStatus,
           createdAt: talent.createAt,
           // Thêm các trường cần thiết cho modal
@@ -35,7 +63,7 @@ const AccountDashboard = () => {
       });
       setAccounts(accountsData);
     } catch (e) {
-      console.error('Failed to fetch pending certificates:', e);
+      console.error("Failed to fetch pending certificates:", e);
     } finally {
       setIsLoading(false);
     }
@@ -46,21 +74,22 @@ const AccountDashboard = () => {
   }, []);
 
   // Filtered accounts for search
-  const filteredAccounts = accounts.filter(account =>
-    account.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    account.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAccounts = accounts.filter(
+    (account) =>
+      account.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      account.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Stats
   const pendingCount = accounts.length;
-  const urgentCount = accounts.filter(acc => {
+  const urgentCount = accounts.filter((acc) => {
     if (!acc.createdAt) return false;
     const created = new Date(acc.createdAt);
     const now = new Date();
     const diff = (now - created) / (1000 * 60 * 60 * 24);
     return diff > 3;
   }).length;
-  const todayCount = accounts.filter(acc => {
+  const todayCount = accounts.filter((acc) => {
     if (!acc.createdAt) return false;
     const created = new Date(acc.createdAt);
     const now = new Date();
@@ -80,25 +109,25 @@ const AccountDashboard = () => {
   // Approve certificate
   const handleApprove = async (account) => {
     const result = await Swal.fire({
-      title: 'Confirm certificate approval?',
+      title: "Confirm certificate approval?",
       text: `Are you sure you want to approve this certificate?`,
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Approve',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonText: "Approve",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
     });
     if (!result.isConfirmed) return;
     setActionLoadingId(account.id);
     try {
       await approveCertificate(account.id);
-      await Swal.fire({ icon: 'success', title: 'Approved successfully!' });
+      await Swal.fire({ icon: "success", title: "Approved successfully!" });
       fetchAccounts();
-      const current = Number(localStorage.getItem('approvedCount')) || 0;
-      localStorage.setItem('approvedCount', current + 1);
+      const current = Number(localStorage.getItem("approvedCount")) || 0;
+      localStorage.setItem("approvedCount", current + 1);
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Approval failed!' });
+      Swal.fire({ icon: "error", title: "Approval failed!" });
     } finally {
       setActionLoadingId(null);
     }
@@ -107,27 +136,27 @@ const AccountDashboard = () => {
   // Reject certificate
   const handleReject = async (account) => {
     const result = await Swal.fire({
-      title: 'Confirm certificate rejection?',
+      title: "Confirm certificate rejection?",
       text: `Are you sure you want to reject this certificate?`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Reject',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonText: "Reject",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     });
     if (!result.isConfirmed) return;
     // Thêm prompt nhập lý do
     const { value: reason } = await Swal.fire({
-      title: 'Reason for rejection',
-      input: 'text',
-      inputPlaceholder: 'Enter rejection reason...',
+      title: "Reason for rejection",
+      input: "text",
+      inputPlaceholder: "Enter rejection reason...",
       showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
       inputValidator: (value) => {
         if (!value) {
-          return 'You must enter a rejection reason!';
+          return "You must enter a rejection reason!";
         }
       },
       allowOutsideClick: false,
@@ -138,12 +167,12 @@ const AccountDashboard = () => {
     setActionLoadingId(account.id);
     try {
       await rejectCertificate(account.id, reason);
-      await Swal.fire({ icon: 'success', title: 'Rejected successfully!' });
+      await Swal.fire({ icon: "success", title: "Rejected successfully!" });
       fetchAccounts();
-      const current = Number(localStorage.getItem('rejectedCount')) || 0;
-      localStorage.setItem('rejectedCount', current + 1);
+      const current = Number(localStorage.getItem("rejectedCount")) || 0;
+      localStorage.setItem("rejectedCount", current + 1);
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Rejection failed!' });
+      Swal.fire({ icon: "error", title: "Rejection failed!" });
     } finally {
       setActionLoadingId(null);
     }
@@ -152,23 +181,23 @@ const AccountDashboard = () => {
   // Duyệt tất cả
   const handleApproveAll = async () => {
     const result = await Swal.fire({
-      title: 'Confirm approve all?',
+      title: "Confirm approve all?",
       text: `Are you sure you want to approve all these certificates?`,
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: 'Approve all',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonText: "Approve all",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
     });
     if (!result.isConfirmed) return;
-    setActionLoadingId('all');
+    setActionLoadingId("all");
     try {
-      await Promise.all(accounts.map(acc => approveCertificate(acc.id)));
-      await Swal.fire({ icon: 'success', title: 'All approved successfully!' });
+      await Promise.all(accounts.map((acc) => approveCertificate(acc.id)));
+      await Swal.fire({ icon: "success", title: "All approved successfully!" });
       fetchAccounts();
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Approve all failed!' });
+      Swal.fire({ icon: "error", title: "Approve all failed!" });
     } finally {
       setActionLoadingId(null);
     }
@@ -177,23 +206,23 @@ const AccountDashboard = () => {
   // Từ chối tất cả
   const handleRejectAll = async () => {
     const result = await Swal.fire({
-      title: 'Confirm reject all?',
+      title: "Confirm reject all?",
       text: `Are you sure you want to reject all these certificates?`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Reject all',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonText: "Reject all",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     });
     if (!result.isConfirmed) return;
-    setActionLoadingId('all');
+    setActionLoadingId("all");
     try {
-      await Promise.all(accounts.map(acc => rejectCertificate(acc.id)));
-      await Swal.fire({ icon: 'success', title: 'All rejected successfully!' });
+      await Promise.all(accounts.map((acc) => rejectCertificate(acc.id)));
+      await Swal.fire({ icon: "success", title: "All rejected successfully!" });
       fetchAccounts();
     } catch (e) {
-      Swal.fire({ icon: 'error', title: 'Reject all failed!' });
+      Swal.fire({ icon: "error", title: "Reject all failed!" });
     } finally {
       setActionLoadingId(null);
     }
@@ -201,9 +230,19 @@ const AccountDashboard = () => {
 
   // Status mapping
   const statusMap = {
-    0: 'Pending',
-    1: 'Waiting For Confirmation',
-    2: 'Completed',
+    0: "Pending",
+    1: "Waiting For Confirmation",
+    2: "Completed",
+  };
+
+  const getInitials = (fullName) => {
+    if (!fullName) return "?";
+    return fullName
+      .split(" ")
+      .map((name) => name[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -211,18 +250,18 @@ const AccountDashboard = () => {
       {/* Header */}
       <header className="dashboard-header">
         <div className="header-left">
-          <h1 className="dashboard-title">Account Approval</h1>
-          <p className="dashboard-subtitle">Approve pending accounts</p>
+          <h1 className="dashboard-title">Certificate Approval</h1>
+          <p className="dashboard-subtitle">Approve pending certificates</p>
         </div>
         <div className="header-right">
           <div className="search-container">
             <Search className="search-icon" size={20} />
             <input
               type="text"
-              placeholder="Tìm kiếm..."
+              placeholder="Search ..."
               className="search-input"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="notification-badge">
@@ -240,7 +279,7 @@ const AccountDashboard = () => {
             <div className="stat-info">
               <h3>Pending Approval</h3>
               <div className="stat-number">{pendingCount}</div>
-              <p>Accounts need processing</p>
+              <p>Certificates need processing</p>
             </div>
             <div className="stat-icon orange">
               <Clock size={24} />
@@ -283,11 +322,21 @@ const AccountDashboard = () => {
             </div>
             <div className="action-content">
               <h3>Approve all</h3>
-              <p>Approve all accounts</p>
+              <p>Approve all certificates</p>
               <div className="action-footer">
-                <span className="account-count">{pendingCount} accounts</span>
-                <button className="action-btn1 green" onClick={handleApproveAll} disabled={actionLoadingId === 'all'}>
-                  {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <CheckCircle size={16} />}
+                <span className="account-count">
+                  {pendingCount} certificates
+                </span>
+                <button
+                  className="action-btn1 green"
+                  onClick={handleApproveAll}
+                  disabled={actionLoadingId === "all"}
+                >
+                  {actionLoadingId === "all" ? (
+                    <span className="acd-btn-spinner"></span>
+                  ) : (
+                    <CheckCircle size={16} />
+                  )}
                   Accept
                 </button>
               </div>
@@ -299,11 +348,19 @@ const AccountDashboard = () => {
             </div>
             <div className="action-content">
               <h3>Reject</h3>
-              <p>Reject all accounts</p>
+              <p>Reject all certificates</p>
               <div className="action-footer">
                 <span className="account-count danger">Dangerous action</span>
-                <button className="action-btn1 red" onClick={handleRejectAll} disabled={actionLoadingId === 'all'}>
-                  {actionLoadingId === 'all' ? <span className="acd-btn-spinner"></span> : <X size={16} />}
+                <button
+                  className="action-btn1 red"
+                  onClick={handleRejectAll}
+                  disabled={actionLoadingId === "all"}
+                >
+                  {actionLoadingId === "all" ? (
+                    <span className="acd-btn-spinner"></span>
+                  ) : (
+                    <X size={16} />
+                  )}
                   Cancel
                 </button>
               </div>
@@ -312,9 +369,9 @@ const AccountDashboard = () => {
         </div>
       </div>
 
-      {/* Accounts List */}
+      {/* Certificates List */}
       <div className="accounts-section">
-        <h2>Accounts awaiting approval ({filteredAccounts.length})</h2>
+        <h2>Certificates awaiting approval ({filteredAccounts.length})</h2>
         {isLoading ? (
           <div className="empty-state">
             <div className="empty-icon">
@@ -327,37 +384,94 @@ const AccountDashboard = () => {
             <div className="empty-icon">
               <CheckCircle size={48} />
             </div>
-            <h3>Great! No accounts awaiting approval</h3>
-            <p>All accounts have been processed</p>
+            <h3>Great! No certificates awaiting approval</h3>
+            <p>All certificates have been processed</p>
           </div>
         ) : (
           <table className="accounts-table">
             <thead>
               <tr>
-                <th>Full Name</th>
+                <th>User</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Address</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {filteredAccounts.map(account => (
+              {filteredAccounts.map((account) => (
                 <tr key={account.id}>
-                  <td>{account.full_name}</td>
-                  <td>{account.email}</td>
-                  <td>{account.phone}</td>
+                  <td>
+                    <div className="acd-account-cell">
+                      {account.avatarURL ? (
+                        <img
+                          src={account.avatarURL}
+                          alt={account.fullName}
+                          className="acd-avatar-image"
+                        />
+                      ) : (
+                        <div className="acd-avatar-icon">
+                          {getInitials(account.fullName)}
+                        </div>
+                      )}
+                      <div>
+                        <p className="acd-account-name">{account.fullName}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="acd-contact-item">
+                      <Mail className="acd-contact-icon" />
+                      <span className="acd-contact-text">{account.email}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="acd-contact-item">
+                      <Phone className="acd-contact-icon" />
+                      <span className="acd-contact-text">
+                        {account.phoneNumber}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="acd-address-text">
+                      {account.address || "N/A"}
+                    </span>
+                  </td>
                   <td>{statusMap[account.status] || account.status}</td>
                   <td>
                     <div className="acd-action-buttons-dashboard">
-                      <button className="view-btn" title="View details" onClick={() => handleOpenModal(account)}>
+                      <button
+                        className="view-btn"
+                        title="View details"
+                        onClick={() => handleOpenModal(account)}
+                      >
                         <Eye size={20} />
                       </button>
-                      <button className="acd-accept-btn" title="Approve" onClick={() => handleApprove(account)} disabled={actionLoadingId === account.id}>
-                        {actionLoadingId === account.id ? <span className="acd-btn-spinner"></span> : <Check size={18} />}
+                      <button
+                        className="acd-accept-btn"
+                        title="Approve"
+                        onClick={() => handleApprove(account)}
+                        disabled={actionLoadingId === account.id}
+                      >
+                        {actionLoadingId === account.id ? (
+                          <span className="acd-btn-spinner"></span>
+                        ) : (
+                          <Check size={18} />
+                        )}
                       </button>
-                      <button className="acd-cancel-btn" title="Reject" onClick={() => handleReject(account)} disabled={actionLoadingId === account.id}>
-                        {actionLoadingId === account.id ? <span className="acd-btn-spinner"></span> : <X size={18} />}
+                      <button
+                        className="acd-cancel-btn"
+                        title="Reject"
+                        onClick={() => handleReject(account)}
+                        disabled={actionLoadingId === account.id}
+                      >
+                        {actionLoadingId === account.id ? (
+                          <span className="acd-btn-spinner"></span>
+                        ) : (
+                          <X size={18} />
+                        )}
                       </button>
                     </div>
                   </td>
@@ -371,8 +485,13 @@ const AccountDashboard = () => {
       {/* Modal Popup */}
       {modalOpen && (
         <div className="acd-modal-overlay" onClick={handleCloseModal}>
-          <div className="acd-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="acd-modal-close" onClick={handleCloseModal}><X size={22} /></button>
+          <div
+            className="acd-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="acd-modal-close" onClick={handleCloseModal}>
+              <X size={22} />
+            </button>
             {modalData === null ? (
               <div className="acd-modal-loading">Loading...</div>
             ) : modalData.error ? (
@@ -382,35 +501,67 @@ const AccountDashboard = () => {
                 <h2 className="acd-modal-title">Certificate Information</h2>
                 {modalData.photoUrl && (
                   <div className="acd-modal-avatar-row">
-                    <img src={modalData.photoUrl} alt="Image" className="acd-modal-avatar" />
+                    <img
+                      src={modalData.photoUrl}
+                      alt="Image"
+                      className="acd-modal-avatar"
+                    />
                   </div>
                 )}
                 {/* Basic Information */}
                 <div className="acd-modal-section">
-                  <div className="acd-modal-section-title">Basic Information</div>
+                  <div className="acd-modal-section-title">
+                    Basic Information
+                  </div>
                   <div className="acd-modal-fields-grid">
-                    <div className="acd-modal-label"><FileText size={16}/> Certificate Title</div>
+                    <div className="acd-modal-label">
+                      <FileText size={16} /> Certificate Title
+                    </div>
                     <div className="acd-modal-value">{modalData.title}</div>
-                    <div className="acd-modal-label"><Briefcase size={16}/> Years of Experience</div>
-                    <div className="acd-modal-value">{modalData.experience}</div>
-                    <div className="acd-modal-label"><GraduationCap size={16}/> Education Background</div>
+                    <div className="acd-modal-label">
+                      <Briefcase size={16} /> Years of Experience
+                    </div>
+                    <div className="acd-modal-value">
+                      {modalData.experience}
+                    </div>
+                    <div className="acd-modal-label">
+                      <GraduationCap size={16} /> Education Background
+                    </div>
                     <div className="acd-modal-value">{modalData.education}</div>
-                    <div className="acd-modal-label"><Globe2 size={16}/> Website URL</div>
+                    <div className="acd-modal-label">
+                      <Globe2 size={16} /> Website URL
+                    </div>
                     <div className="acd-modal-value">{modalData.website}</div>
                   </div>
                 </div>
                 {/* Professional Details */}
                 <div className="acd-modal-section">
-                  <div className="acd-modal-section-title">Professional Details</div>
+                  <div className="acd-modal-section-title">
+                    Professional Details
+                  </div>
                   <div className="acd-modal-fields-grid">
-                    <div className="acd-modal-label"><Briefcase size={16}/> Work Type</div>
+                    <div className="acd-modal-label">
+                      <Briefcase size={16} /> Work Type
+                    </div>
                     <div className="acd-modal-value">{modalData.workType}</div>
-                    <div className="acd-modal-label"><FileText size={16}/> Translation Form</div>
-                    <div className="acd-modal-value">{modalData.translationForm}</div>
-                    <div className="acd-modal-label"><Languages size={16}/> Translation Languages</div>
-                    <div className="acd-modal-value">{modalData.translationLanguage}</div>
-                    <div className="acd-modal-label"><FileText size={16}/> Certificate Names</div>
-                    <div className="acd-modal-value">{modalData.certificateNames}</div>
+                    <div className="acd-modal-label">
+                      <FileText size={16} /> Translation Form
+                    </div>
+                    <div className="acd-modal-value">
+                      {modalData.translationForm}
+                    </div>
+                    <div className="acd-modal-label">
+                      <Languages size={16} /> Translation Languages
+                    </div>
+                    <div className="acd-modal-value">
+                      {modalData.translationLanguage}
+                    </div>
+                    <div className="acd-modal-label">
+                      <FileText size={16} /> Certificate Names
+                    </div>
+                    <div className="acd-modal-value">
+                      {modalData.certificateNames}
+                    </div>
                   </div>
                 </div>
                 {/* File Uploads */}
@@ -418,25 +569,49 @@ const AccountDashboard = () => {
                   <div className="acd-modal-section-title">File Uploads</div>
                   <div className="acd-modal-files-grid">
                     <div className="acd-modal-file-card">
-                      <FileUp size={22}/>
+                      <FileUp size={22} />
                       <div>Upload CV</div>
                       {modalData.cvFileUrl ? (
-                        <a href={modalData.cvFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">View CV</a>
-                      ) : <span className="acd-modal-file-empty">No file</span>}
+                        <a
+                          href={modalData.cvFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="acd-modal-link"
+                        >
+                          View CV
+                        </a>
+                      ) : (
+                        <span className="acd-modal-file-empty">No file</span>
+                      )}
                     </div>
                     <div className="acd-modal-file-card">
-                      <ImageIcon size={22}/>
+                      <ImageIcon size={22} />
                       <div>Upload Photo</div>
                       {modalData.photoUrl ? (
-                        <img src={modalData.photoUrl} alt="Image" className="acd-modal-file-img" />
-                      ) : <span className="acd-modal-file-empty">No file</span>}
+                        <img
+                          src={modalData.photoUrl}
+                          alt="Image"
+                          className="acd-modal-file-img"
+                        />
+                      ) : (
+                        <span className="acd-modal-file-empty">No file</span>
+                      )}
                     </div>
                     <div className="acd-modal-file-card">
-                      <FileText size={22}/>
+                      <FileText size={22} />
                       <div>Upload Certificate</div>
                       {modalData.certificateFileUrl ? (
-                        <a href={modalData.certificateFileUrl} target="_blank" rel="noopener noreferrer" className="acd-modal-link">View file</a>
-                      ) : <span className="acd-modal-file-empty">No file</span>}
+                        <a
+                          href={modalData.certificateFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="acd-modal-link"
+                        >
+                          View file
+                        </a>
+                      ) : (
+                        <span className="acd-modal-file-empty">No file</span>
+                      )}
                     </div>
                   </div>
                 </div>

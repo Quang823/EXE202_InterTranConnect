@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
   UserCheck,
-  Shield,
+  DollarSign,
+  CreditCard,
+  MessageCircle,
   LogOut,
   LogIn,
 } from "lucide-react";
 import Sidebar from "react-sidebar";
 import { Badge } from "react-bootstrap";
 import { getUserByUserId } from "../../../apiHandler/authAPIHandler";
+import AuthContext from "../../../context/AuthContext";
 import "./AdminSidebars.scss";
-
+import Image from "../../../assets/images/Image";
 const navigationItems = [
   {
     title: "Dashboard",
@@ -25,24 +28,24 @@ const navigationItems = [
     icon: Users,
   },
   {
-    title: "Approval",
+    title: "Certificate Approval",
     url: "/admin/accountAccept",
     icon: UserCheck,
   },
   {
     title: "Revenue Management",
     url: "/admin/revenue",
-    icon: UserCheck,
+    icon: DollarSign,
   },
   {
     title: "Subscription Management",
     url: "/admin/subscription",
-    icon: UserCheck,
+    icon: CreditCard,
   },
   {
     title: "Complaint Management",
     url: "/admin/complaint",
-    icon: UserCheck,
+    icon: MessageCircle,
   },
 ];
 
@@ -50,6 +53,7 @@ export default function AdminSidebars({ children, currentPageName }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const { logout } = useContext(AuthContext);
 
   useEffect(() => {
     const sessionData = JSON.parse(sessionStorage.getItem("user"));
@@ -64,8 +68,7 @@ export default function AdminSidebars({ children, currentPageName }) {
   }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("accessToken");
+    logout();
     window.location.href = "/login";
   };
 
@@ -92,7 +95,12 @@ export default function AdminSidebars({ children, currentPageName }) {
       <div className="ap-sidebar-header">
         <div className="ap-header-content">
           <div className="ap-logo-container">
-            <Shield className="ap-logo-icon" />
+            <Image
+              className="itc-header__logo-svg"
+              src="logo"
+              alt="Inter-Trans Connect Logo"
+            />
+            <div className="itc-header__logo-glow"></div>
           </div>
           <div>
             <h2 className="ap-title">AdminPanel</h2>

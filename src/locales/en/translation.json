@@ -9,6 +9,10 @@
   "forum": "Forum",
   "hero": {
     "title": { "line": "Top Translators", "highlight": "Connect TODAY!" },
+    "title2": {
+      "line": "Smarts Connections",
+      "highlight": "Smooth Conversations!"
+    },
     "subtitle": "Professional Translators – Meeting all your translation needs with exceptional quality and lightning speed!",
     "cta": "Hire a Translator Now",
     "search": {
