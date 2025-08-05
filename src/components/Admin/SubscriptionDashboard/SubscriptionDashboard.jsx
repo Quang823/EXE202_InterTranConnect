@@ -1,13 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import * as Chart from 'chart.js';
-import { TrendingUp, TrendingDown, Users, DollarSign, ChevronLeft, ChevronRight } from 'lucide-react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { getSubscriptionDashboard } from '../../../apiHandler/adminAPIHandler';
-import './SubscriptionDashboard.scss';
+import React, { useState, useEffect, useRef } from "react";
+import * as Chart from "chart.js";
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  DollarSign,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { getSubscriptionDashboard } from "../../../apiHandler/adminAPIHandler";
+import "./SubscriptionDashboard.scss";
 
 // Register Chart.js components
-Chart.Chart.register(
+CChart.Chart.register(
   Chart.CategoryScale,
   Chart.LinearScale,
   Chart.PointElement,
@@ -17,14 +24,15 @@ Chart.Chart.register(
   Chart.Tooltip,
   Chart.Legend,
   Chart.ArcElement,
-  Chart.RadialLinearScale
+  Chart.RadialLinearScale,
+  Chart.PolarAreaController // <== THÊM DÒNG NÀY
 );
 
 const SubscriptionDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dateRange, setDateRange] = useState({
     startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
-    endDate: new Date() // Today
+    endDate: new Date(), // Today
   });
   const [dashboardData, setDashboardData] = useState({
     totalSubscriptions: 0,
@@ -32,7 +40,7 @@ const SubscriptionDashboard = () => {
     subscriptionRevenue: 0,
     distributionByPlan: [],
     trendOverTime: [],
-    activeSubscriptionList: []
+    activeSubscriptionList: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,10 +58,13 @@ const SubscriptionDashboard = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Only fetch if both start and end dates are selected
       if (dateRange.startDate && dateRange.endDate) {
-        const data = await getSubscriptionDashboard(dateRange.startDate, dateRange.endDate);
+        const data = await getSubscriptionDashboard(
+          dateRange.startDate,
+          dateRange.endDate
+        );
         setDashboardData(data);
       } else {
         // Set empty data when no date range is selected
@@ -63,13 +74,12 @@ const SubscriptionDashboard = () => {
           subscriptionRevenue: 0,
           distributionByPlan: [],
           trendOverTime: [],
-          activeSubscriptionList: []
+          activeSubscriptionList: [],
         });
       }
-      
     } catch (err) {
-      setError('Unable to load dashboard data');
-      console.error('Error fetching dashboard data:', err);
+      setError("Unable to load dashboard data");
+      console.error("Error fetching dashboard data:", err);
     } finally {
       setLoading(false);
     }
@@ -82,10 +92,17 @@ const SubscriptionDashboard = () => {
   }, [dateRange]);
 
   // Pagination logic for subscriptions
-  const totalPages = Math.ceil((dashboardData.activeSubscriptionList?.length || 0) / subscriptionsPerPage);
+  const totalPages = Math.ceil(
+    (dashboardData.activeSubscriptionList?.length || 0) / subscriptionsPerPage
+  );
   const indexOfLastSubscription = currentPage * subscriptionsPerPage;
-  const indexOfFirstSubscription = indexOfLastSubscription - subscriptionsPerPage;
-  const currentSubscriptions = dashboardData.activeSubscriptionList?.slice(indexOfFirstSubscription, indexOfLastSubscription) || [];
+  const indexOfFirstSubscription =
+    indexOfLastSubscription - subscriptionsPerPage;
+  const currentSubscriptions =
+    dashboardData.activeSubscriptionList?.slice(
+      indexOfFirstSubscription,
+      indexOfLastSubscription
+    ) || [];
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -94,27 +111,36 @@ const SubscriptionDashboard = () => {
   // Format date for chart labels
   const formatDateForChart = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+    return `${date.getDate().toString().padStart(2, "0")}/${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()}`;
   };
 
   // Format date for table display
   const formatDateForTable = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+    return `${date.getDate().toString().padStart(2, "0")}/${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()}`;
   };
 
   // Format currency
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(amount);
   };
 
   // Calculate average per subscription
-  const averagePerSubscription = dashboardData.totalSubscriptions > 0 
-    ? dashboardData.subscriptionRevenue / dashboardData.totalSubscriptions 
-    : 0;
+  const averagePerSubscription =
+    dashboardData.totalSubscriptions > 0
+      ? dashboardData.subscriptionRevenue / dashboardData.totalSubscriptions
+      : 0;
 
   // Calculate cancellation rate (mock calculation - you might want to get this from API)
   const cancellationRate = 0; // This should come from API
@@ -124,170 +150,181 @@ const SubscriptionDashboard = () => {
 
     // Initialize revenue chart (Doughnut chart)
     if (lineChartRef.current) {
-      const ctx = lineChartRef.current.getContext('2d');
-      
+      const ctx = lineChartRef.current.getContext("2d");
+
       if (lineChartInstance.current) {
         lineChartInstance.current.destroy();
       }
 
       // Calculate revenue by plan
-      const revenueByPlan = dashboardData.distributionByPlan.map(plan => {
-        const planSubscriptions = dashboardData.activeSubscriptionList.filter(sub => sub.plan === plan.plan);
-        const totalRevenue = planSubscriptions.reduce((sum, sub) => sum + sub.amount, 0);
+      const revenueByPlan = dashboardData.distributionByPlan.map((plan) => {
+        const planSubscriptions = dashboardData.activeSubscriptionList.filter(
+          (sub) => sub.plan === plan.plan
+        );
+        const totalRevenue = planSubscriptions.reduce(
+          (sum, sub) => sum + sub.amount,
+          0
+        );
         return {
           plan: plan.plan,
           revenue: totalRevenue,
-          count: plan.count
+          count: plan.count,
         };
       });
 
       lineChartInstance.current = new Chart.Chart(ctx, {
-        type: 'doughnut',
+        type: "doughnut",
         data: {
-          labels: revenueByPlan.map(item => item.plan),
-          datasets: [{
-            data: revenueByPlan.map(item => item.revenue),
-            backgroundColor: [
-              '#3b82f6',
-              '#8b5cf6', 
-              '#10b981',
-              '#f59e0b',
-              '#ef4444',
-              '#06b6d4',
-              '#84cc16',
-              '#f97316'
-            ],
-            borderColor: '#ffffff',
-            borderWidth: 3,
-            cutout: '60%'
-          }]
+          labels: revenueByPlan.map((item) => item.plan),
+          datasets: [
+            {
+              data: revenueByPlan.map((item) => item.revenue),
+              backgroundColor: [
+                "#3b82f6",
+                "#8b5cf6",
+                "#10b981",
+                "#f59e0b",
+                "#ef4444",
+                "#06b6d4",
+                "#84cc16",
+                "#f97316",
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 3,
+              cutout: "60%",
+            },
+          ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
+              position: "bottom",
               labels: {
                 padding: 20,
                 usePointStyle: true,
                 font: {
-                  size: 12
-                }
-              }
+                  size: 12,
+                },
+              },
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const percentage = ((context.parsed / total) * 100).toFixed(1);
-                  const revenue = new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
+                  const percentage = ((context.parsed / total) * 100).toFixed(
+                    1
+                  );
+                  const revenue = new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
                   }).format(context.parsed);
                   return `${context.label}: ${revenue} (${percentage}%)`;
-                }
-              }
-            }
-          }
-        }
+                },
+              },
+            },
+          },
+        },
       });
     }
 
     // Initialize trend chart (Polar Area chart)
     if (trendChartRef.current) {
-      const ctx = trendChartRef.current.getContext('2d');
-      
+      const ctx = trendChartRef.current.getContext("2d");
+
       if (trendChartInstance.current) {
         trendChartInstance.current.destroy();
       }
 
-      const trendChartData = dashboardData.trendOverTime.length > 0 
-        ? dashboardData.trendOverTime.map(item => ({
-            time: formatDateForChart(item.date),
-            registrations: item.count
-          }))
-        : [];
+      const trendChartData =
+        dashboardData.trendOverTime.length > 0
+          ? dashboardData.trendOverTime.map((item) => ({
+              time: formatDateForChart(item.date),
+              registrations: item.count,
+            }))
+          : [];
 
       // Use selected dates or default to first 5 dates
-      const displayData = appliedDates.length > 0 
-        ? appliedDates 
-        : trendChartData.slice(0, 5);
-      
+      const displayData =
+        appliedDates.length > 0 ? appliedDates : trendChartData.slice(0, 5);
+
       const hasMoreDates = trendChartData.length > 5;
 
       trendChartInstance.current = new Chart.Chart(ctx, {
-        type: 'polarArea',
+        type: "polarArea",
         data: {
-          labels: displayData.map(item => item.time),
-          datasets: [{
-            label: 'New registrations',
-            data: displayData.map(item => item.registrations),
-            backgroundColor: [
-              'rgba(59, 130, 246, 0.7)',
-              'rgba(139, 92, 246, 0.7)',
-              'rgba(34, 197, 94, 0.7)',
-              'rgba(249, 115, 22, 0.7)',
-              'rgba(239, 68, 68, 0.7)',
-              'rgba(6, 182, 212, 0.7)',
-              'rgba(132, 204, 22, 0.7)',
-              'rgba(249, 115, 22, 0.7)'
-            ],
-            borderColor: [
-              'rgba(59, 130, 246, 1)',
-              'rgba(139, 92, 246, 1)',
-              'rgba(34, 197, 94, 1)',
-              'rgba(249, 115, 22, 1)',
-              'rgba(239, 68, 68, 1)',
-              'rgba(6, 182, 212, 1)',
-              'rgba(132, 204, 22, 1)',
-              'rgba(249, 115, 22, 1)'
-            ],
-            borderWidth: 2
-          }]
+          labels: displayData.map((item) => item.time),
+          datasets: [
+            {
+              label: "New registrations",
+              data: displayData.map((item) => item.registrations),
+              backgroundColor: [
+                "rgba(59, 130, 246, 0.7)",
+                "rgba(139, 92, 246, 0.7)",
+                "rgba(34, 197, 94, 0.7)",
+                "rgba(249, 115, 22, 0.7)",
+                "rgba(239, 68, 68, 0.7)",
+                "rgba(6, 182, 212, 0.7)",
+                "rgba(132, 204, 22, 0.7)",
+                "rgba(249, 115, 22, 0.7)",
+              ],
+              borderColor: [
+                "rgba(59, 130, 246, 1)",
+                "rgba(139, 92, 246, 1)",
+                "rgba(34, 197, 94, 1)",
+                "rgba(249, 115, 22, 1)",
+                "rgba(239, 68, 68, 1)",
+                "rgba(6, 182, 212, 1)",
+                "rgba(132, 204, 22, 1)",
+                "rgba(249, 115, 22, 1)",
+              ],
+              borderWidth: 2,
+            },
+          ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
+              position: "bottom",
               labels: {
                 padding: 20,
                 usePointStyle: true,
                 font: {
-                  size: 12
-                }
-              }
+                  size: 12,
+                },
+              },
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   return `Registration: ${context.parsed.r}`;
-                }
-              }
-            }
+                },
+              },
+            },
           },
           scales: {
             r: {
               beginAtZero: true,
               grid: {
-                color: 'rgba(0, 0, 0, 0.1)'
+                color: "rgba(0, 0, 0, 0.1)",
               },
               pointLabels: {
                 font: {
-                  size: 11
-                }
+                  size: 11,
+                },
               },
               ticks: {
                 stepSize: 1,
-                callback: function(value) {
+                callback: function (value) {
                   return Math.floor(value);
-                }
-              }
-            }
-          }
-        }
+                },
+              },
+            },
+          },
+        },
       });
     }
 
@@ -312,9 +349,17 @@ const SubscriptionDashboard = () => {
       </div>
       <div className="stat-value">{value}</div>
       {trendText && (
-        <div className={`stat-trend ${trend === 'up' ? 'positive' : trend === 'down' ? 'negative' : 'neutral'}`}>
-          {trend === 'up' && <TrendingUp size={16} />}
-          {trend === 'down' && <TrendingDown size={16} />}
+        <div
+          className={`stat-trend ${
+            trend === "up"
+              ? "positive"
+              : trend === "down"
+              ? "negative"
+              : "neutral"
+          }`}
+        >
+          {trend === "up" && <TrendingUp size={16} />}
+          {trend === "down" && <TrendingDown size={16} />}
           <span>{trendText}</span>
         </div>
       )}
@@ -322,15 +367,22 @@ const SubscriptionDashboard = () => {
   );
 
   // Date Modal Component
-  const DateModal = ({ isOpen, onClose, dates, selectedDates, onDateSelect, onApply }) => {
+  const DateModal = ({
+    isOpen,
+    onClose,
+    dates,
+    selectedDates,
+    onDateSelect,
+    onApply,
+  }) => {
     if (!isOpen) return null;
 
     const handleDateToggle = (date) => {
       const dateString = date.time; // Use date string as unique identifier
-      const isSelected = selectedDates.some(d => d.time === dateString);
-      
+      const isSelected = selectedDates.some((d) => d.time === dateString);
+
       if (isSelected) {
-        onDateSelect(selectedDates.filter(d => d.time !== dateString));
+        onDateSelect(selectedDates.filter((d) => d.time !== dateString));
       } else {
         onDateSelect([...selectedDates, date]);
       }
@@ -350,7 +402,7 @@ const SubscriptionDashboard = () => {
     };
 
     const isDateSelected = (date) => {
-      return selectedDates.some(d => d.time === date.time);
+      return selectedDates.some((d) => d.time === date.time);
     };
 
     return (
@@ -358,15 +410,16 @@ const SubscriptionDashboard = () => {
         <div className="date-modal" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
             <h3>Select display dates</h3>
-            <button className="close-btn" onClick={onClose}>×</button>
+            <button className="close-btn" onClick={onClose}>
+              ×
+            </button>
           </div>
           <div className="modal-content">
             <div className="modal-actions">
-              <button 
-                className="select-all-btn"
-                onClick={handleSelectAll}
-              >
-                {selectedDates.length === dates.length ? 'Deselect all' : 'Select all'}
+              <button className="select-all-btn" onClick={handleSelectAll}>
+                {selectedDates.length === dates.length
+                  ? "Deselect all"
+                  : "Select all"}
               </button>
               <span className="selected-count">
                 Selected: {selectedDates.length}/{dates.length}
@@ -376,14 +429,14 @@ const SubscriptionDashboard = () => {
               {dates.map((date, index) => {
                 const isSelected = isDateSelected(date);
                 return (
-                  <div 
-                    key={index} 
-                    className={`date-item ${isSelected ? 'selected' : ''}`}
+                  <div
+                    key={index}
+                    className={`date-item ${isSelected ? "selected" : ""}`}
                     onClick={() => handleDateToggle(date)}
                   >
                     <div className="checkbox">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         checked={isSelected}
                         onChange={() => handleDateToggle(date)}
                       />
@@ -391,8 +444,13 @@ const SubscriptionDashboard = () => {
                     <div className="date-label">{date.time}</div>
                     {isSelected && (
                       <div className="selected-indicator">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                         </svg>
                       </div>
                     )}
@@ -430,11 +488,13 @@ const SubscriptionDashboard = () => {
           <p>Track and analyze subscription packages</p>
           <div className="date-range-picker">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
             </svg>
             <DatePicker
               selected={dateRange.startDate}
-              onChange={date => setDateRange({ ...dateRange, startDate: date })}
+              onChange={(date) =>
+                setDateRange({ ...dateRange, startDate: date })
+              }
               selectsStart
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}
@@ -442,10 +502,10 @@ const SubscriptionDashboard = () => {
               placeholderText="From date"
               className="date-input"
             />
-            <span style={{ margin: '0 4px' }}>-</span>
+            <span style={{ margin: "0 4px" }}>-</span>
             <DatePicker
               selected={dateRange.endDate}
-              onChange={date => setDateRange({ ...dateRange, endDate: date })}
+              onChange={(date) => setDateRange({ ...dateRange, endDate: date })}
               selectsEnd
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}
@@ -482,7 +542,15 @@ const SubscriptionDashboard = () => {
                 title="Active"
                 value={dashboardData.activeSubscriptions}
                 trend="up"
-                trendText={`${dashboardData.totalSubscriptions > 0 ? (dashboardData.activeSubscriptions / dashboardData.totalSubscriptions * 100).toFixed(1) : 0}% of total`}
+                trendText={`${
+                  dashboardData.totalSubscriptions > 0
+                    ? (
+                        (dashboardData.activeSubscriptions /
+                          dashboardData.totalSubscriptions) *
+                        100
+                      ).toFixed(1)
+                    : 0
+                }% of total`}
                 color="green"
                 icon={TrendingUp}
               />
@@ -524,7 +592,11 @@ const SubscriptionDashboard = () => {
                       <p>No data in the selected time range</p>
                     </div>
                   ) : (
-                    <canvas ref={lineChartRef} width="400" height="300"></canvas>
+                    <canvas
+                      ref={lineChartRef}
+                      width="400"
+                      height="300"
+                    ></canvas>
                   )}
                 </div>
               </div>
@@ -541,17 +613,20 @@ const SubscriptionDashboard = () => {
                     </div>
                   ) : (
                     <>
-                      <canvas ref={trendChartRef} width="400" height="300"></canvas>
+                      <canvas
+                        ref={trendChartRef}
+                        width="400"
+                        height="300"
+                      ></canvas>
                       {dashboardData.trendOverTime.length > 5 && (
                         <div className="view-more-dates">
-                          <button 
+                          <button
                             className="view-more-btn"
                             onClick={handleOpenModal}
                           >
-                            {appliedDates.length > 0 
+                            {appliedDates.length > 0
                               ? `Selected ${appliedDates.length} days`
-                              : `View all ${dashboardData.trendOverTime.length} days`
-                            }
+                              : `View all ${dashboardData.trendOverTime.length} days`}
                           </button>
                         </div>
                       )}
@@ -563,7 +638,10 @@ const SubscriptionDashboard = () => {
 
             <div className="subscriptions-table">
               <div className="table-header">
-                <h3>Active subscriptions ({dashboardData.activeSubscriptionList.length})</h3>
+                <h3>
+                  Active subscriptions (
+                  {dashboardData.activeSubscriptionList.length})
+                </h3>
               </div>
               <div className="table-container">
                 <table>
@@ -601,30 +679,38 @@ const SubscriptionDashboard = () => {
                   </tbody>
                 </table>
               </div>
-              
-              {/* Pagination */}
-              {dashboardData.activeSubscriptionList && dashboardData.activeSubscriptionList.length > subscriptionsPerPage && (
-                <div className="pagination-container">
-                  <div className="pagination-info">
-                    <span>
-                      Displaying {indexOfFirstSubscription + 1}-
-                      {Math.min(indexOfLastSubscription, dashboardData.activeSubscriptionList.length)} of{" "}
-                      {dashboardData.activeSubscriptionList.length} subscriptions
-                    </span>
-                  </div>
-                  <div className="pagination-controls">
-                    <button
-                      className="pagination-button prev"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      <span>Previous</span>
-                      <ChevronLeft size={16} />
-                    </button>
 
-                    <div className="pagination-numbers">
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                        (page) => (
+              {/* Pagination */}
+              {dashboardData.activeSubscriptionList &&
+                dashboardData.activeSubscriptionList.length >
+                  subscriptionsPerPage && (
+                  <div className="pagination-container">
+                    <div className="pagination-info">
+                      <span>
+                        Displaying {indexOfFirstSubscription + 1}-
+                        {Math.min(
+                          indexOfLastSubscription,
+                          dashboardData.activeSubscriptionList.length
+                        )}{" "}
+                        of {dashboardData.activeSubscriptionList.length}{" "}
+                        subscriptions
+                      </span>
+                    </div>
+                    <div className="pagination-controls">
+                      <button
+                        className="pagination-button prev"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        <span>Previous</span>
+                        <ChevronLeft size={16} />
+                      </button>
+
+                      <div className="pagination-numbers">
+                        {Array.from(
+                          { length: totalPages },
+                          (_, i) => i + 1
+                        ).map((page) => (
                           <button
                             key={page}
                             className={`page-number ${
@@ -634,32 +720,31 @@ const SubscriptionDashboard = () => {
                           >
                             {page}
                           </button>
-                        )
-                      )}
-                    </div>
+                        ))}
+                      </div>
 
-                    <button
-                      className="pagination-button next"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      <span>Next</span>
-                      <ChevronRight size={16} />
-                    </button>
+                      <button
+                        className="pagination-button next"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <span>Next</span>
+                        <ChevronRight size={16} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </>
         )}
       </main>
 
-      <DateModal 
+      <DateModal
         isOpen={showDateModal}
         onClose={() => setShowDateModal(false)}
-        dates={dashboardData.trendOverTime.map(item => ({
+        dates={dashboardData.trendOverTime.map((item) => ({
           time: formatDateForChart(item.date),
-          registrations: item.count
+          registrations: item.count,
         }))}
         selectedDates={selectedDates}
         onDateSelect={setSelectedDates}
