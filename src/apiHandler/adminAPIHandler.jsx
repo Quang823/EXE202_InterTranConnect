@@ -183,10 +183,22 @@ export const getUserCountByRole = async () => {
 
 export const getAllTalent = async () => {
   try {
-    const response = await apiClient.get("/User/all-talent");
+    const response = await apiClient.get("/User/all-talents-with-certificates");
     return response.data;
   } catch (error) {
     console.error("Error fetching all talent users:", error);
+    throw error;
+  }
+};
+
+export const getTopRatedTalents = async (count = 3) => {
+  try {
+    const response = await apiClient.get(
+      `/User/top-rated-talents?count=${count}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching top rated talents:", error);
     throw error;
   }
 };

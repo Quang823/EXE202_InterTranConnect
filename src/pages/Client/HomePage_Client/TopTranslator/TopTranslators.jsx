@@ -1,44 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Star, CheckCircle } from "lucide-react";
+import { getTopRatedTalents } from "../../../../apiHandler/adminAPIHandler";
 import "./TopTranslators.scss";
-import Image from "../../../../assets/images/Image";
 
 const TopTranslators = () => {
-  const topTranslators = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      languages: "English ↔ Spanish",
-      rating: 4.9,
-      reviews: 245,
-      price: "$25/hour",
-      avatar:
-        "https://res.cloudinary.com/dk3yac2ie/image/upload/v1744269752/Ban-sao-cua-Anh-Profile.04-scaled_vuvqel_Circle_rdve2p.jpg",
-      verified: true,
-    },
-    {
-      id: 2,
-      name: "Miguel Rodriguez",
-      languages: "Spanish ↔ French",
-      rating: 4.8,
-      reviews: 189,
-      price: "$30/hour",
-      avatar:
-        "https://res.cloudinary.com/dk3yac2ie/image/upload/v1744270074/Anh-CV-chuyen-nghiep-min-1.jpg_exzc9m_Circle_miymix.webp",
-      verified: true,
-    },
-    {
-      id: 3,
-      name: "Anna Chen",
-      languages: "English ↔ Mandarin",
-      rating: 5.0,
-      reviews: 312,
-      price: "$35/hour",
-      avatar:
-        "https://res.cloudinary.com/dk3yac2ie/image/upload/v1744270066/portrait-photography_1661_umiqms_Circle_f7orkt.jpg",
-      verified: true,
-    },
-  ];
+  const [topTranslators, setTopTranslators] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getTopRatedTalents(3);
+        if (response) {
+          const data = Array.isArray(response)
+            ? response
+            : response.data || [response];
+          const formattedTranslators = data.map((user) => {
+            const certificate = user.certificates[0] || {};
+            return {
+              id: user.id,
+              name: user.fullName,
+              languages: `${certificate.translationForm || "N/A"}-${
+                certificate.translationLanguage || "N/A"
+              }`,
+              rating: user.averageRating,
+              reviews: user.totalReviews,
+              avatar: user.avatarURL || "https://via.placeholder.com/300", // Dùng placeholder nếu avatarURL null
+              verified: true, // Giả định tất cả đều verified
+            };
+          });
+          setTopTranslators(formattedTranslators);
+        } else {
+          console.warn("No data returned from getTopRatedTalents");
+        }
+      } catch (error) {
+        console.error("Error fetching top rated talents:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
@@ -54,7 +53,6 @@ const TopTranslators = () => {
 
   return (
     <section className="top-translators">
-      {/* Background Elements */}
       <div className="top-translators__bg">
         <div className="top-translators__bg-circle top-translators__bg-circle--1"></div>
         <div className="top-translators__bg-circle top-translators__bg-circle--2"></div>
@@ -62,7 +60,6 @@ const TopTranslators = () => {
       </div>
 
       <div className="top-translators__container">
-        {/* Title Section */}
         <div className="top-translators__header">
           <h2 className="top-translators__title">
             <span className="top-translators__title-main">TOP</span>
@@ -75,7 +72,6 @@ const TopTranslators = () => {
           </p>
         </div>
 
-        {/* Translators Grid */}
         <div className="top-translators__grid">
           {topTranslators.map((translator, index) => (
             <div
@@ -85,13 +81,15 @@ const TopTranslators = () => {
             >
               <div className="top-translators__card-glow"></div>
 
-              {/* Avatar Section */}
               <div className="top-translators__avatar-section">
                 <div className="top-translators__avatar-wrapper">
                   <img
                     src={translator.avatar}
                     alt={translator.name}
                     className="top-translators__avatar"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/300";
+                    }} // Fallback nếu ảnh không load được
                   />
                   <div className="top-translators__avatar-ring"></div>
                 </div>
@@ -102,14 +100,12 @@ const TopTranslators = () => {
                 )}
               </div>
 
-              {/* Content */}
               <div className="top-translators__content">
                 <h3 className="top-translators__name">{translator.name}</h3>
                 <p className="top-translators__languages">
                   {translator.languages}
                 </p>
 
-                {/* Rating */}
                 <div className="top-translators__rating">
                   <div className="top-translators__stars">
                     {renderStars(translator.rating)}
@@ -119,10 +115,6 @@ const TopTranslators = () => {
                   </span>
                 </div>
 
-                {/* Price */}
-                <div className="top-translators__price">{translator.price}</div>
-
-                {/* Connect Button */}
                 <button className="top-translators__connect-btn">
                   <span className="top-translators__btn-text">Connect Now</span>
                   <div className="top-translators__btn-shimmer"></div>
