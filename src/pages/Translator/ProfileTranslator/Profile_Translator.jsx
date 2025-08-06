@@ -153,10 +153,10 @@ const Profile_Translator = () => {
           response.avatarURL ||
           "https://res.cloudinary.com/dk3yac2ie/image/upload/v1749144659/y2pbt57hi0fapj5btjaw.png",
         dateOfBirth: response.dateOfBirth || "Not specified",
-        gender: response.gender || "Not specified",
+        gender: response.gender?.toLowerCase() || "not specified",
         studentId: response.studentId || "Add student ID",
         otherName: response.otherName || "Add other name/nickname",
-        mailingAddress: response.mailingAddress || "Add mailing address",
+        mailingAddress: response.email || "Add mailing address",
         phoneNumber: response.phoneNumber || "Add phone number",
         businessFax: response.businessFax || "Add business fax number",
         company: response.company || "Add company",
@@ -222,22 +222,9 @@ const Profile_Translator = () => {
         id: editData.id,
         fullName: `${editData.firstName} ${editData.lastName}`.trim(),
         avatarURL: editData.avatarURL,
-        email: editData.email,
-        contactNumber: editData.contactNumber,
-        dateOfBirth: editData.dateOfBirth,
-        gender: editData.gender,
-        studentId: editData.studentId,
-        otherName: editData.otherName,
-        mailingAddress: editData.mailingAddress,
         phoneNumber: editData.phoneNumber,
-        businessFax: editData.businessFax,
-        company: editData.company,
-        jobTitle: editData.jobTitle,
-        department: editData.department,
-        workLocation: editData.workLocation,
+        gender: editData.gender,
         address: editData.address,
-        bio: editData.bio,
-        certificates: editData.certificates,
       };
 
       const response = await updateUserProfileService(profileData);
@@ -245,7 +232,13 @@ const Profile_Translator = () => {
       if (response) {
         ToastManager.showSuccess("Profile updated successfully!");
         setShowModal(false);
-        fetchUserData();
+        // Cập nhật userData sau khi lưu thành công
+        setUserData((prev) => ({
+          ...prev,
+          ...profileData,
+          firstName: editData.firstName,
+          lastName: editData.lastName,
+        }));
       }
     } catch (error) {
       ToastManager.showError("Failed to update profile: " + error.message);
@@ -828,14 +821,32 @@ const Profile_Translator = () => {
                   />
                 </div>
                 <div className="wallet-form__group">
-                  <label htmlFor="bio" className="wallet-form__label">
-                    Bio
+                  <label htmlFor="gender" className="wallet-form__label">
+                    Gender
                   </label>
-                  <textarea
-                    id="bio"
-                    value={editData?.bio || ""}
+                  <select
+                    id="gender"
+                    value={editData?.gender || ""}
                     onChange={handleInputChange}
-                    rows="3"
+                    className="wallet-form__input"
+                  >
+                    <option value="" disabled>
+                      Select Gender
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div className="wallet-form__group">
+                  <label htmlFor="address" className="wallet-form__label">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    value={editData?.address || ""}
+                    onChange={handleInputChange}
                     className="wallet-form__input"
                   />
                 </div>

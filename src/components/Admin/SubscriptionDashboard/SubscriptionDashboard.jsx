@@ -14,7 +14,7 @@ import { getSubscriptionDashboard } from "../../../apiHandler/adminAPIHandler";
 import "./SubscriptionDashboard.scss";
 
 // Register Chart.js components
-CChart.Chart.register(
+Chart.Chart.register(
   Chart.CategoryScale,
   Chart.LinearScale,
   Chart.PointElement,
